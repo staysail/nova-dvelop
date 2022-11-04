@@ -1,0 +1,28 @@
+{
+    "identifier": "tech.staysail.ServeD",
+    "name": "Serve-D",
+    "organization": "Staysail Systems",
+    "description": "D language support via Serve-D.",
+    "version": "1.0",
+    "categories": ["languages"],
+    
+    "main": "main.js",
+    
+    "entitlements": {
+        "process": true,
+        "filesystem": "readonly"
+    },
+    
+    "config": [
+        {
+            "key": "d.language-server-path",
+            "title": "Language Server Path",
+            "type": "path",
+            "placeholder": "/usr/local/bin/serve-d"
+        }
+    ],
+    "debug": true,
+    "activationEvents": [
+        "onLanguage:d"
+    ]
+}

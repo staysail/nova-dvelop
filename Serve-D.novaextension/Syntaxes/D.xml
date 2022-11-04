@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<syntax name="d">
+    <meta>
+        <name>D</name>
+        <type>compiled</type>
+        <preferred-file-extension>d</preferred-file-extension>
+    </meta>
+    
+    <detectors>
+        <extension priority="1.0">d</extension>
+    </detectors>
+    
+    <indentation>
+        <increase>
+            <expression>\{</expression>
+        </increase>
+        <decrease>
+            <expression>\}</expression>
+        </decrease>
+    </indentation>
+    
+    <comments>
+        <single>
+            <expression>//</expression>
+        </single>
+        <multiline>
+            <starts-with>
+                <expression>/*</expression>
+            </starts-with>
+            <ends-with>
+                <expression>*/</expression>
+            </ends-with>
+        </multiline>
+    </comments>
+    
+    <injection>
+        <expression>^(d)$</expression>
+    </injection>
+    
+    <tree-sitter language="d">
+        <highlights path="highlights.scm" />
+        <folds path="folds.scm" />
+        <symbols path="symbols.scm" />
+    </tree-sitter>
+</syntax>
