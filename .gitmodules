@@ -1,0 +1,3 @@
+[submodule "tree-sitter-d"]
+	path = tree-sitter-d
+	url = https://github.com/gdamore/tree-sitter-d

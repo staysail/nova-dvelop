@@ -40,6 +40,5 @@
     <tree-sitter language="d">
         <highlights path="highlights.scm" />
         <folds path="folds.scm" />
-        <symbols path="symbols.scm" />
     </tree-sitter>
 </syntax>
