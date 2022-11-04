@@ -5,9 +5,11 @@
     "description": "D language support via Serve-D.",
     "version": "0.5",
     "categories": ["languages"],
-    
+    "repository": "https://github.com/staysail/nova-serve-d",
+    "bugs": "https://github.com/staysail/nova-serve-d/issues",
     "main": "main.js",
-    
+    "license": "MIT",
+
     "entitlements": {
         "process": true,
         "filesystem": "readonly"
