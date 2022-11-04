@@ -43,7 +43,8 @@ class DLanguageServer {
 		// Create the client
 		var serverOptions = {
 			path: path,
-			args: ['--loglevel', 'trace'],
+			// uncomment the following for debugging
+			// args: ['--loglevel', 'trace'],
 		};
 		var clientOptions = {
 			// The set of document syntaxes for which the server is valid
