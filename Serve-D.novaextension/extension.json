@@ -3,7 +3,7 @@
     "name": "Serve-D",
     "organization": "Staysail Systems",
     "description": "D language support via Serve-D.",
-    "version": "1.0",
+    "version": "0.5",
     "categories": ["languages"],
     
     "main": "main.js",
