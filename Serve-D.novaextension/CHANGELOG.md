@@ -1,3 +1,3 @@
-## Version 1.0
+## Version 0.5
 
-Initial release
+Initial preview release
