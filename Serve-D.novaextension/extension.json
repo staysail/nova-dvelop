@@ -25,7 +25,7 @@
                 "filters": {
                     "syntaxes": [ "d"]
                 }
-            },
+            }
         ]
     },
     "configWorkspace": [
