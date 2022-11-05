@@ -48,7 +48,7 @@
             "title": "dfmt Executable",
             "type": "path",
             "default": "/usr/local/bin/dfmt",
-            "description": "Path to dmt",
+            "description": "Path to dmt"
         }
 
     ],
