@@ -1,12 +1,18 @@
+//
+// Copyright 2022 Staysail Systems, Inc.
+//
+// Distributed under the terms of the MIT license.
+
 const Messages = require("./messages.js");
 const Catalog = require("./catalog.js");
 const ServeD = require("./served.js");
 
-var langserver = null;
+var lspServer = null;
 
 exports.activate = function () {
   // Do work when the extension is activated
-  langserver = new ServeD();
+  lspServer = new ServeD();
+  lspServer.start();
 
   nova.workspace.onDidAddTextEditor((editor) => {
     if (editor.document.syntax != "d") return;
@@ -24,7 +30,7 @@ async function formatFileCmd(editor) {
   try {
     await formatFile(editor);
   } catch (err) {
-    nova.workspace.showErrorMessage(err);
+    Messages.showError(err.message);
   }
 }
 
@@ -61,7 +67,7 @@ function lspApplyEdits(editor, edits) {
 }
 
 async function formatFile(editor) {
-  if (langserver && langserver.languageClient) {
+  if (lspServer && lspServer.languageClient) {
     var cmdArgs = {
       textDocument: {
         uri: editor.document.uri,
@@ -72,7 +78,7 @@ async function formatFile(editor) {
       },
       // TBD: options
     };
-    var client = langserver.languageClient;
+    var client = lspServer.languageClient;
     if (!client) {
       Messages.showError(Catalog.msgNoLspClient);
       console.error("no language client");
@@ -92,8 +98,8 @@ async function formatFile(editor) {
 
 exports.deactivate = function () {
   // Clean up state before the extension is deactivated
-  if (langserver) {
-    langserver.deactivate();
-    langserver = null;
+  if (lspServer) {
+    lspServer.deactivate();
+    lspServer = null;
   }
 };

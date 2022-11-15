@@ -6,27 +6,27 @@
 const Messages = require("./messages.js");
 const Catalog = require("./catalog.js");
 
-class ServeD {
+class ServeD extends Disposable {
   constructor() {
-    // Observe the configuration setting for the server's location, and restart the server on change
-    nova.config.observe(
-      "d.language-server-path",
-      function (path) {
-        this.start(path);
-      },
-      this
-    );
+    super();
+    this.lspClient = null;
+    nova.subscriptions.add(this);
   }
 
   deactivate() {
-    this.stop();
+    this.dispose();
   }
 
-  start(path) {
-    if (this.languageClient) {
-      this.languageClient.stop();
-      nova.subscriptions.remove(this.languageClient);
+  start() {
+    if (this.lspClient) {
+      this.lspClient.stop();
+      this.lspClient = null;
     }
+
+    let path = "";
+    let args = [];
+    // uncomment the following for debugging
+    // args: ['--loglevel', 'trace'],
 
     // Use the default server path
     if (!path) {
@@ -36,42 +36,58 @@ class ServeD {
     // Create the client
     var serverOptions = {
       path: path,
-      // uncomment the following for debugging
-      // args: ['--loglevel', 'trace'],
+      args: args,
     };
     var clientOptions = {
       // The set of document syntaxes for which the server is valid
       syntaxes: ["d"],
       debug: true,
     };
-    var client = new LanguageClient(
+    this.lspClient = new LanguageClient(
       "d-langserver",
       "D Language Server",
       serverOptions,
       clientOptions
     );
 
+    this.didStopDispose = this.lspClient.onDidStop(this.didStop);
+
     try {
       // Start the client
-      client.start();
-
-      // Add the client to the subscriptions to be cleaned up
-      nova.subscriptions.add(client);
-      this.languageClient = client;
+      this.lspClient.start();
     } catch (err) {
-      // If the .start() method throws, it's likely because the path to the language server is invalid
-
+      Messages.showNotice(Catalog.msgLspDidNotStart, "");
       if (nova.inDevMode()) {
         console.error(err);
       }
+      this.lspClient = null;
     }
   }
 
-  stop() {
-    if (this.languageClient) {
-      this.languageClient.stop();
-      nova.subscriptions.remove(this.languageClient);
-      this.languageClient = null;
+  async restart() {
+    let client = this.lspClient;
+    this.lspClient = null;
+    if (client) {
+      let onStop = client.onDidStop((_) => {
+        onStop.dispose();
+        this.start();
+        Messages.showNotice(Catalog.msgLspRestarted, "");
+      });
+
+      await client.stop();
+    } else {
+      this.start();
+    }
+  }
+
+  async dispose() {
+    if (this.didStopDispose) {
+      this.didStopDispose.dispose();
+      this.didStopDispose = null;
+    }
+    if (this.lspClient) {
+      this.lspClient.stop();
+      this.lspClient = null;
     }
   }
 }

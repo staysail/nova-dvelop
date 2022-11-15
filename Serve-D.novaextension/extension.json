@@ -1,59 +1,56 @@
 {
-    "identifier": "tech.staysail.ServeD",
-    "name": "Serve-D",
-    "organization": "Staysail Systems",
-    "description": "D language support via Serve-D.",
-    "version": "0.6",
-    "categories": ["languages", "formatters"],
-    "repository": "https://github.com/staysail/nova-serve-d",
-    "bugs": "https://github.com/staysail/nova-serve-d/issues",
-    "main": "main.js",
-    "min_runtime": "10.0",
-    "license": "MIT",
+  "identifier": "tech.staysail.ServeD",
+  "name": "Serve-D",
+  "organization": "Staysail Systems",
+  "description": "D language support via Serve-D.",
+  "version": "0.6",
+  "categories": ["languages", "formatters"],
+  "repository": "https://github.com/staysail/nova-serve-d",
+  "bugs": "https://github.com/staysail/nova-serve-d/issues",
+  "main": "main.js",
+  "min_runtime": "10.0",
+  "license": "MIT",
 
-    "entitlements": {
-        "process": true,
-        "filesystem": "readonly"
-    },
+  "entitlements": {
+    "process": true,
+    "filesystem": "readonly"
+  },
 
-    "commands" : {
-        "editor": [
-            {
-                "title": "Format D File",
-                "command": "dfmt.format",
-                "shortcut": "opt-shift-f",
-                "filters": {
-                    "syntaxes": [ "d"]
-                }
-            }
-        ]
-    },
-    "configWorkspace": [
-        {
-        "key": "d.dfmt.formatOnSave",
-        "title": "Format on Save",
-        "type": "boolean",
-        "default": false
+  "commands": {
+    "editor": [
+      {
+        "title": "Format D File",
+        "command": "dfmt.format",
+        "shortcut": "opt-shift-f",
+        "filters": {
+          "syntaxes": ["d"]
         }
-    ],
-    "config": [
-        {
-            "key": "d.language-server-path",
-            "title": "Language Server Path",
-            "type": "path",
-            "placeholder": "/usr/local/bin/serve-d"
-        },
-        {
-            "key": "d.dfmt.path",
-            "title": "dfmt Executable",
-            "type": "path",
-            "default": "/usr/local/bin/dfmt",
-            "description": "Path to dmt"
-        }
-
-    ],
-    "debug": true,
-    "activationEvents": [
-        "onLanguage:d"
+      }
     ]
+  },
+  "configWorkspace": [
+    {
+      "key": "d.dfmt.formatOnSave",
+      "title": "Format on Save",
+      "type": "boolean",
+      "default": false
+    }
+  ],
+  "config": [
+    {
+      "key": "d.language-server-path",
+      "title": "Language Server Path",
+      "type": "path",
+      "placeholder": "/usr/local/bin/serve-d"
+    },
+    {
+      "key": "d.dfmt.path",
+      "title": "dfmt Executable",
+      "type": "path",
+      "default": "/usr/local/bin/dfmt",
+      "description": "Path to dmt"
+    }
+  ],
+  "debug": true,
+  "activationEvents": ["onLanguage:d"]
 }
