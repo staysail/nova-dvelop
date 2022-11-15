@@ -16,6 +16,9 @@ class Messages {
    * Strips off any leading JSON-RPC code if present.
    */
   static showError(err) {
+    if (catalog.values[err]) {
+      err = this.getMsg(key);
+    }
     // strip off the LSP error code; few users can grok it anyway
     let m = err.match(/-3\d\d\d\d\s+(.*)/);
     if (m && m[1]) {
@@ -30,6 +33,9 @@ class Messages {
    */
   static showNotice(title, body) {
     let req = new NotificationRequest();
+    if (catalog.values[title]) {
+      title = this.getMsg(title);
+    }
     req.title = title;
     req.body = body;
     nova.notifications.add(req);

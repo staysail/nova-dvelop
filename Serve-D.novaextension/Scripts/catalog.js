@@ -18,6 +18,13 @@ const values = {
   msgLspDidNotStart: "Language server failed to start.",
 };
 
+// verify that every entry in the catalog has a matching entry in values
+for (name in catalog) {
+  if (!values[name]) {
+    throw `Key mismatch for ${name}`;
+  }
+}
+
 catalog.values = values;
 
 module.exports = catalog;

@@ -6,6 +6,7 @@
 const Messages = require("./messages.js");
 const Catalog = require("./catalog.js");
 const ServeD = require("./served.js");
+const Cfg = require("./config.js");
 
 var lspServer = null;
 
@@ -17,7 +18,7 @@ exports.activate = function () {
   nova.workspace.onDidAddTextEditor((editor) => {
     if (editor.document.syntax != "d") return;
     editor.onWillSave((editor) => {
-      const formatOnSave = nova.workspace.config.get("d.dfmt.formatOnSave");
+      const formatOnSave = nova.workspace.config.get(Cfg.formatOnSave);
       if (formatOnSave) {
         return formatFile(editor);
       }
