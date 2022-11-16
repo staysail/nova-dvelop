@@ -9,6 +9,8 @@ const ServeD = require("./served.js");
 const Cfg = require("./config.js");
 const Commands = require("./commands.js");
 const Navigate = require("./navigate.js");
+const Edits = require("./edits.js");
+const Format = require("./format.js");
 
 var lspServer = null;
 
@@ -22,11 +24,13 @@ exports.activate = function () {
     editor.onWillSave((editor) => {
       const formatOnSave = nova.workspace.config.get(Cfg.formatOnSave);
       if (formatOnSave) {
-        return formatFile(editor);
+        return Format.formatFile(lspServer, editor);
       }
     });
   });
-  nova.commands.register(Commands.formatFile, formatFileCmd);
+  nova.commands.register(Commands.formatFile, (editor) => {
+    Format.formatFileCmd(lspServer, editor);
+  });
   nova.commands.register(Commands.jumpToDefinition, (editor) =>
     Navigate.toDefinition(lspServer, editor)
   );
@@ -36,81 +40,38 @@ exports.activate = function () {
   nova.commands.register(Commands.extensionPreferences, (_) =>
     nova.openConfig()
   );
-  nova.commands.register(
-    Commands.restartServer,
-    lspServer.restart.bind(lspServer)
-  );
+  nova.commands.register(Commands.restartServer, lspServer.restart, lspServer);
 };
 
-async function formatFileCmd(editor) {
-  try {
-    await formatFile(editor);
-  } catch (err) {
-    Messages.showError(err.message);
-  }
-}
+// async function formatFileCmd(editor) {
+//   try {
+//     await formatFile(editor);
+//   } catch (err) {
+//     Messages.showError(err.message);
+//   }
+// }
 
-// Nova ranges are absolute character offsets
-// LSP ranges based on line/column.
-function lspRangeToNovaRange(document, range) {
-  let pos = 0;
-  let start = 0;
-  let end = document.length;
-  const lines = document
-    .getTextInRange(new Range(0, document.length))
-    .split(document.eol);
-  for (let line = 0; line < lines.length; line++) {
-    if (range.start.line == line) {
-      start = pos + range.start.character;
-    }
-    if (range.end.line == line) {
-      end = pos + range.end.character;
-      break; // we finished, so no need to keep scanning the doc
-    }
-    pos += lines[line].length + document.eol.length;
-  }
-  let res = new Range(start, end);
-  return res;
-}
-
-function lspApplyEdits(editor, edits) {
-  return editor.edit((textEditorEdit) => {
-    for (const change of edits.reverse()) {
-      const range = lspRangeToNovaRange(editor.document, change.range);
-      textEditorEdit.replace(range, change.newText);
-    }
-  });
-}
-
-async function formatFile(editor) {
-  if (lspServer && lspServer.languageClient) {
-    var cmdArgs = {
-      textDocument: {
-        uri: editor.document.uri,
-      },
-      options: {
-        tabSize: editor.tabLength,
-        insertSpaces: editor.softTabs,
-      },
-      // TBD: options
-    };
-    var client = lspServer.languageClient;
-    if (!client) {
-      Messages.showError(Catalog.msgNoLspClient);
-      console.error("no language client");
-      return;
-    }
-    const changes = await client.sendRequest(
-      "textDocument/formatting",
-      cmdArgs
-    );
-
-    if (!changes) {
-      return;
-    }
-    await lspApplyEdits(editor, changes);
-  }
-}
+// async function formatFile(editor) {
+//   var cmdArgs = {
+//     textDocument: {
+//       uri: editor.document.uri,
+//     },
+//     options: {
+//       tabSize: editor.tabLength,
+//       insertSpaces: editor.softTabs,
+//     },
+//     // TBD: options
+//   };
+//   const changes = await lspServer.sendRequest(
+//     "textDocument/formatting",
+//     cmdArgs
+//   );
+//
+//   if (!changes) {
+//     return;
+//   }
+//   await Edits.applyEdits(editor, changes);
+// }
 
 exports.deactivate = function () {
   // Clean up state before the extension is deactivated

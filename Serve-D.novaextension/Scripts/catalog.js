@@ -14,6 +14,8 @@ const catalog = {
   msgLspDidNotStart: "msgLspDidNotStart",
   msgNothingFound: "msgNothingFound",
   msgSelectLocation: "msgSelectLocation",
+  msgUnableToApply: "msgUnableToApply",
+  msgUnableToOpen: "msgUnableToOpen",
 };
 
 // default English strings
@@ -24,6 +26,8 @@ const values = {
   msgLspDidNotStart: "Language server failed to start.",
   msgNothingFound: "No matches found.",
   msgSelectLocation: "Select location",
+  msgUnableToApply: "Unable to apply changes.",
+  msgUnableToOpen: "Unable to open _URI_",
 };
 
 // verify that every entry in the catalog has a matching entry in values

@@ -73,7 +73,7 @@ class ServeD extends Disposable {
   }
 
   async sendRequest(method, params) {
-    if (!this.lspClient) {
+    if (this.lspClient == null) {
       Messages.showError(Catalog.msgNoLspClient);
     } else {
       return this.lspClient.sendRequest(method, params);
