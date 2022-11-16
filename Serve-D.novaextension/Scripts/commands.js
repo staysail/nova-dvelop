@@ -7,14 +7,16 @@ function extName(suffix) {
   return "tech.staysail.served." + suffix;
 }
 
-// These are configuration parameters. If public they should be
+// These are command identifiers. If exposed to users they should be
 // exposed via the extension.json file.  Note that these all have
 // the above prefix.
 
 const keys = {
-  lspFlavor: extName("lsp.flavor"),
-  lspPath: extName("lsp.path"),
-  formatOnSave: extName("fmt.OnSave"),
+  preferences: extName("preferences"),
+  extensionPreferences: extName("extensionPreferences"),
+  restartServer: extName("restartServer"),
+  jumpToDefinition: extName("jumpToDefinition"),
+  formatFile: extName("formatFile"),
 };
 
 module.exports = keys;

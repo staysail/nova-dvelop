@@ -17,7 +17,7 @@ class Messages {
    */
   static showError(err) {
     if (catalog.values[err]) {
-      err = this.getMsg(key);
+      err = this.getMsg(err);
     }
     // strip off the LSP error code; few users can grok it anyway
     let m = err.match(/-3\d\d\d\d\s+(.*)/);

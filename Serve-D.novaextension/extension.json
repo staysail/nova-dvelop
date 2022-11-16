@@ -3,7 +3,7 @@
   "name": "Serve-D",
   "organization": "Staysail Systems",
   "description": "D language support via Serve-D.",
-  "version": "0.6",
+  "version": "0.7",
   "categories": ["languages", "formatters"],
   "repository": "https://github.com/staysail/nova-serve-d",
   "bugs": "https://github.com/staysail/nova-serve-d/issues",
@@ -19,18 +19,36 @@
   "commands": {
     "editor": [
       {
+        "title": "Jump to Definition",
+        "command": "tech.staysail.served.jumpToDefinition",
+        "filters": { "syntaxes": ["d"] }
+      },
+      {
         "title": "Format D File",
-        "command": "dfmt.format",
+        "command": "tech.staysail.served.formatFile",
         "shortcut": "opt-shift-f",
-        "filters": {
-          "syntaxes": ["d"]
-        }
+        "filters": { "syntaxes": ["d"] }
+      },
+      {
+        "title": "Preferences",
+        "command": "tech.staysail.served.preferences"
+      }
+    ],
+    "extensions": [
+      {
+        "title": "Preferences",
+        "command": "tech.staysail.served.extensionPreferences"
+      },
+      {
+        "title": "Restart Server",
+        "command": "tech.staysail.served.restartServer",
+        "filters": { "syntaxes": ["d"] }
       }
     ]
   },
   "configWorkspace": [
     {
-      "key": "d.dfmt.formatOnSave",
+      "key": "tech.staysail.served.fmt.onSave",
       "title": "Format on Save",
       "type": "boolean",
       "default": false
@@ -42,13 +60,6 @@
       "title": "Language Server Path",
       "type": "path",
       "placeholder": "/usr/local/bin/serve-d"
-    },
-    {
-      "key": "d.dfmt.path",
-      "title": "dfmt Executable",
-      "type": "path",
-      "default": "/usr/local/bin/dfmt",
-      "description": "Path to dmt"
     }
   ],
   "debug": true,

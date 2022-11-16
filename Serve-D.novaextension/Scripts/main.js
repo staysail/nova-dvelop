@@ -7,6 +7,8 @@ const Messages = require("./messages.js");
 const Catalog = require("./catalog.js");
 const ServeD = require("./served.js");
 const Cfg = require("./config.js");
+const Commands = require("./commands.js");
+const Navigate = require("./navigate.js");
 
 var lspServer = null;
 
@@ -24,7 +26,20 @@ exports.activate = function () {
       }
     });
   });
-  nova.commands.register("dfmt.format", formatFileCmd);
+  nova.commands.register(Commands.formatFile, formatFileCmd);
+  nova.commands.register(Commands.jumpToDefinition, (editor) =>
+    Navigate.toDefinition(lspServer, editor)
+  );
+  nova.commands.register(Commands.preferences, (_) =>
+    nova.workspace.openConfig()
+  );
+  nova.commands.register(Commands.extensionPreferences, (_) =>
+    nova.openConfig()
+  );
+  nova.commands.register(
+    Commands.restartServer,
+    lspServer.restart.bind(lspServer)
+  );
 };
 
 async function formatFileCmd(editor) {

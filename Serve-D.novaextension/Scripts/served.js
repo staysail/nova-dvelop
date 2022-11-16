@@ -17,8 +17,16 @@ class ServeD extends Disposable {
     this.dispose();
   }
 
+  didStop(error) {
+    if (error) {
+      Messages.showError(Catalog.msgLspStoppedErr);
+      console.error("Language server stopped with error:", error.message);
+    }
+  }
+
   start() {
     if (this.lspClient) {
+      // stop client
       this.lspClient.stop();
       this.lspClient = null;
     }
@@ -64,17 +72,23 @@ class ServeD extends Disposable {
     }
   }
 
+  async sendRequest(method, params) {
+    if (!this.lspClient) {
+      Messages.showError(Catalog.msgNoLspClient);
+    } else {
+      return this.lspClient.sendRequest(method, params);
+    }
+  }
+
   async restart() {
     let client = this.lspClient;
     this.lspClient = null;
     if (client) {
-      let onStop = client.onDidStop((_) => {
-        onStop.dispose();
+      client.onDidStop((_) => {
         this.start();
         Messages.showNotice(Catalog.msgLspRestarted, "");
-      });
-
-      await client.stop();
+      }, this);
+      client.stop();
     } else {
       this.start();
     }
