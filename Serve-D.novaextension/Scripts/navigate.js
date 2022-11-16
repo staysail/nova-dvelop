@@ -6,6 +6,7 @@
 Messages = require("./messages.js");
 Catalog = require("./catalog.js");
 Position = require("./position.js");
+Ranges = require("./ranges.js");
 
 // internal navigate function
 async function jumpTo(lspServer, editor, thing) {
@@ -28,13 +29,42 @@ async function jumpTo(lspServer, editor, thing) {
   }
 }
 
+// showLocation will either jump to a Location,
+// or to a LocationLink.  It will apply the text selection
+// appropriately.  Note that CCLS returns LocationLink
+// whereas CLangD returns plain Location.
+async function showLocation(loc) {
+  // this might be a Location, or it might be a LocationLink
+  if (loc.targetUri) {
+    return nova.workspace
+      .openFile(loc.targetUri, {
+        line: loc.targetRange.start.line + 1,
+        column: loc.targetRange.start.character + 1,
+      })
+      .then((editor) => {
+        let sel = Ranges.fromLsp(editor.document, loc.targetSelectionRange);
+        editor.selectedRange = sel;
+      });
+  }
+  return nova.workspace
+    .openFile(loc.uri, {
+      // this object starts counting at 1
+      line: loc.range.start.line + 1,
+      column: loc.range.start.character + 1,
+    })
+    .then((editor) => {
+      let sel = Ranges.fromLsp(editor.document, loc.range);
+      editor.selectedRange = sel;
+    });
+}
+
 // chooseLocation either jumps to a location if the
 // argument is a single location, or offers a selection palette.
 // It understands both Location and LocationLink.
 async function chooseLocation(locs) {
   if (!Array.isArray(locs)) {
-    if (loc) {
-      return showLocation(loc);
+    if (locs) {
+      return showLocation(locs);
     }
     Messages.showNotice(Catalog.msgNothingFound, "");
     return;
@@ -74,19 +104,19 @@ async function chooseLocation(locs) {
 
 class Navigate {
   static toDefinition(lspServer, editor) {
-    jumpTo(editor, "definition");
+    jumpTo(lspServer, editor, "definition");
   }
 
   static toTypeDefinition(lspServer, editor) {
-    jumpTo(editor, "typeDefinition");
+    jumpTo(lspServer, editor, "typeDefinition");
   }
 
   static toDeclaration(lspServer, editor) {
-    jumpTo(editor, "declaration");
+    jumpTo(lspServer, editor, "declaration");
   }
 
   static toImplementation(lspServer, editor) {
-    jumpTo(editor, "implementation");
+    jumpTo(lspServer, editor, "implementation");
   }
 }
 
