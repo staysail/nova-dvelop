@@ -32,7 +32,7 @@ class Messages {
    * Show a non-disruptive notification for the given message.
    */
   static showNotice(title, body) {
-    let req = new NotificationRequest();
+    let req = new NotificationRequest(title);
     if (catalog.values[title]) {
       title = this.getMsg(title);
     }

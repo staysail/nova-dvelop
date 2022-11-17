@@ -10,6 +10,7 @@ const Catalog = require("./catalog.js");
 const extract = require("./extract.js");
 
 const extPath = nova.extension.globalStoragePath;
+const srvPath = nova.path.join(extPath, "serve-d");
 
 let updateEmitter = new Emitter();
 
@@ -27,7 +28,7 @@ class Update {
     let beta = !!nova.config.get(Config.allowPreRelease);
 
     let releases = await GitHub.releases();
-    let best = GitHub.bestRelease(releases, beta);
+    let best = await GitHub.bestRelease(releases, beta);
 
     let next = nova.config.get(Config.releaseServeD);
     if (best != null && next != best.tag_name) {
@@ -35,8 +36,14 @@ class Update {
       nova.config.set(Config.releaseServeD, next);
     }
     let curr = nova.config.get(Config.currentServeD);
+    if (curr && !nova.fs.access(srvPath, nova.fs.X_OK)) {
+      console.error(
+        "We should have had a binary, but it appears to be missing."
+      );
+      curr = null;
+    }
 
-    if (curr == next) {
+    if (curr == next && nova.fs.access(srvPath, nova.fs.X_OK)) {
       Messages.showNotice(Catalog.msgUpToDate, curr);
       console.log("Language server is current.");
       return true;
@@ -48,7 +55,7 @@ class Update {
     let text = Messages.getMsg(
       curr ? Catalog.msgNewServedBody : Catalog.msgMissingServedBody
     );
-    let n = new NotificationRequest();
+    let n = new NotificationRequest("autoUpdate");
     n.title = title;
     n.body = text.replace("_VERSION_", next);
     n.actions = [
@@ -63,11 +70,14 @@ class Update {
       return false;
     }
     // do it!
-    let path = await GitHub.downloadAsset(best);
+    let path = await GitHub.downloadAsset(best, nova.fs.tempdir);
 
     try {
+      console.log("Extracting", path);
       let status = extract(path, extPath, (status) => {
         if (status == 0) {
+          // let's remove the temporary asset since we're done with it.
+          nova.fs.remove(path);
           emitUpdate();
           nova.config.set(Config.currentServeD, best.tag_name);
         } else {

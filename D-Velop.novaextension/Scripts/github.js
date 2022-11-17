@@ -6,27 +6,17 @@
 const Messages = require("./messages.js");
 const Catalog = require("./catalog.js");
 const Cache = require("./cache.js");
+const getCpu = require("./getcpu.js");
 
 const repoUrl = "https://api.github.com/repos/Pure-D/serve-d";
 const extPath = nova.extension.globalStoragePath;
+const tmpDir = nova.fs.tempdir;
 const novaVersion = "nova " + nova.versionString;
 const macosVersion = "macos " + nova.systemVersion.join(".");
 const ourUrl = "https://github.com/staysail/nova-serve-d";
 const userAgent = `Dvelop (${novaVersion} ${macosVersion})`;
 const earliestSupported = "v0.8.0-beta.1";
 const releasesUrl = `${repoUrl}/releases`;
-
-// We need to figure out what CPU architecture we are on
-let cpu = "";
-var process = new Process("/usr/bin/uname", { args: ["-m"] });
-process.onStdout((line) => {
-  cpu = line.trim();
-});
-process.start();
-
-function getCpu() {
-  return cpu;
-}
 
 function makeExtensionDir() {
   try {
@@ -90,7 +80,7 @@ function isNewer(vers1, vers2) {
 }
 
 class GitHub {
-  static findAsset(release) {
+  static findAsset(release, cpu = "universal") {
     // skip over releases with an artifact we can use
     // for the moment this does not accommodate rosetta2 -- since
     // we have ARM binaries available.
@@ -98,14 +88,14 @@ class GitHub {
       return null;
     }
     let ending1 = "-osx-universal.tar.xz";
-    let ending2 = "-osx-" + getCpu() + ".tar.xz";
+    let ending2 = "-osx-" + cpu + ".tar.xz";
     for (let a of release.assets) {
       // prefer universal binaries for now
       let an = a.name;
-      if (a.name.endsWith(ending1)) {
+      if (an.endsWith(ending1)) {
         return a;
       }
-      if (a.name.endsWith(ending2)) {
+      if (an.endsWith(ending2)) {
         return a;
       }
     }
@@ -140,19 +130,22 @@ class GitHub {
 
   // choose the best release from the list of available releases
   // if beta is true, then we will prefer betas.  otherwise we only
-  // fallback to a beta if no formal release is available.
-  static bestRelease(releases, beta = false) {
+  // fallback to a beta if no formal release is available.  returns a promise.
+  static async bestRelease(releases, beta = false) {
     let bestRel = null;
     let bestPre = null;
 
+    let cpu = await getCpu();
+
     if (!Array.isArray(releases)) {
+      Messages.showError("BUG: Value to bestRelease is not an array");
       return null;
     }
     for (let r of releases) {
       if (r.tag_name == "nightly") {
         continue; // skip nightly builds for now
       }
-      if (!this.findAsset(r)) {
+      if (!this.findAsset(r, cpu)) {
         continue;
       }
 
@@ -185,34 +178,35 @@ class GitHub {
 
   // this attempts to download a specific asset, which should be supplied.
   // it returns a promise that resolves to the saved asset path.
-  static async downloadAsset(release) {
-    let asset = this.findAsset(release);
-    let path = nova.path.join(extPath, asset.name);
+  static async downloadAsset(release, dir = tmpDir) {
+    let cpu = await getCpu();
+    let asset = this.findAsset(release, cpu);
+    let path = nova.path.join(dir, asset.name);
     if (!asset) {
       // we don't expect to be here
       throw new Error("Asset no found for release " + release.tag_name);
     }
-    console.log("Starting download of", asset.url);
+    console.log("Starting download of", asset.url, "into", dir);
 
     let response = await fetch(asset.url, {
       headers: { Accept: "application/octet-stream", "User-Agent": userAgent },
     });
 
     if (!response.ok) {
+      console.error("Failed GitHub", response.status, response.statusText);
       return null;
     }
 
     let ab = await response.arrayBuffer();
     try {
-      makeExtensionDir();
-      nova.fs.remove(path + ".tmp");
-      let f = nova.fs.open(path + ".tmp", "wb");
+      let f = nova.fs.open(path, "wb");
       f.write(ab);
       f.close();
-      nova.fs.remove(path + ".old");
-      nova.fs.move(path, path + ".old");
-      nova.fs.move(path + ".tmp", path);
     } catch (e) {
+      // clean up the file if it is there (it's probably garbage)
+      nova.fs.remove(path);
+      Messages.showError(Catalog.msgDownloadFailed);
+      console.error("Failed to download asset", e.message);
       return null;
     }
     return path;

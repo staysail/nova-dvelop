@@ -24,6 +24,7 @@ const catalog = {
   msgUpdate: "msgUpdate",
   msgCancel: "msgCancel",
   msgUpToDate: "msgUpToDate",
+  msgDownloadFailed: "msgDownloadFailed",
 };
 
 // default English strings
@@ -41,11 +42,12 @@ const values = {
     "An new language server (serve-d _VERSION_) update is available.",
   msgMissingServedTitle: "Server Missing",
   msgMissingServedBody:
-    "A language server is required for full functionality. Download and install serve-d version _VERSION_ now?",
+    "A language server is required for full functionality. Install serve-d _VERSION_ now?",
   msgInstall: "Install",
   msgUpdate: "Update",
   msgCancel: "Cancel",
   msgUpToDate: "Language server is up to date.",
+  msgDownloadFailed: "Download of asset failed.",
 };
 
 // verify that every entry in the catalog has a matching entry in values

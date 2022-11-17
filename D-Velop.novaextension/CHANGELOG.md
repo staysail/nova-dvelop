@@ -1,3 +1,7 @@
+## Version 0.7.1
+
+Bug fixes for download process.
+
 ## Version 0.7
 
 Renamed to D-Velop.

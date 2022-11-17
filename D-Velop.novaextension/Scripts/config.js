@@ -17,6 +17,7 @@ const keys = {
   checkForUpdates: "dvelop.checkForUpdates",
 
   // context keys that don't get written out
+  arch: "dvelop.served.arch", // to avoid waiting for calls to uname
   currentServeD: "dvelop.served.current",
   releaseServeD: "dvelop.served.release",
 };
