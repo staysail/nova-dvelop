@@ -3,18 +3,22 @@
 //
 // Distributed under the terms of the MIT license.
 
-function extName(suffix) {
-  return "tech.staysail.served." + suffix;
-}
-
 // These are configuration parameters. If public they should be
 // exposed via the extension.json file.  Note that these all have
 // the above prefix.
 
 const keys = {
-  lspFlavor: extName("lsp.flavor"),
-  lspPath: extName("lsp.path"),
-  formatOnSave: extName("fmt.OnSave"),
+  lspFlavor: "dvelop.lsp.flavor",
+  lspPath: "dvelop.lsp.path",
+  formatOnSave: "dvelop.fmt.OnSave",
+  useCustomServer: "dvelop.useCustomServer",
+  customServerPath: "dvelop.customServerPath",
+  allowPreRelease: "dvelop.allowPreRelease",
+  checkForUpdates: "dvelop.checkForUpdates",
+
+  // context keys that don't get written out
+  currentServeD: "dvelop.served.current",
+  releaseServeD: "dvelop.served.release",
 };
 
 module.exports = keys;

@@ -16,6 +16,14 @@ const catalog = {
   msgSelectLocation: "msgSelectLocation",
   msgUnableToApply: "msgUnableToApply",
   msgUnableToOpen: "msgUnableToOpen",
+  msgNewServedTitle: "msgNewServedTitle",
+  msgNewServedBody: "msgNewServedBody",
+  msgMissingServedTitle: "msgMissingServedTitle",
+  msgMissingServedBody: "msgMissingServedBody",
+  msgInstall: "msgInstall",
+  msgUpdate: "msgUpdate",
+  msgCancel: "msgCancel",
+  msgUpToDate: "msgUpToDate",
 };
 
 // default English strings
@@ -28,6 +36,16 @@ const values = {
   msgSelectLocation: "Select location",
   msgUnableToApply: "Unable to apply changes.",
   msgUnableToOpen: "Unable to open _URI_",
+  msgNewServedTitle: "Update Available",
+  msgNewServedBody:
+    "An new language server (serve-d _VERSION_) update is available.",
+  msgMissingServedTitle: "Server Missing",
+  msgMissingServedBody:
+    "A language server is required for full functionality. Download and install serve-d version _VERSION_ now?",
+  msgInstall: "Install",
+  msgUpdate: "Update",
+  msgCancel: "Cancel",
+  msgUpToDate: "Language server is up to date.",
 };
 
 // verify that every entry in the catalog has a matching entry in values

@@ -3,20 +3,17 @@
 //
 // Distributed under the terms of the MIT license.
 
-function extName(suffix) {
-  return "tech.staysail.served." + suffix;
-}
-
 // These are command identifiers. If exposed to users they should be
 // exposed via the extension.json file.  Note that these all have
 // the above prefix.
 
 const keys = {
-  preferences: extName("preferences"),
-  extensionPreferences: extName("extensionPreferences"),
-  restartServer: extName("restartServer"),
-  jumpToDefinition: extName("jumpToDefinition"),
-  formatFile: extName("formatFile"),
+  preferences: "dvelop.preferences",
+  extensionPreferences: "dvelop.extensionPreferences",
+  restartServer: "dvelop.restartServer",
+  jumpToDefinition: "dvelop.jumpToDefinition",
+  formatFile: "dvelop.formatFile",
+  checkForUpdate: "dvelop.checkForUpdate",
 };
 
 module.exports = keys;

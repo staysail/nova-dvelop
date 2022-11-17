@@ -11,12 +11,16 @@ const Commands = require("./commands.js");
 const Navigate = require("./navigate.js");
 const Edits = require("./edits.js");
 const Format = require("./format.js");
+const GitHub = require("./github.js");
+const Update = require("./update.js");
 
-var lspServer = null;
+let lspServer = new ServeD();
 
 exports.activate = function () {
   // Do work when the extension is activated
-  lspServer = new ServeD();
+  if (lspServer == null) {
+    lspServer = new ServeD();
+  }
   lspServer.start();
 
   nova.workspace.onDidAddTextEditor((editor) => {
@@ -28,6 +32,9 @@ exports.activate = function () {
       }
     });
   });
+
+  Update.onUpdate(restart);
+
   nova.commands.register(Commands.formatFile, (editor) => {
     Format.formatFileCmd(lspServer, editor);
   });
@@ -40,38 +47,20 @@ exports.activate = function () {
   nova.commands.register(Commands.extensionPreferences, (_) =>
     nova.openConfig()
   );
-  nova.commands.register(Commands.restartServer, lspServer.restart, lspServer);
+  nova.commands.register(Commands.restartServer, restart);
+
+  nova.commands.register(Commands.checkForUpdate, async function (_) {
+    try {
+      Update.checkForUpdate();
+    } catch (error) {
+      Messages.showError(error.message);
+    }
+  });
 };
 
-// async function formatFileCmd(editor) {
-//   try {
-//     await formatFile(editor);
-//   } catch (err) {
-//     Messages.showError(err.message);
-//   }
-// }
-
-// async function formatFile(editor) {
-//   var cmdArgs = {
-//     textDocument: {
-//       uri: editor.document.uri,
-//     },
-//     options: {
-//       tabSize: editor.tabLength,
-//       insertSpaces: editor.softTabs,
-//     },
-//     // TBD: options
-//   };
-//   const changes = await lspServer.sendRequest(
-//     "textDocument/formatting",
-//     cmdArgs
-//   );
-//
-//   if (!changes) {
-//     return;
-//   }
-//   await Edits.applyEdits(editor, changes);
-// }
+function restart() {
+  lspServer.restart();
+}
 
 exports.deactivate = function () {
   // Clean up state before the extension is deactivated

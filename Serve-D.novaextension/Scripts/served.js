@@ -21,6 +21,12 @@ class ServeD extends Disposable {
     if (error) {
       Messages.showError(Catalog.msgLspStoppedErr);
       console.error("Language server stopped with error:", error.message);
+    } else {
+      if (this.wantRestart) {
+        this.wantRestart = false;
+        this.start();
+        Messages.showNotice(Catalog.msgLspRestarted, "");
+      }
     }
   }
 
@@ -34,7 +40,7 @@ class ServeD extends Disposable {
     let path = "";
     let args = [];
     // uncomment the following for debugging
-    // args: ['--loglevel', 'trace'],
+    //    args.concat(["--loglevel", "trace"]);
 
     // Use the default server path
     if (!path) {
@@ -58,16 +64,14 @@ class ServeD extends Disposable {
       clientOptions
     );
 
-    this.didStopDispose = this.lspClient.onDidStop(this.didStop);
+    this.lspClient.onDidStop(this.didStop, this);
 
     try {
       // Start the client
       this.lspClient.start();
     } catch (err) {
       Messages.showNotice(Catalog.msgLspDidNotStart, "");
-      if (nova.inDevMode()) {
-        console.error(err);
-      }
+      console.error(err);
       this.lspClient = null;
     }
   }
@@ -80,25 +84,17 @@ class ServeD extends Disposable {
     }
   }
 
-  async restart() {
-    let client = this.lspClient;
-    this.lspClient = null;
-    if (client) {
-      client.onDidStop((_) => {
-        this.start();
-        Messages.showNotice(Catalog.msgLspRestarted, "");
-      }, this);
-      client.stop();
+  restart() {
+    if (this.lspClient) {
+      this.wantRestart = true;
+      this.lspClient.stop();
+      this.lspClient = null;
     } else {
       this.start();
     }
   }
 
   async dispose() {
-    if (this.didStopDispose) {
-      this.didStopDispose.dispose();
-      this.didStopDispose = null;
-    }
     if (this.lspClient) {
       this.lspClient.stop();
       this.lspClient = null;
