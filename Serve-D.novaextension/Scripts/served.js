@@ -5,6 +5,7 @@
 
 const Messages = require("./messages.js");
 const Catalog = require("./catalog.js");
+const Config = require("./config.js");
 
 class ServeD extends Disposable {
   constructor() {
@@ -42,9 +43,18 @@ class ServeD extends Disposable {
     // uncomment the following for debugging
     //    args.concat(["--loglevel", "trace"]);
 
-    // Use the default server path
-    if (!path) {
-      path = "/usr/local/bin/serve-d";
+    if (nova.config.get(Config.useCustomServer)) {
+      path = nova.config.get(Config.customServerPath);
+      // Use the default server path
+      if (!path) {
+        path = "/usr/local/bin/serve-d";
+      }
+    } else {
+      path = nova.path.join(nova.extension.globalStoragePath, "serve-d");
+    }
+
+    if (!nova.fs.access(path, nova.fs.X_OK)) {
+      return;
     }
 
     // Create the client

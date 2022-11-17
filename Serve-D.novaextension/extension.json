@@ -41,8 +41,8 @@
         "command": "dvelop.extensionPreferences"
       },
       {
-          "title": "Check for Update",
-          "command": "dvelop.checkForUpdate"
+        "title": "Check for Update",
+        "command": "dvelop.checkForUpdate"
       },
       {
         "title": "Restart Server",
@@ -61,10 +61,38 @@
   ],
   "config": [
     {
-      "key": "d.language-server-path",
-      "title": "Language Server Path",
-      "type": "path",
-      "placeholder": "/usr/local/bin/serve-d"
+      "type": "section",
+      "title": "Language Server",
+      "children": [
+        {
+          "key": "dvelop.checkForUpdates",
+          "title": "Check for Updates at Start",
+          "description": "When starting up, should we check to see if a new update of serve-d is available?",
+          "type": "boolean",
+          "default": true
+        },
+        {
+          "key": "dvelop.allowPreRelease",
+          "title": "Use Beta Releases",
+          "description": "Selecting this enables beta (and release candidate) versions of serve-d to be installed.",
+          "type": "boolean",
+          "default": false
+        },
+        {
+          "key": "dvelop.useCustomServer",
+          "title": "Custom Serve-D Installation",
+          "description": "Select this if you wish to use your own copy of serve-d.",
+          "type": "boolean",
+          "default": false
+        },
+        {
+          "key": "dvelop.customServerPath",
+          "title": "Serve-D Location",
+          "description": "Path to serve-d, only used if using a custom installation.",
+          "type": "path",
+          "placeholder": "/usr/local/bin/serve-d"
+        }
+      ]
     }
   ],
   "debug": true,

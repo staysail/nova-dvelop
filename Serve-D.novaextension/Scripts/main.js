@@ -6,7 +6,7 @@
 const Messages = require("./messages.js");
 const Catalog = require("./catalog.js");
 const ServeD = require("./served.js");
-const Cfg = require("./config.js");
+const Config = require("./config.js");
 const Commands = require("./commands.js");
 const Navigate = require("./navigate.js");
 const Edits = require("./edits.js");
@@ -23,10 +23,19 @@ exports.activate = function () {
   }
   lspServer.start();
 
+  // If we should check for new versions at start up, try to download from
+  // GitHub releases.
+  if (nova.config.get(Config.checkForUpdates)) {
+    // if it doesn't work, don't bother warning about it.
+    try {
+      Update.checkForUpdate();
+    } catch (error) {}
+  }
+
   nova.workspace.onDidAddTextEditor((editor) => {
     if (editor.document.syntax != "d") return;
     editor.onWillSave((editor) => {
-      const formatOnSave = nova.workspace.config.get(Cfg.formatOnSave);
+      const formatOnSave = nova.workspace.config.get(Config.formatOnSave);
       if (formatOnSave) {
         return Format.formatFile(lspServer, editor);
       }
