@@ -2,6 +2,8 @@
 
 ## D-Velop Extension for Nova
 
+> This extension is a _BETA_ release.
+
 **D-Velop** provides deep integration with [**D**][1] via the [Serve-D][2] Language Server.
 
 This includes support for syntax highlighting via a [Tree-sitter][3] D [grammar][4], indentation,
@@ -10,6 +12,8 @@ code on save.
 
 If you have installed our _D_ extension, you may disable that as this
 extension includes all of that functionality as well.
+
+> _NOTE_: An earlier version extension of this was named _Serve-D_.
 
 ![](https://raw.githubusercontent.com/staysail/nova-serve-d/main/screenshot.png)
 
@@ -55,6 +59,22 @@ options will become available soon.
 Note that the default formatting does not perfectly match the
 settings used by `dfmt` if you use it. This will be made more
 flexible in the near future.
+
+## Security Considerations
+
+You may notice that this extension needs entitlements to access
+the network and to read and write local files. These are used
+solely to support updating the language server. No files outside
+of the extension's private area are accessed directly, and the
+only requests made are read-only unauthenticated requests to access
+the public release information and actually download the binary
+needed for `serve-d`.
+
+If you are concerned, you may download and configure your own
+copy of `serve-d`, and disable the automatic downloads. This
+will prevent both direct access to the network by this extension,
+as well as direct filesystem access. Note however that `serve-d`
+may itself perform those activities.
 
 ## Future Work
 
