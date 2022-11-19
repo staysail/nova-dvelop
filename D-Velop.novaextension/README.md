@@ -89,8 +89,9 @@ Import order sorting will be added soon.
 We anticipate that `serve-d` will grow additional capabilities, and when
 it does we will try to enable such functionality here.
 
-Support for DUB including selecting build configuration and actually performing builds
-is planned as well.
+Support for improved support for DUB including selecting build configuration
+and actually performing various build tasks besides just the top-level one
+(including for nested projects) is planned as well.
 
 ---
 

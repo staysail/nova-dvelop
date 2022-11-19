@@ -1,3 +1,11 @@
+## Version 0.8.0
+
+Introduce very limited support for DUB. (Will expand.)
+
+Introduce symbolication (which helps the editor understand nesting
+levels, and such. The symbols sidebar know provides useful data, and
+completions will include some guidance about what is being completed.)
+
 ## Version 0.7.1
 
 Bug fixes for download process.
