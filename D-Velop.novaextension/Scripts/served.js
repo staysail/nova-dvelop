@@ -69,7 +69,7 @@ class ServeD extends Disposable {
     };
     this.lspClient = new LanguageClient(
       "d-langserver",
-      "D Language Server",
+      "Serve-D",
       serverOptions,
       clientOptions
     );
