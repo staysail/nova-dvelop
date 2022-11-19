@@ -95,6 +95,18 @@
       ]
     }
   ],
+  "issueMatchers": {
+    "dmd-error": {
+      "pattern": {
+        "regexp": "^([^:()]+)\\(([0-9]+),([0-9]+)\\): ([A-Za-z]+): (.+)$",
+        "message": 5,
+        "file": 1,
+        "line": 2,
+        "column": 3,
+        "severity": 4
+      }
+    }
+  },
   "debug": true,
   "activationEvents": ["onLanguage:d"]
 }
