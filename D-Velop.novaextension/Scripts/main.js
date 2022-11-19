@@ -13,6 +13,7 @@ const Edits = require("./edits.js");
 const Format = require("./format.js");
 const GitHub = require("./github.js");
 const Update = require("./update.js");
+const Dub = require("./dub.js");
 
 let lspServer = new ServeD();
 
@@ -64,6 +65,11 @@ exports.activate = function () {
     } catch (error) {
       Messages.showError(error.message);
     }
+  });
+
+  nova.assistants.registerTaskAssistant(Dub, {
+    identifier: "dub",
+    name: "dub",
   });
 };
 
