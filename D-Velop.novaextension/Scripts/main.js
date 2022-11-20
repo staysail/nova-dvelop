@@ -26,6 +26,9 @@ exports.activate = function () {
   }
   lspServer.start();
 
+  Dub.setLspServer(lspServer);
+  lspServer.onReloadDub(Dub.reloadTasks);
+
   // If we should check for new versions at start up, try to download from
   // GitHub releases.
   if (nova.config.get(Config.checkForUpdates)) {
@@ -73,10 +76,7 @@ exports.activate = function () {
     }
   });
 
-  nova.assistants.registerTaskAssistant(Dub, {
-    identifier: "dub",
-    name: "dub",
-  });
+  Dub.registerTaskGroups();
   nova.assistants.registerTaskAssistant(Weka, {
     identifier: "weka",
     name: "Weka",

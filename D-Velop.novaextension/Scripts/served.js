@@ -9,6 +9,8 @@ const Config = require("./config.js");
 const delay = require("./delay.js");
 
 var lspClient = null;
+var tasks = null;
+var onDub = null;
 
 function stopClient() {
   if (lspClient) {
@@ -56,6 +58,9 @@ async function startClient() {
 
   // lspClient.onDidStop(this.didStop, this);
 
+  lspClient.onNotification("coded/initDubTree", onDubInit);
+  lspClient.onNotification("coded/updateDubTree", () => onDubInit);
+
   try {
     lspClient.start();
   } catch (err) {
@@ -94,11 +99,65 @@ async function sendRequest_(method, params) {
   }
 }
 
+async function onDubInit() {
+  if (lspClient == null) {
+    return;
+  }
+  let result = await lspClient.sendRequest("served/buildTasks", {});
+
+  // we are going to reorganize Tasks somewhat, so that they match the
+  // organization of our provideTasks.  Note that DUB has richer support
+  // than just Build, Run, Clean... so we are not really using that.
+
+  tasks = {};
+  if (!result || !Array.isArray(result)) {
+    return;
+  }
+
+  for (var task of result) {
+    if (task.source != "dub" || !task.definition) {
+      continue;
+    }
+    "".replace();
+    var def = task.definition;
+
+    var cwd = task.definition.cwd;
+    cwd = cwd.replace("${workspaceFolder}", nova.workspace.path + "/");
+    var group = task.group;
+
+    var arr = [];
+    if (tasks[group]) {
+      arr = tasks[group];
+    }
+
+    arr.push({
+      name: task.name,
+      exec: task.exec[0],
+      args: task.exec.slice(1),
+      group: group,
+      cwd: cwd,
+      run: !!def.run,
+      test: !!def.test,
+    });
+    tasks[group] = arr;
+  }
+
+  if (onDub) {
+    onDub();
+  }
+}
+
 let ServeD = {
   restart: restartClient,
   start: startClient,
   stop: stopClient,
   deactivate: stopClient,
   sendRequest: sendRequest_,
+  onReloadDub: (cb) => {
+    onDub = cb;
+  },
+  getTasks: () => {
+    return tasks;
+  },
 };
 module.exports = ServeD;

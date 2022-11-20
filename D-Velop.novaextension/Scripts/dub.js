@@ -6,40 +6,80 @@
 // This first version just uses /usr/bin/env dub ... but we will
 // follow up soon with proper integration with serve-d.
 
-let Dub = {
-  provideTasks: () => {
-    if (
-      nova.workspace.contains(
-        nova.path.join(nova.workspace.path, "dub.json")
-      ) ||
-      nova.workspace.contains("dub.sdl")
-    ) {
-      let task = new Task("DUB");
-      task.setAction(
-        Task.Build,
-        new TaskProcessAction("/usr/bin/env", {
-          args: ["dub", "build", "-q"],
-          matchers: ["dmd-error", "dmd-short-error"],
-        })
-      );
-      task.setAction(
-        Task.Clean,
-        new TaskProcessAction("/usr/bin/env", {
-          args: ["dub", "clean"],
-          matchers: ["dmd-error", "dmd-short-error"],
-        })
-      );
-      task.setAction(
-        Task.Run,
-        new TaskProcessAction("/usr/bin/env", {
-          args: ["dub", "run"],
-          matchers: ["dmd-error", "dmd-short-error"],
-        })
-      );
-      task.image = "dub";
-      return [task];
+let lspServer = null;
+
+// Group names are clean, build, rebuild, and test.
+// We create special providers for each of them.
+
+function taskType(t) {
+  if (t.run || t.test) {
+    return Task.Run;
+  }
+  return Task.Build;
+}
+
+function provideTasksGroup(group) {
+  let newTasks = [];
+  if (lspServer) {
+    let tasks = lspServer.getTasks();
+    if (!tasks || !tasks[group]) {
+      return [];
     }
-    return [];
+    for (let t of tasks[group]) {
+      if (!t.exec.startsWith("/")) {
+        t.args.unshift(t.exec);
+        t.exec = "/usr/bin/env";
+      }
+      let task = new Task(t.name);
+      task.setAction(
+        taskType(t),
+        new TaskProcessAction(t.exec, {
+          args: t.args,
+          cwd: t.cwd,
+          matchers: ["dmd-error", "dmd-short-error"],
+        })
+      );
+      if (t.run) {
+        console.error("PERSISTENT", t.name);
+        task.persistent = true;
+      }
+      task.image = "dub";
+      newTasks.push(task);
+    }
+    return newTasks;
+  }
+  return [];
+}
+
+let Dub = {
+  setLspServer: (lsp) => {
+    lspServer = lsp;
+  },
+
+  registerTaskGroups: () => {
+    nova.assistants.registerTaskAssistant(
+      { provideTasks: () => provideTasksGroup("build") },
+      { identifier: "dub-build", name: "Dub Build" }
+    );
+    nova.assistants.registerTaskAssistant(
+      { provideTasks: () => provideTasksGroup("rebuild") },
+      { identifier: "dub-rebuild", name: "Dub Rebuild" }
+    );
+    nova.assistants.registerTaskAssistant(
+      { provideTasks: () => provideTasksGroup("test") },
+      { identifier: "dub-test", name: "Dub Test" }
+    );
+    nova.assistants.registerTaskAssistant(
+      { provideTasks: () => provideTasksGroup("clean") },
+      { identifier: "dub-clean", name: "Dub Clean" }
+    );
+  },
+
+  reloadTasks: () => {
+    nova.workspace.reloadTasks("dub-build");
+    nova.workspace.reloadTasks("dub-rebuild");
+    nova.workspace.reloadTasks("dub-test");
+    nova.workspace.reloadTasks("dub-clean");
   },
 };
 
