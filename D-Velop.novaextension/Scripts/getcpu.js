@@ -3,6 +3,7 @@
 //
 // Distributed under the terms of the MIT license.
 
+const delay = require("./delay.js");
 // We need to figure out what CPU architecture we are on.
 // It would be *lots* easier if we had this in nova.environment or something.
 // This has to be initialized early on.
@@ -12,10 +13,6 @@ process.onStdout((line) => {
   cpu = line.trim();
 });
 process.start();
-
-function delay(time) {
-  return new Promise((resolve) => setTimeout(resolve, time));
-}
 
 async function getCpu() {
   let maxTime = 1000; // one second
