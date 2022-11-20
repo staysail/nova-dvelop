@@ -10,27 +10,13 @@ const delay = require("./delay.js");
 
 var lspClient = null;
 
-async function stopClient() {
-  if (!lspClient) {
-    return true;
+function stopClient() {
+  if (lspClient) {
+    lspClient.stop();
   }
-  lspClient.stop();
-  var limit = 1000;
-  while (lspClient.running && limit > 0) {
-    delay(10);
-    limit -= 10;
-  }
-  let rv = lspClient.running;
-  lspClient = null;
-  return rv;
 }
 
 async function startClient() {
-  if (lspClient) {
-    await stopClient();
-    // stop client
-  }
-
   let path = "";
   let args = [];
   // uncomment the following for debugging
@@ -47,7 +33,7 @@ async function startClient() {
   }
 
   if (!nova.fs.access(path, nova.fs.X_OK)) {
-    // TODO : noLSPclient message
+    Messages.showNotice(catalog.msgNoLspClient, "");
     return null;
   }
 
@@ -62,7 +48,7 @@ async function startClient() {
     debug: true,
   };
   lspClient = new LanguageClient(
-    "d-langserver",
+    "d-langserver" + Date.now(), // use a unique server id for each call
     "Serve-D",
     serverOptions,
     clientOptions
@@ -91,7 +77,7 @@ async function startClient() {
 }
 
 async function restartClient() {
-  await stopClient();
+  stopClient();
   let rv = await startClient();
   if (rv) {
     Messages.showNotice(Catalog.msgLspRestarted, "");
