@@ -3,7 +3,7 @@
   "name": "D-Velop",
   "organization": "Staysail Systems",
   "description": "D language support via Serve-D.",
-  "version": "0.8.0",
+  "version": "0.8.1",
   "categories": ["languages", "formatters"],
   "repository": "https://github.com/staysail/nova-serve-d",
   "bugs": "https://github.com/staysail/nova-serve-d/issues",
@@ -104,6 +104,15 @@
         "line": 2,
         "column": 3,
         "severity": 4
+      }
+    },
+    "dmd-short-error": {
+      "pattern": {
+        "regexp": "^([^:()]+)\\(([0-9]+)\\): ([A-Za-z]+): (.+)$",
+        "message": 4,
+        "file": 1,
+        "line": 2,
+        "severity": 3
       }
     }
   },

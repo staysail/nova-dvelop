@@ -1,3 +1,11 @@
+## Version 0.8.1
+
+Introduce special tasks for Weka.io staff (local compilation, testing).
+
+More resilient issue matchers from compiler output.
+
+Fixes for server restart (hopefully) to make it less brittle.
+
 ## Version 0.8.0
 
 Introduce very limited support for DUB. (Will expand.)

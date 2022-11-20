@@ -14,6 +14,7 @@ const Format = require("./format.js");
 const GitHub = require("./github.js");
 const Update = require("./update.js");
 const Dub = require("./dub.js");
+const Weka = require("./weka.js");
 
 let lspServer = ServeD;
 
@@ -70,6 +71,10 @@ exports.activate = function () {
   nova.assistants.registerTaskAssistant(Dub, {
     identifier: "dub",
     name: "dub",
+  });
+  nova.assistants.registerTaskAssistant(Weka, {
+    identifier: "weka",
+    name: "Weka",
   });
 };
 
