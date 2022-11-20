@@ -6,110 +6,112 @@
 const Messages = require("./messages.js");
 const Catalog = require("./catalog.js");
 const Config = require("./config.js");
+const delay = require("./delay.js");
 
-class ServeD extends Disposable {
-  constructor() {
-    super();
-    this.lspClient = null;
-    nova.subscriptions.add(this);
+var lspClient = null;
+
+async function stopClient() {
+  if (!lspClient) {
+    return true;
+  }
+  lspClient.stop();
+  var limit = 1000;
+  while (lspClient.running && limit > 0) {
+    delay(10);
+    limit -= 10;
+  }
+  let rv = lspClient.running;
+  lspClient = null;
+  return rv;
+}
+
+async function startClient() {
+  if (lspClient) {
+    await stopClient();
+    // stop client
   }
 
-  deactivate() {
-    this.dispose();
+  let path = "";
+  let args = [];
+  // uncomment the following for debugging
+  //    args.concat(["--loglevel", "trace"]);
+
+  if (nova.config.get(Config.useCustomServer)) {
+    path = nova.config.get(Config.customServerPath);
+    // Use the default server path
+    if (!path) {
+      path = "/usr/local/bin/serve-d";
+    }
+  } else {
+    path = nova.path.join(nova.extension.globalStoragePath, "serve-d");
   }
 
-  didStop(error) {
-    if (error) {
-      Messages.showError(Catalog.msgLspStoppedErr);
-      console.error("Language server stopped with error:", error.message);
-    } else {
-      if (this.wantRestart) {
-        this.wantRestart = false;
-        this.start();
-        Messages.showNotice(Catalog.msgLspRestarted, "");
-      }
-    }
+  if (!nova.fs.access(path, nova.fs.X_OK)) {
+    // TODO : noLSPclient message
+    return null;
   }
 
-  start() {
-    if (this.lspClient) {
-      // stop client
-      this.lspClient.stop();
-      this.lspClient = null;
-    }
+  // Create the client
+  var serverOptions = {
+    path: path,
+    args: args,
+  };
+  var clientOptions = {
+    // The set of document syntaxes for which the server is valid
+    syntaxes: ["d"],
+    debug: true,
+  };
+  lspClient = new LanguageClient(
+    "d-langserver",
+    "Serve-D",
+    serverOptions,
+    clientOptions
+  );
 
-    let path = "";
-    let args = [];
-    // uncomment the following for debugging
-    //    args.concat(["--loglevel", "trace"]);
+  // lspClient.onDidStop(this.didStop, this);
 
-    if (nova.config.get(Config.useCustomServer)) {
-      path = nova.config.get(Config.customServerPath);
-      // Use the default server path
-      if (!path) {
-        path = "/usr/local/bin/serve-d";
-      }
-    } else {
-      path = nova.path.join(nova.extension.globalStoragePath, "serve-d");
-    }
-
-    if (!nova.fs.access(path, nova.fs.X_OK)) {
-      return;
-    }
-
-    // Create the client
-    var serverOptions = {
-      path: path,
-      args: args,
-    };
-    var clientOptions = {
-      // The set of document syntaxes for which the server is valid
-      syntaxes: ["d"],
-      debug: true,
-    };
-    this.lspClient = new LanguageClient(
-      "d-langserver",
-      "Serve-D",
-      serverOptions,
-      clientOptions
-    );
-
-    this.lspClient.onDidStop(this.didStop, this);
-
-    try {
-      // Start the client
-      this.lspClient.start();
-    } catch (err) {
-      Messages.showNotice(Catalog.msgLspDidNotStart, "");
-      console.error(err);
-      this.lspClient = null;
-    }
+  try {
+    lspClient.start();
+  } catch (err) {
+    Messages.showNotice(Catalog.msgLspDidNotStart, err.message);
+    return false;
   }
 
-  async sendRequest(method, params) {
-    if (this.lspClient == null) {
-      Messages.showError(Catalog.msgNoLspClient);
-    } else {
-      return this.lspClient.sendRequest(method, params);
-    }
+  var limit = 1000;
+  while (!lspClient.running && limit > 0) {
+    delay(10);
+    limit -= 10;
+  }
+  if (lspClient.running) {
+    return true;
   }
 
-  restart() {
-    if (this.lspClient) {
-      this.wantRestart = true;
-      this.lspClient.stop();
-      this.lspClient = null;
-    } else {
-      this.start();
-    }
-  }
+  Messages.showNotice(Catalog.msgLspDidNotStart, "");
+  return false;
+}
 
-  async dispose() {
-    if (this.lspClient) {
-      this.lspClient.stop();
-      this.lspClient = null;
-    }
+async function restartClient() {
+  await stopClient();
+  let rv = await startClient();
+  if (rv) {
+    Messages.showNotice(Catalog.msgLspRestarted, "");
+  }
+  return rv;
+}
+
+async function sendRequest(method, params) {
+  if (lspClient == null) {
+    Messages.showError(Catalog.msgNoLspClient);
+    return null;
+  } else {
+    return lspClient.sendRequest(method, params);
   }
 }
 
+let ServeD = {
+  restart: restartClient,
+  start: startClient,
+  stop: stopClient,
+  deactivate: stopClient,
+};
 module.exports = ServeD;

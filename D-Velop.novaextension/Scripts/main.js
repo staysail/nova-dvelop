@@ -15,7 +15,7 @@ const GitHub = require("./github.js");
 const Update = require("./update.js");
 const Dub = require("./dub.js");
 
-let lspServer = new ServeD();
+let lspServer = ServeD;
 
 exports.activate = function () {
   // Do work when the extension is activated
