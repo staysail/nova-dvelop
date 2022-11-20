@@ -85,7 +85,7 @@ async function restartClient() {
   return rv;
 }
 
-async function sendRequest(method, params) {
+async function sendRequest_(method, params) {
   if (lspClient == null) {
     Messages.showError(Catalog.msgNoLspClient);
     return null;
@@ -99,5 +99,6 @@ let ServeD = {
   start: startClient,
   stop: stopClient,
   deactivate: stopClient,
+  sendRequest: sendRequest_,
 };
 module.exports = ServeD;

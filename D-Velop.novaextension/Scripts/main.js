@@ -15,6 +15,7 @@ const GitHub = require("./github.js");
 const Update = require("./update.js");
 const Dub = require("./dub.js");
 const Weka = require("./weka.js");
+const Rename = require("./rename.js");
 
 let lspServer = ServeD;
 
@@ -45,13 +46,17 @@ exports.activate = function () {
   });
 
   Update.onUpdate(restart);
-
   nova.commands.register(Commands.formatFile, (editor) => {
     Format.formatFileCmd(lspServer, editor);
   });
-  nova.commands.register(Commands.jumpToDefinition, (editor) =>
-    Navigate.toDefinition(lspServer, editor)
-  );
+  nova.commands.register(Commands.jumpToDefinition, (editor) => {
+    Navigate.toDefinition(lspServer, editor);
+  });
+
+  nova.commands.register(Commands.renameSymbol, (editor) => {
+    Rename.renameSymbol(lspServer, editor);
+  });
+
   nova.commands.register(Commands.preferences, (_) =>
     nova.workspace.openConfig()
   );

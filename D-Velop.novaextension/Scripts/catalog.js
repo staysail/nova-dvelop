@@ -25,6 +25,11 @@ const catalog = {
   msgCancel: "msgCancel",
   msgUpToDate: "msgUpToDate",
   msgDownloadFailed: "msgDownloadFailed",
+
+  msgRenameSymbol: "msgRenameSymbol",
+  msgNewName: "msgNewName", // for renaming symbols
+  msgSelectionNotRenameable: "msgSelectionNotRenameable",
+  msgCouldNotRenameSym: "msgCouldNotRenameSymbol",
 };
 
 // default English strings
@@ -48,6 +53,10 @@ const values = {
   msgCancel: "Cancel",
   msgUpToDate: "Language server is up to date.",
   msgDownloadFailed: "Download of asset failed.",
+  msgRenameSymbol: "Rename symbol _OLD_SYMBOL_",
+  msgNewName: "New name",
+  msgSelectionNotRenameable: "No renameable symbol at cursor",
+  msgCouldNotRenameSym: "Could not rename symbol",
 };
 
 // verify that every entry in the catalog has a matching entry in values

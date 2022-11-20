@@ -10,6 +10,9 @@ This includes support for syntax highlighting via a [Tree-sitter][3] D [grammar]
 folding, and automatic formatting via `dfmt`, including optional formatting of your
 code on save.
 
+Also, some support for symbolication (the "Symbols" sidebar in Nova, and symbol type icons),
+along with local symbol renaming support is provided.
+
 If you have installed our _D_ extension, you may disable that as this
 extension includes all of that functionality as well.
 
@@ -39,6 +42,8 @@ or newer is released.)
 
 Note that if you use a custom release, you must use a **0.8.0-beta.1** or
 newer. Older releases will not function at all with this extension.
+
+Local symbol renaming requires serve-d **0.8.0-beta.8** or newer.
 
 ## Usage
 
@@ -93,6 +98,22 @@ Support for improved support for DUB including selecting build configuration
 and actually performing various build tasks besides just the top-level one
 (including for nested projects) is planned as well.
 
+## Bugs
+
+- Symbol renames won't work if the selection starts in columns 0 or 1, or is located
+  on the first two lines of the file. This is a [defect][6] in Nova.
+  The appearance will be as though nothing has occurred when trying to rename the symbol.
+
+  To workaround this, try just clicking (not selecting) a position within the symbol,
+  but in in columns 3 or higher, then rename (the command palette may be easier to use).
+
+- Symbol renames can mess up highlighting. Make a subsequent change to refresh the
+  tree-sitter grammar's view of things. This appears to be a Nova defect.
+
+- _serve-d_ only supports renaming local symbols (including function parameters).
+  We hope someday this will improve, and when it does this extension should just
+  automatically benefit.
+
 ---
 
 ## Attribution
@@ -104,3 +125,4 @@ The D Rocket logo is used [under license][2].
 [3]: https://tree-sitter.github.io "Tree-sitter web site"
 [4]: https://github.com/gdamore/tree-sitter-d "D Grammar for Tree-sitter"
 [5]: https://github.com/dlang-community/artwork "D community artwork"
+[6]: https://devforum.nova.app/t/lsp-integers-0-and-1-serialized-to-boolean/1831

@@ -14,6 +14,7 @@ const keys = {
   jumpToDefinition: "dvelop.jumpToDefinition",
   formatFile: "dvelop.formatFile",
   checkForUpdate: "dvelop.checkForUpdate",
+  renameSymbol: "dvelop.renameSymbol",
 };
 
 module.exports = keys;

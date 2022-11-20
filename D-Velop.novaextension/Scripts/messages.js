@@ -28,6 +28,19 @@ class Messages {
     }
   }
 
+  static showWarning(err) {
+    if (catalog.values[err]) {
+      err = this.getMsg(err);
+    }
+    // strip off the LSP error code; few users can grok it anyway
+    let m = err.match(/-3\d\d\d\d\s+(.*)/);
+    if (m && m[1]) {
+      nova.workspace.showWarningMessage(m[1]);
+    } else {
+      nova.workspace.showWarningMessage(err);
+    }
+  }
+
   /**
    * Show a non-disruptive notification for the given message.
    */
