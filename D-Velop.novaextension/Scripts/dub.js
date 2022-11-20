@@ -40,6 +40,7 @@ let Dub = {
           matchers: ["dmd-error"],
         })
       );
+      task.image = "dub";
       return [task];
     }
     return [];
