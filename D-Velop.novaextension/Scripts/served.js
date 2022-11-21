@@ -12,6 +12,69 @@ var lspClient = null;
 var tasks = null;
 var onDub = null;
 
+// serve-d wants us to send the complete config, so we fill in a generic
+// default that covers it all.
+function defaultConfig() {
+  return {
+    d: {
+      stdlibPath: "auto", // can be an array
+      dubPath: "dub",
+      dmdPath: "dmd",
+      enableLinting: true,
+      enableSDLLinting: true,
+      enableStaticLinting: true,
+      enableDubLinting: true,
+      enableAutoComplete: true,
+      enableFormatting: true,
+      enableDMDImportTiming: false,
+      enableCoverageDecoration: false, // upstream true, Nova can't
+      enableGCProfilerDecorations: false, // upstream true, Nova can't
+      neverUseDub: false,
+      projectImportPaths: [], // string array
+      dubConfiguration: "",
+      dubArchType: "",
+      dubBuildType: "",
+      dubCompiler: "",
+      overrideDfmtEditorconfig: true, // we might want to revisit this!
+      aggressiveUpdate: false, // differs from default code-d settings on purpose!
+      argumentSnippets: false,
+      scanAllFolders: true,
+      disabledRootGlobs: [], // string array
+      extraRoots: [], // string array
+      manyProjectsAction: "ask", // see  = ManyProjectsAction.ask;
+      manyProjectsThreshold: 6,
+      lintOnFileOpen: "project",
+      dietContextCompletion: false,
+      generateModuleNames: true,
+    },
+    dfmt: {
+      alignSwitchStatements: true,
+      braceStyle: "allman",
+      outdentAttributes: true,
+      spaceAfterCast: true,
+      splitOperatorAtLineEnd: false,
+      selectiveImportSpace: true,
+      compactLabeledStatements: true,
+      templateConstraintStyle: "conditional_newline_indent",
+      spaceBeforeFunctionParameters: false,
+      singleTemplateConstraintIndent: false,
+      spaceBeforeAAColon: false,
+      keepLineBreaks: true,
+      singleIndent: true,
+    },
+    dscanner: {
+      ignoredKeys: [], // string array
+    },
+    editor: {
+      rulers: [], // array of integers
+      tabSize: 4, // for now
+    },
+    git: {
+      git: "git", // path
+    },
+  };
+}
+
 function stopClient() {
   if (lspClient) {
     lspClient.stop();
@@ -39,6 +102,10 @@ async function startClient() {
     return null;
   }
 
+  let debug = false;
+  if (nova.inDevMode()) {
+    debug = true;
+  }
   // Create the client
   var serverOptions = {
     path: path,
@@ -47,7 +114,7 @@ async function startClient() {
   var clientOptions = {
     // The set of document syntaxes for which the server is valid
     syntaxes: ["d"],
-    debug: true,
+    debug: debug,
   };
   lspClient = new LanguageClient(
     "d-langserver" + Date.now(), // use a unique server id for each call
@@ -63,6 +130,7 @@ async function startClient() {
 
   try {
     lspClient.start();
+    setTimeout(sendConfig, 1000); // send config (50 ms for initialization)
   } catch (err) {
     Messages.showNotice(Catalog.msgLspDidNotStart, err.message);
     return false;
@@ -73,6 +141,7 @@ async function startClient() {
     delay(10);
     limit -= 10;
   }
+
   if (lspClient.running) {
     return true;
   }
@@ -96,6 +165,12 @@ async function sendRequest_(method, params) {
     return null;
   } else {
     return lspClient.sendRequest(method, params);
+  }
+}
+
+function sendNotification(method, params) {
+  if (lspClient) {
+    return lspClient.sendNotification(method, params);
   }
 }
 
@@ -145,6 +220,23 @@ async function onDubInit() {
   if (onDub) {
     onDub();
   }
+}
+
+function getConfig(name) {
+  return nova.workspace.config.get(name) ?? nova.config.get(name);
+}
+
+function sendConfig() {
+  let cfg = defaultConfig();
+  cfg.d.dubPath = getConfig(Config.dubPath) ?? cfg.d.dubPath;
+
+  sendNotification("served/didChangeConfiguration", { settings: cfg });
+}
+
+function watchConfig() {
+  nova.config.observe(Config.dubPath, (nv, ov) => {
+    sendConfig();
+  });
 }
 
 let ServeD = {

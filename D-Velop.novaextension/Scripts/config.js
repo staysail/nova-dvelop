@@ -15,6 +15,7 @@ const keys = {
   customServerPath: "dvelop.customServerPath",
   allowPreRelease: "dvelop.allowPreRelease",
   checkForUpdates: "dvelop.checkForUpdates",
+  dubPath: "dvelop.dub.path",
 
   // context keys that don't get written out
   arch: "dvelop.served.arch", // to avoid waiting for calls to uname

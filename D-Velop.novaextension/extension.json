@@ -58,10 +58,16 @@
   },
   "configWorkspace": [
     {
-      "key": "dvelop.fmt.onSave",
-      "title": "Format on Save",
-      "type": "boolean",
-      "default": false
+      "title": "Formatting",
+      "type": "section",
+      "children": [
+        {
+          "key": "dvelop.fmt.onSave",
+          "title": "Format on Save",
+          "type": "boolean",
+          "default": false
+        }
+      ]
     }
   ],
   "config": [
@@ -96,6 +102,19 @@
           "description": "Path to serve-d, only used if using a custom installation.",
           "type": "path",
           "placeholder": "/usr/local/bin/serve-d"
+        }
+      ]
+    },
+    {
+      "type": "section",
+      "title": "Dub",
+      "children": [
+        {
+          "key": "dvelop.dub.path",
+          "title": "Dub Location",
+          "description": "Path to dub, if empty will search $PATH",
+          "type": "path",
+          "placeholder": "/Library/D/dmd/bin/dub"
         }
       ]
     }
