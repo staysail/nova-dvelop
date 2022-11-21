@@ -40,7 +40,6 @@ function provideTasksGroup(group) {
         })
       );
       if (t.run) {
-        console.error("PERSISTENT", t.name);
         task.persistent = true;
       }
       task.image = "dub";
