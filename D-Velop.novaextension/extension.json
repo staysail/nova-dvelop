@@ -66,6 +66,114 @@
           "title": "Format on Save",
           "type": "boolean",
           "default": false
+        },
+        {
+          "key": "dvelop.fmt.overrideEditorConfig",
+          "title": "Override .editorconfig",
+          "description": "If set, the values here override any .editorconfig file.",
+          "type": "boolean",
+          "default": true
+        },
+        {
+          "key": "dvelop.fmt.braceStyle",
+          "title": "Brace Style",
+          "type": "enum",
+          "values": [
+            ["allman", "Allman"],
+            ["knr", "K&R"],
+            ["otbs", "One True Brace"],
+            ["stroustrup", "Stroustrup"]
+          ],
+          "default": "allman"
+        },
+        {
+          "key": "dvelop.fmt.softLength",
+          "title": "Soft Line Length",
+          "type": "number",
+          "max": 1000,
+          "min": 10,
+          "default": 80,
+          "description": "Formatter will try to keep lines less than this usually."
+        },
+        {
+          "key": "dvelop.fmt.hardLength",
+          "title": "Hard Line Length",
+          "type": "number",
+          "max": 1000,
+          "min": 10,
+          "default": 120,
+          "description": "Formatter will keep lines less than this in any case."
+        },
+        {
+          "key": "dvelop.fmt.keepBreaks",
+          "title": "Preserve Line Breaks",
+          "description": "Formater will preserve line breaks if possible.",
+          "type": "boolean",
+          "default": true
+        },
+        {
+          "key": "dvelop.fmt.compactLabeled",
+          "title": "Compact Labels",
+          "description": "Label on same line as associated statement.",
+          "type": "boolean",
+          "default": true
+        },
+        {
+          "key": "dvelop.fmt.breakAfterOperator",
+          "title": "Break After Operator",
+          "description": "Prefer to break lines after the operator.",
+          "type": "boolean",
+          "default": false
+        },
+        {
+          "key": "dvelop.fmt.spaceAfterCast",
+          "title": "Space After Cast",
+          "description": "Insert a space after a type cast.",
+          "type": "boolean",
+          "default": true
+        },
+        {
+          "key": "dvelop.fmt.spaceBeforeParameters",
+          "title": "Space Before Function Parameters",
+          "description": "Insert a space before the parameter list.",
+          "type": "boolean",
+          "default": false
+        },
+        {
+          "key": "dvelop.fmt.selectiveImportSpace",
+          "title": "Selective Import Space",
+          "description": "Insert a space after the module name for selective imports.",
+          "type": "boolean",
+          "default": false
+        },
+        {
+          "key": "dvelop.fmt.spaceBeforeAAColon",
+          "title": "Space After Key",
+          "description": "Insert a space between the key and colon of an associative array (old style).",
+          "type": "boolean",
+          "default": false
+        },
+        {
+          "key": "dvelop.fmt.singleIndent",
+          "title": "Single Indent Inside Parenthesis",
+          "description": "Indent inside a parenthesis by one level instead of two.",
+          "type": "boolean",
+          "value": false
+        },
+        {
+          "key": "dvelop.fmt.templateConstraints",
+          "title": "Template Constraint Location",
+          "description": "Where should template constraints be located?",
+          "type": "enum",
+          "values": [
+            ["cond0", "Same line if possible, no indentation"],
+            ["cond1", "Same line if possible, single indent otherwise"],
+            ["cond2", "Same line if possible, double indent otherwise"],
+            ["always0", "Next line, no indentation"],
+            ["always1", "Next line, single indent"],
+            ["always2", "Next line, double indent"]
+          ],
+          "default": "cond2"
         }
       ]
     },

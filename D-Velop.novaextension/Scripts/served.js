@@ -131,7 +131,6 @@ async function startClient() {
   try {
     lspClient.start();
     setTimeout(sendConfig, 1000); // send config (50 ms for initialization)
-    setTimeout(getInfo, 2500);
   } catch (err) {
     Messages.showNotice(Catalog.msgLspDidNotStart, err.message);
     return false;
@@ -149,20 +148,6 @@ async function startClient() {
 
   Messages.showNotice(Catalog.msgLspDidNotStart, "");
   return false;
-}
-
-async function getInfo() {
-  console.error("GETTING ARCHES");
-  let arches = await lspClient.sendRequest("served/listArchTypes", {});
-  console.error("ARCHES is", JSON.stringify(arches));
-  let arch = await lspClient.sendRequest("served/getArchType", {});
-  console.error("CURRENT ARCH is", arch);
-  let builds = await lspClient.sendRequest("served/listBuildTypes", {});
-  console.error("BUILD TYPES is", JSON.stringify(builds));
-  let build = await lspClient.sendRequest("served/getBuildType", {});
-  console.error("CURRENT BUILD TYPE is", build);
-  let compiler = await lspClient.sendRequest("served/getCompiler", {});
-  console.error("CURRENT COMPILER IS", compiler);
 }
 
 async function restartClient() {
@@ -244,14 +229,90 @@ function getConfig(name) {
 function sendConfig() {
   let cfg = defaultConfig();
   cfg.d.dubPath = getConfig(Config.dubPath) ?? cfg.d.dubPath;
+  cfg.d.overrideDfmtEditorconfig =
+    getConfig(Config.overrideEditorConfig) ?? cfg.d.overrideDfmtEditorconfig;
+  cfg.dfmt.braceStyle = getConfig(Config.braceStyle) ?? cfg.dfmt.braceStyle;
+  cfg.dfmt.keepLineBreaks =
+    getConfig(Config.keepBreaks) ?? cfg.dfmt.keepLineBreaks;
+  cfg.dfmt.splitOperatorAtLineEnd =
+    getConfig(Config.breakAfterOp) ?? cfg.dfmt.splitOperatorAtLineEnd;
+  cfg.dfmt.compactLabeledStatements =
+    getConfig(Config.compactLabeled) ?? cfg.dfmt.compactLabeledStatements;
+  cfg.dfmt.spaceAfterCast =
+    getConfig(Config.spaceAfterCast) ?? cfg.dfmt.spaceAfterCast;
+  cfg.dfmt.spaceBeforeFunctionParameters =
+    getConfig(Config.spaceBeforeFuncParams) ??
+    cfg.dfmt.spaceBeforeFunctionParameters;
+  cfg.dfmt.selectiveImportSpace =
+    getConfig(Config.selectiveImportSpace) ?? cfg.dfmt.selectiveImportSpace;
+  cfg.dfmt.spaceBeforeAAColon =
+    getConfig(Config.spaceBeforeAAColon) ?? cfg.dfmt.spaceBeforeAAColon;
+  cfg.dfmt.singleIndent =
+    getConfig(Config.singleIndent) ?? cfg.dfmt.singleIndent;
+  switch (getConfig(Config.templateConstraintStyle)) {
+    case "cond0":
+      cfg.dfmt.templateConstraintStyle = "conditional_newline";
+      cfg.dfmt.singleTemplateConstraintIndent = false;
+      break;
+    case "cond1":
+      cfg.dfmt.templateConstraintStyle = "conditional_newline_indent";
+      cfg.dfmt.singleTemplateConstraintIndent = true;
+      break;
+    case "cond2":
+      cfg.dfmt.templateConstraintStyle = "conditional_newline_indent";
+      cfg.dfmt.singleTemplateConstraintIndent = false;
+      break;
+    case "always0":
+      cfg.dfmt.templateConstraintStyle = "always_newline";
+      cfg.dfmt.singleTemplateConstraintIndent = false;
+      break;
+    case "always1":
+      cfg.dfmt.templateConstraintStyle = "always_newline_indent";
+      cfg.dfmt.singleTemplateConstraintIndent = true;
+      break;
+    case "always2":
+      cfg.dfmt.templateConstraintStyle = "always_newline_indent";
+      cfg.dfmt.singleTemplateConstraintIndent = false;
+      break;
+    default:
+      // no change
+      break;
+  }
+  cfg.editor.rules = [80, 120];
+  cfg.editor.rulers[0] = getConfig(Config.softLineLength) ?? 80;
+  cfg.editor.rulers[1] = getConfig(Config.hardLineLength) ?? 120;
+  // tabSize? we don't have access necessarily to the editor's tabSize
 
   sendNotification("served/didChangeConfiguration", { settings: cfg });
 }
 
-function watchConfig() {
-  nova.config.observe(Config.dubPath, (nv, ov) => {
-    sendConfig();
+function watchConfigVar(name) {
+  nova.config.observe(name, (nv, ov) => {
+    // this doesn't send an update a workspace override exists
+    if (nv != getConfig(name)) {
+      sendConfig();
+    }
   });
+  nova.workspace.config.observe(name, (nv, ov) => {
+    // this always sends an update
+    if (nv != ov) {
+      sendConfig();
+    }
+  });
+}
+
+function watchConfig() {
+  watchConfigVar(Config.dubPath);
+  watchConfigVar(Config.overrideEditorConfig);
+  watchConfigVar(Config.braceStyle);
+  watchConfigVar(Config.compactLabeled);
+  watchConfigVar(Config.keepBreaks);
+  watchConfigVar(Config.hardLineLength);
+  watchConfigVar(Config.softLineLength);
+  watchConfigVar(Config.breakAfterOp);
+  watchConfigVar(Config.spaceAfterCast);
+  watchConfigVar(Config.spaceBeforeFuncParams);
+  watchConfigVar(Config.selectiveImportSpace);
 }
 
 let ServeD = {
@@ -266,5 +327,6 @@ let ServeD = {
   getTasks: () => {
     return tasks;
   },
+  startUp: watchConfig,
 };
 module.exports = ServeD;

@@ -28,6 +28,7 @@ exports.activate = function () {
 
   Dub.setLspServer(lspServer);
   lspServer.onReloadDub(Dub.reloadTasks);
+  lspServer.startUp();
 
   // If we should check for new versions at start up, try to download from
   // GitHub releases.
