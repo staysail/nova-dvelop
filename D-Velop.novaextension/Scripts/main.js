@@ -70,7 +70,7 @@ exports.activate = function () {
 
   nova.commands.register(Commands.checkForUpdate, async function (_) {
     try {
-      Update.checkForUpdate();
+      Update.checkForUpdate(true);
     } catch (error) {
       Messages.showError(error.message);
     }

@@ -131,6 +131,7 @@ async function startClient() {
   try {
     lspClient.start();
     setTimeout(sendConfig, 1000); // send config (50 ms for initialization)
+    setTimeout(getInfo, 2500);
   } catch (err) {
     Messages.showNotice(Catalog.msgLspDidNotStart, err.message);
     return false;
@@ -148,6 +149,20 @@ async function startClient() {
 
   Messages.showNotice(Catalog.msgLspDidNotStart, "");
   return false;
+}
+
+async function getInfo() {
+  console.error("GETTING ARCHES");
+  let arches = await lspClient.sendRequest("served/listArchTypes", {});
+  console.error("ARCHES is", JSON.stringify(arches));
+  let arch = await lspClient.sendRequest("served/getArchType", {});
+  console.error("CURRENT ARCH is", arch);
+  let builds = await lspClient.sendRequest("served/listBuildTypes", {});
+  console.error("BUILD TYPES is", JSON.stringify(builds));
+  let build = await lspClient.sendRequest("served/getBuildType", {});
+  console.error("CURRENT BUILD TYPE is", build);
+  let compiler = await lspClient.sendRequest("served/getCompiler", {});
+  console.error("CURRENT COMPILER IS", compiler);
 }
 
 async function restartClient() {

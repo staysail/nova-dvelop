@@ -105,7 +105,7 @@ class GitHub {
   // releases returns a promise that resolves to a GitHub releases object for language server.
   // It should be an array of items, each item corresponding to a release.
   // Within each release may be an array of associated assets.
-  static releases() {
+  static releases(force) {
     // My instinct is that there is probably a better way to do this,
     // but I'm not a Javascript expert.  Would be grateful for any
     // suggestions to clean it up.
@@ -123,9 +123,14 @@ class GitHub {
     //
     // This check needs to be done infrequently, because it can be expensive.
     // We actually prefer it be done only manually.
-    return Cache.fetch("releases", releasesUrl, {
-      headers: { Accept: "application/vnd.github+json" },
-    });
+    return Cache.fetch(
+      "releases",
+      releasesUrl,
+      {
+        headers: { Accept: "application/vnd.github+json" },
+      },
+      force
+    );
   }
 
   // choose the best release from the list of available releases

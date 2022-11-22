@@ -68,6 +68,19 @@
           "default": false
         }
       ]
+    },
+    {
+      "title": "DUB",
+      "type": "section",
+      "children": [
+        {
+          "key": "dvelop.dub.path",
+          "title": "Dub Location",
+          "description": "Path to dub, if empty uses global default",
+          "type": "path",
+          "placeholder": "/Library/D/dmd/bin/dub"
+        }
+      ]
     }
   ],
   "config": [
