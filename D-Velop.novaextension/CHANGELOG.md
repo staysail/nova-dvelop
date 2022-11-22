@@ -1,3 +1,14 @@
+## Version 0.8.3
+
+Added configuration support for formatting. This requires served 0.8.0-beta.9
+or better.
+
+DUB recipes are now generated from _serve-d_.
+
+Nicer DUB logo that adapts to themes (especially dark mode).
+
+Fixed a bug where the "Format On Save" configuration was not respected.
+
 ## Version 0.8.2
 
 Fix for non-functional format command.
