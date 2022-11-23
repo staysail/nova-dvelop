@@ -15,6 +15,8 @@ const keys = {
   formatFile: "dvelop.formatFile",
   checkForUpdate: "dvelop.checkForUpdate",
   renameSymbol: "dvelop.renameSymbol",
+  findDub: "dvelop.findDub",
+  findDmd: "dvelop.findDmd",
 };
 
 module.exports = keys;

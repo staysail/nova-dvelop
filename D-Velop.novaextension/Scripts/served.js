@@ -229,8 +229,13 @@ function getConfig(name) {
 function sendConfig() {
   let cfg = defaultConfig();
   cfg.d.dubPath = getConfig(Config.dubPath) ?? cfg.d.dubPath;
+  cfg.d.dmdPath = getConfig(Config.dmdPath) ?? cfg.d.dmdPath;
+  cfg.d.projectImportPaths =
+    getConfig(Config.projectImportPaths) ?? cfg.d.projectImportPaths;
   cfg.d.overrideDfmtEditorconfig =
     getConfig(Config.overrideEditorConfig) ?? cfg.d.overrideDfmtEditorconfig;
+  cfg.dfmt.alignSwitchStatements =
+    getConfig(Config.alignSwitch) ?? cfg.dfmt.alignSwitchStatements;
   cfg.dfmt.braceStyle = getConfig(Config.braceStyle) ?? cfg.dfmt.braceStyle;
   cfg.dfmt.keepLineBreaks =
     getConfig(Config.keepBreaks) ?? cfg.dfmt.keepLineBreaks;
@@ -303,8 +308,11 @@ function watchConfigVar(name) {
 
 function watchConfig() {
   watchConfigVar(Config.dubPath);
+  watchConfigVar(Config.dmdPath);
+  watchConfigVar(Config.projectImportPaths);
   watchConfigVar(Config.overrideEditorConfig);
   watchConfigVar(Config.braceStyle);
+  watchConfigVar(Config.alignSwitch);
   watchConfigVar(Config.compactLabeled);
   watchConfigVar(Config.keepBreaks);
   watchConfigVar(Config.hardLineLength);

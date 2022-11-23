@@ -77,7 +77,7 @@ exports.activate = function () {
     }
   });
 
-  Dub.registerTaskGroups();
+  Dub.register();
   nova.assistants.registerTaskAssistant(Weka, {
     identifier: "weka",
     name: "Weka",

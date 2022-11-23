@@ -1,3 +1,11 @@
+## Version 0.8.4
+
+Added switch alignment configuration for formatting.
+
+Added ability to configure project import paths.
+
+Added ability to configure DMD path used by serve-d.
+
 ## Version 0.8.3
 
 Added configuration support for formatting. This requires served 0.8.0-beta.9

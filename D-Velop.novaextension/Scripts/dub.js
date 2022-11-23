@@ -6,6 +6,9 @@
 // This first version just uses /usr/bin/env dub ... but we will
 // follow up soon with proper integration with serve-d.
 
+const Commands = require("./commands.js");
+const Paths = require("./paths.js");
+
 let lspServer = null;
 
 // Group names are clean, build, rebuild, and test.
@@ -50,28 +53,49 @@ function provideTasksGroup(group) {
   return [];
 }
 
+let searchPaths = [
+  "/Library/D/dmd/bin",
+  "/usr/bin",
+  "/usr/local/bin",
+  "/opt/homebrew/bin",
+];
+
+function findDub() {
+  return Paths.findProgram(searchPaths, ["dub"]);
+}
+
+function findDmd() {
+  return Paths.findProgram(searchPaths, ["dmd", "ldmd2", "ldmd", "gdmd"]);
+}
+
+function registerTaskGroups() {
+  nova.assistants.registerTaskAssistant(
+    { provideTasks: () => provideTasksGroup("build") },
+    { identifier: "dub-build", name: "Dub Build" }
+  );
+  nova.assistants.registerTaskAssistant(
+    { provideTasks: () => provideTasksGroup("rebuild") },
+    { identifier: "dub-rebuild", name: "Dub Rebuild" }
+  );
+  nova.assistants.registerTaskAssistant(
+    { provideTasks: () => provideTasksGroup("test") },
+    { identifier: "dub-test", name: "Dub Test" }
+  );
+  nova.assistants.registerTaskAssistant(
+    { provideTasks: () => provideTasksGroup("clean") },
+    { identifier: "dub-clean", name: "Dub Clean" }
+  );
+}
+
+function register() {
+  nova.commands.register(Commands.findDub, findDub);
+  nova.commands.register(Commands.findDmd, findDmd);
+  registerTaskGroups();
+}
+
 let Dub = {
   setLspServer: (lsp) => {
     lspServer = lsp;
-  },
-
-  registerTaskGroups: () => {
-    nova.assistants.registerTaskAssistant(
-      { provideTasks: () => provideTasksGroup("build") },
-      { identifier: "dub-build", name: "Dub Build" }
-    );
-    nova.assistants.registerTaskAssistant(
-      { provideTasks: () => provideTasksGroup("rebuild") },
-      { identifier: "dub-rebuild", name: "Dub Rebuild" }
-    );
-    nova.assistants.registerTaskAssistant(
-      { provideTasks: () => provideTasksGroup("test") },
-      { identifier: "dub-test", name: "Dub Test" }
-    );
-    nova.assistants.registerTaskAssistant(
-      { provideTasks: () => provideTasksGroup("clean") },
-      { identifier: "dub-clean", name: "Dub Clean" }
-    );
   },
 
   reloadTasks: () => {
@@ -80,6 +104,8 @@ let Dub = {
     nova.workspace.reloadTasks("dub-test");
     nova.workspace.reloadTasks("dub-clean");
   },
+
+  register: register,
 };
 
 module.exports = Dub;

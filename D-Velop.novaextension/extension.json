@@ -112,6 +112,13 @@
           "default": true
         },
         {
+          "key": "dvelop.fmt.alignSwitch",
+          "title": "Align Switch Statements",
+          "type": "boolean",
+          "description": "Align labels, cases, and defaults with their enclosing switch.",
+          "default": true
+        },
+        {
           "key": "dvelop.fmt.compactLabeled",
           "title": "Compact Labels",
           "description": "Label on same line as associated statement.",
@@ -147,18 +154,18 @@
           "default": false
         },
         {
-          "key": "dvelop.fmt.spaceBeforeAAColon",
-          "title": "Space After Key",
-          "description": "Insert a space between the key and colon of an associative array (old style).",
-          "type": "boolean",
-          "default": false
-        },
-        {
           "key": "dvelop.fmt.singleIndent",
           "title": "Single Indent Inside Parenthesis",
           "description": "Indent inside a parenthesis by one level instead of two.",
           "type": "boolean",
           "value": false
+        },
+        {
+          "key": "dvelop.fmt.spaceBeforeAAColon",
+          "title": "Old Style Associative Array Literals",
+          "description": "Insert a space between the key and colon of an associative array.",
+          "type": "boolean",
+          "default": false
         },
         {
           "key": "dvelop.fmt.templateConstraints",
@@ -178,15 +185,34 @@
       ]
     },
     {
-      "title": "DUB",
+      "title": "Helpers",
       "type": "section",
       "children": [
         {
           "key": "dvelop.dub.path",
           "title": "Dub Location",
           "description": "Path to dub, if empty uses global default",
-          "type": "path",
+          "type": "enum",
+          "resolve": "dvelop.findDub",
+          "allowCustom": "true",
           "placeholder": "/Library/D/dmd/bin/dub"
+        },
+        {
+          "key": "dvelop.dmd.path",
+          "title": "DMD Location",
+          "description": "Path to dmd, if empty uses global default",
+          "type": "enum",
+          "resolve": "dvelop.findDmd",
+          "allowCustom": "true",
+          "placeholder": "/Library/D/dmd/bin/dmd"
+        },
+        {
+          "key": "devlop.importPaths",
+          "title": "Project Import Paths",
+          "type": "pathArray",
+          "allowFiles": false,
+          "allowFolders": true,
+          "description": "Additional paths to search for imports."
         }
       ]
     }
@@ -228,7 +254,7 @@
     },
     {
       "type": "section",
-      "title": "Dub",
+      "title": "Helpers",
       "children": [
         {
           "key": "dvelop.dub.path",
@@ -236,6 +262,13 @@
           "description": "Path to dub, if empty will search $PATH",
           "type": "path",
           "placeholder": "/Library/D/dmd/bin/dub"
+        },
+        {
+          "key": "dvelop.dmd.path",
+          "title": "DMD Location",
+          "description": "Path to DMD, if empty will search $PATH",
+          "type": "path",
+          "placeholder": "/Library/D/dmd/bin/dmd"
         }
       ]
     }
