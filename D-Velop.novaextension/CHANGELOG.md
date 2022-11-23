@@ -4,14 +4,17 @@ Added switch alignment configuration for formatting.
 
 Added ability to configure project import paths.
 
-Added ability to configure DMD path used by serve-d.
+Added ability to configure DMD path used by _serve-d_.
+
+Added Sort Imports commands. This only sorts the import block
+where the cursor or selection is located. This is a limitation in _serve-d_.
 
 ## Version 0.8.3
 
-Added configuration support for formatting. This requires served 0.8.0-beta.9
+Added configuration support for formatting. This requires _serve-d_ 0.8.0-beta.9
 or better.
 
-DUB recipes are now generated from _serve-d_.
+Dub recipes are now generated from _serve-d_.
 
 Nicer DUB logo that adapts to themes (especially dark mode).
 
@@ -21,7 +24,7 @@ Fixed a bug where the "Format On Save" configuration was not respected.
 
 Fix for non-functional format command.
 
-Added support for local symbol renaming (requires serve-d 0.8.0-beta.8 or better).
+Added support for local symbol renaming (requires _serve-d_ 0.8.0-beta.8 or better).
 
 Note that due to the usual problem with Nova symbols (selections) starting in
 columns 0 or 1, or rows 0 or 1, won't work. (Nova issues those as "true" and

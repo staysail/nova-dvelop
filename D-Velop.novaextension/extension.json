@@ -3,7 +3,7 @@
   "name": "D-Velop",
   "organization": "Staysail Systems",
   "description": "D language support via Serve-D.",
-  "version": "0.8.3",
+  "version": "0.8.4",
   "categories": ["languages", "formatters"],
   "repository": "https://github.com/staysail/nova-serve-d",
   "bugs": "https://github.com/staysail/nova-serve-d/issues",
@@ -27,6 +27,11 @@
       {
         "title": "Rename Symbol",
         "command": "dvelop.renameSymbol",
+        "filters": { "syntaxes": ["d"] }
+      },
+      {
+        "title": "Sort Imports",
+        "command": "dvelop.sortImports",
         "filters": { "syntaxes": ["d"] }
       },
       {

@@ -93,7 +93,8 @@ More control over the diagnostic hints provided by _serve-d_ would be nice as we
 Richer support for configuration of `dub` recipes and settings, such as
 selecting different configurations, is planned.
 
-Import order sorting will be added soon.
+Import order sorting works now, but is somewhat limited. We would like to
+see this tied into the formatting as an option when formatting documents.
 
 We anticipate that _serve-d_ will grow additional capabilities, and when
 it does we will try to enable such functionality here.

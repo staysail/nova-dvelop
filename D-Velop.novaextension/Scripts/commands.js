@@ -17,6 +17,7 @@ const keys = {
   renameSymbol: "dvelop.renameSymbol",
   findDub: "dvelop.findDub",
   findDmd: "dvelop.findDmd",
+  sortImports: "dvelop.sortImports",
 };
 
 module.exports = keys;
