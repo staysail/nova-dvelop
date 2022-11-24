@@ -60,9 +60,10 @@ async function checkForUpdate() {
   // do it!
   let path = await GitHub.downloadAsset(best, nova.fs.tempdir);
 
+  let result = null;
   try {
     console.log("Extracting", path);
-    let status = extract(path, extPath, (status) => {
+    let result = extract(path, extPath, (status) => {
       if (status == 0) {
         // let's remove the temporary asset since we're done with it.
         nova.fs.remove(path);
@@ -77,7 +78,7 @@ async function checkForUpdate() {
     console.error(e.message);
   }
 
-  return status;
+  return result;
 }
 
 //nova.commands.register(Commands.checkForUpdate, async function (_) {

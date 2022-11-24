@@ -80,6 +80,7 @@ function defaultConfig() {
 function stopClient() {
   if (lspClient) {
     lspClient.stop();
+    lspClient = null;
   }
 }
 
@@ -125,6 +126,16 @@ async function startClient() {
     clientOptions
   );
 
+  lspClient.onDidStop((error) => {
+    console.warn("Language server stopped.");
+    if (error) {
+      console.error(
+        "Language encountered error:",
+        error.message || "unknown exit"
+      );
+    }
+  });
+
   // lspClient.onDidStop(this.didStop, this);
 
   lspClient.onNotification("coded/initDubTree", onDubInit);
@@ -153,10 +164,13 @@ async function startClient() {
 }
 
 async function restartClient() {
+  console.warn("Stopping language server for restart.");
   stopClient();
-  delay(1000); // wait a second before trying to restart
+  delay(2000); // wait a while before trying to restart
+  console.warn("Start language server in restart.");
   let rv = await startClient();
   if (rv) {
+    console.warn("Language server resetart complete");
     Messages.showNotice(Catalog.msgLspRestarted, "");
   }
   return rv;
@@ -343,7 +357,6 @@ function register() {
 }
 
 let ServeD = {
-  restart: restartClient,
   deactivate: stopClient,
   sendRequest: sendRequest,
   getTasks: () => {
