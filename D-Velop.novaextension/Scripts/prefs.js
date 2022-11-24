@@ -11,8 +11,12 @@ function getConfig(name) {
 }
 
 function register() {
-  State.registerCommand(Commands.preferences, nova.workspace.openConfig);
-  State.registerCommand(Commands.extensionPreferences, nova.openConfig);
+  State.registerCommand(Commands.preferences, (_) =>
+    nova.workspace.openConfig()
+  );
+  State.registerCommand(Commands.extensionPreferences, (_) =>
+    nova.openConfig()
+  );
 }
 
 module.exports = {
