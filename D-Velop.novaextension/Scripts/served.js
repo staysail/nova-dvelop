@@ -130,7 +130,7 @@ async function startClient() {
 
   try {
     lspClient.start();
-    setTimeout(sendConfig, 1000); // send config (50 ms for initialization)
+    setTimeout(sendConfig, 200); // send config (50 ms for initialization)
   } catch (err) {
     Messages.showNotice(Catalog.msgLspDidNotStart, err.message);
     return false;
@@ -152,6 +152,7 @@ async function startClient() {
 
 async function restartClient() {
   stopClient();
+  delay(1000); // wait a second before trying to restart
   let rv = await startClient();
   if (rv) {
     Messages.showNotice(Catalog.msgLspRestarted, "");
@@ -288,11 +289,16 @@ function sendConfig() {
   cfg.editor.rulers[1] = getConfig(Config.hardLineLength) ?? 120;
   // tabSize? we don't have access necessarily to the editor's tabSize
 
+  cfg.d.manyProjectsThreshold =
+    getConfig(Config.tooManyProjectsThreshold) ?? cfg.d.manyProjectsThreshold;
+  cfg.d.manyProjectsAction =
+    getConfig(Config.tooManyProjectsAction) ?? cfg.d.manyProjectsAction;
+
   sendNotification("served/didChangeConfiguration", { settings: cfg });
 }
 
 function watchConfigVar(name) {
-  nova.config.observe(name, (nv, ov) => {
+  nova.config.onDidChange(name, (nv, ov) => {
     // this doesn't send an update a workspace override exists
     if (nv != getConfig(name)) {
       sendConfig();
@@ -321,6 +327,8 @@ function watchConfig() {
   watchConfigVar(Config.spaceAfterCast);
   watchConfigVar(Config.spaceBeforeFuncParams);
   watchConfigVar(Config.selectiveImportSpace);
+  watchConfigVar(Config.tooManyProjectsAction);
+  watchConfigVar(Config.tooManyProjectsThreshold);
 }
 
 let ServeD = {

@@ -220,6 +220,32 @@
           "description": "Additional paths to search for imports."
         }
       ]
+    },
+    {
+      "title": "Miscellaneous",
+      "type": "section",
+      "children": [
+        {
+          "key": "dvelop.manyProjectsThreshold",
+          "title": "Many Projects Threshold",
+          "description": "More than this many subprojects triggers special handling",
+          "type": "number",
+          "default": 4,
+          "comment": "minimum value 2 because of Nova bug",
+          "min": 2
+        },
+        {
+          "key": "dvelop.manyProjectsAction",
+          "title": "Action to Perform When Many Projects",
+          "type": "enum",
+          "values": [
+            ["ask", "Ask (Prompt in Notification Center)"],
+            ["skip", "Skip (Will not Index)"],
+            ["load", "Load (No Confirmation)"]
+          ],
+          "default": "ask"
+        }
+      ]
     }
   ],
   "config": [

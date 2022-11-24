@@ -33,6 +33,8 @@ const keys = {
   spaceBeforeAAColon: "dvelop.fmt.spaceBeforeAAColon",
   singleIndent: "dvelop.fmt.singleIndent",
   templateConstraintStyle: "dvelop.fmt.templateConstraints",
+  tooManyProjectsThreshold: "dvelop.manyProjectsThreshold",
+  tooManyProjectsAction: "dvelop.manyProjectsAction",
 
   // context keys that don't get written out
   arch: "dvelop.served.arch", // to avoid waiting for calls to uname

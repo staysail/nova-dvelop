@@ -18,18 +18,19 @@ const Weka = require("./weka.js");
 const Rename = require("./rename.js");
 const Imports = require("./imports.js");
 
-let lspServer = ServeD;
-
 exports.activate = function () {
   // Do work when the extension is activated
-  if (lspServer == null) {
-    lspServer = new ServeD();
-  }
-  lspServer.start();
+  console.warn("Activating");
 
-  Dub.setLspServer(lspServer);
-  lspServer.onReloadDub(Dub.reloadTasks);
-  lspServer.startUp();
+  ServeD.start();
+
+  Dub.setLspServer(ServeD);
+  ServeD.onReloadDub(Dub.reloadTasks);
+
+  console.warn("STARTING UP LSP");
+  ServeD.startUp();
+
+  // THIS SHOULD BE ASYNCHRONOUS
 
   // If we should check for new versions at start up, try to download from
   // GitHub releases.
@@ -40,29 +41,31 @@ exports.activate = function () {
     } catch (error) {}
   }
 
+  console.warn("REGISTERING SYNTAX");
   nova.workspace.onDidAddTextEditor((editor) => {
     if (editor.document.syntax != "d") return;
     editor.onWillSave((editor) => {
       const formatOnSave = nova.workspace.config.get(Config.formatOnSave);
       if (formatOnSave) {
-        return Format.formatFile(lspServer, editor);
+        return Format.formatFile(ServeD, editor);
       }
     });
   });
 
+  console.warn("REGISTERING UPDATE RESTART");
   Update.onUpdate(restart);
   nova.commands.register(Commands.formatFile, (editor) => {
-    Format.formatFileCmd(lspServer, editor);
+    Format.formatFileCmd(ServeD, editor);
   });
   nova.commands.register(Commands.sortImports, (editor) => {
-    Imports.sortImportsCmd(lspServer, editor);
+    Imports.sortImportsCmd(ServeD, editor);
   });
   nova.commands.register(Commands.jumpToDefinition, (editor) => {
-    Navigate.toDefinition(lspServer, editor);
+    Navigate.toDefinition(ServeD, editor);
   });
 
   nova.commands.register(Commands.renameSymbol, (editor) => {
-    Rename.renameSymbol(lspServer, editor);
+    Rename.renameSymbol(ServeD, editor);
   });
 
   nova.commands.register(Commands.preferences, (_) =>
@@ -73,6 +76,8 @@ exports.activate = function () {
   );
   nova.commands.register(Commands.restartServer, restart);
 
+  console.warn("REGISTERING UPDATE CMD");
+
   nova.commands.register(Commands.checkForUpdate, async function (_) {
     try {
       Update.checkForUpdate(true);
@@ -81,7 +86,9 @@ exports.activate = function () {
     }
   });
 
+  console.warn("REGISTERING DUB");
   Dub.register();
+  console.warn("REGISTERING WEKA");
   nova.assistants.registerTaskAssistant(Weka, {
     identifier: "weka",
     name: "Weka",
@@ -89,13 +96,10 @@ exports.activate = function () {
 };
 
 function restart() {
-  lspServer.restart();
+  ServeD.restart();
 }
 
 exports.deactivate = function () {
   // Clean up state before the extension is deactivated
-  if (lspServer) {
-    lspServer.deactivate();
-    lspServer = null;
-  }
+  ServeD.deactivate();
 };
