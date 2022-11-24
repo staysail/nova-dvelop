@@ -3,13 +3,16 @@
 //
 // Distributed under the terms of the MIT license.
 
+const Commands = require("./commands.js");
 const Edits = require("./edits.js");
 const Messages = require("./messages.js");
 const Catalog = require("./catalog.js");
 const Ranges = require("./ranges.js");
 const Position = require("./position.js");
+const State = require("./state.js");
+const Lsp = require("./served.js");
 
-async function renameSym(lspServer, editor) {
+async function renameSym(editor) {
   const selected = editor.selectedRange;
   if (!selected) {
     Messages.showError(Catalog.msgNothingSelected);
@@ -21,7 +24,7 @@ async function renameSym(lspServer, editor) {
     return;
   }
   let oldName = editor.selectedText;
-  const prepResult = await lspServer.sendRequest("textDocument/prepareRename", {
+  const prepResult = await Lsp.sendRequest("textDocument/prepareRename", {
     textDocument: { uri: editor.document.uri },
     position: selectedPos,
   });
@@ -69,7 +72,7 @@ async function renameSym(lspServer, editor) {
     textDocument: { uri: editor.document.uri },
   };
 
-  const response = await lspServer.sendRequest("textDocument/rename", params);
+  const response = await Lsp.sendRequest("textDocument/rename", params);
 
   if (!response) {
     Messages.showWarning(Catalog.msgCouldNotRenameSym);
@@ -82,14 +85,16 @@ async function renameSym(lspServer, editor) {
   editor.scrollToCursorPosition();
 }
 
-class Rename {
-  static async renameSymbol(lspServer, editor) {
-    try {
-      renameSym(lspServer, editor);
-    } catch (err) {
-      Messages.showError(err.message);
-    }
+async function renameSymbolCmd(editor) {
+  try {
+    renameSym(editor);
+  } catch (err) {
+    Messages.showError(err.message);
   }
 }
 
-module.exports = Rename;
+function register() {
+  State.registerCommand(Commands.renameSymbol, renameSymbolCmd);
+}
+
+module.exports = { register: register };

@@ -3,13 +3,16 @@
 //
 // Distributed under the terms of the MIT license.
 
-Messages = require("./messages.js");
-Catalog = require("./catalog.js");
-Position = require("./position.js");
-Ranges = require("./ranges.js");
+const Commands = require("./commands.js");
+const Messages = require("./messages.js");
+const Catalog = require("./catalog.js");
+const Position = require("./position.js");
+const Ranges = require("./ranges.js");
+const Lsp = require("./served.js");
+const State = require("./state.js");
 
 // internal navigate function
-async function jumpTo(lspServer, editor, thing) {
+async function jumpTo(editor, thing) {
   console.log(`Jumping to ${thing}`);
 
   try {
@@ -19,7 +22,7 @@ async function jumpTo(lspServer, editor, thing) {
       return;
     }
     const position = Position.toLsp(editor.document, selected.start);
-    const response = await lspServer.sendRequest(`textDocument/${thing}`, {
+    const response = await Lsp.sendRequest(`textDocument/${thing}`, {
       textDocument: { uri: editor.document.uri },
       position: position,
     });
@@ -102,22 +105,19 @@ async function chooseLocation(locs) {
   );
 }
 
-class Navigate {
-  static toDefinition(lspServer, editor) {
-    jumpTo(lspServer, editor, "definition");
-  }
-
-  static toTypeDefinition(lspServer, editor) {
-    jumpTo(lspServer, editor, "typeDefinition");
-  }
-
-  static toDeclaration(lspServer, editor) {
-    jumpTo(lspServer, editor, "declaration");
-  }
-
-  static toImplementation(lspServer, editor) {
-    jumpTo(lspServer, editor, "implementation");
-  }
+function register() {
+  State.registerCommand(Commands.jumpToDefinition, (editor) =>
+    jumpTo(editor, "definition")
+  );
+  State.registerCommand(Commands.jumpToTypeDefinition, (editor) =>
+    jumpTo(editor, "typeDefinition")
+  );
+  State.registerCommand(Commands.jumpToDeclaration, (editor) =>
+    jumpTo(editor, "declaration")
+  );
+  State.registerCommand(Commands.jumpToImplementation, (editor) =>
+    jumpTo(editor, "implementation")
+  );
 }
 
-module.exports = Navigate;
+module.exports = { register: register };

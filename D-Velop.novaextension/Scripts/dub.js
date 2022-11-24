@@ -8,8 +8,8 @@
 
 const Commands = require("./commands.js");
 const Paths = require("./paths.js");
-
-let lspServer = null;
+const State = require("./state.js");
+const Lsp = require("./served.js");
 
 // Group names are clean, build, rebuild, and test.
 // We create special providers for each of them.
@@ -23,33 +23,31 @@ function taskType(t) {
 
 function provideTasksGroup(group) {
   let newTasks = [];
-  if (lspServer) {
-    let tasks = lspServer.getTasks();
-    if (!tasks || !tasks[group]) {
-      return [];
-    }
-    for (let t of tasks[group]) {
-      if (!t.exec.startsWith("/")) {
-        t.args.unshift(t.exec);
-        t.exec = "/usr/bin/env";
-      }
-      let task = new Task(t.name);
-      task.setAction(
-        taskType(t),
-        new TaskProcessAction(t.exec, {
-          args: t.args,
-          cwd: t.cwd,
-          matchers: ["dmd-error", "dmd-short-error"],
-        })
-      );
-      if (t.run) {
-        task.persistent = true;
-      }
-      task.image = "dub";
-      newTasks.push(task);
-    }
-    return newTasks;
+  let tasks = Lsp.getTasks();
+  if (!tasks || !tasks[group]) {
+    return [];
   }
+  for (let t of tasks[group]) {
+    if (!t.exec.startsWith("/")) {
+      t.args.unshift(t.exec);
+      t.exec = "/usr/bin/env";
+    }
+    let task = new Task(t.name);
+    task.setAction(
+      taskType(t),
+      new TaskProcessAction(t.exec, {
+        args: t.args,
+        cwd: t.cwd,
+        matchers: ["dmd-error", "dmd-short-error"],
+      })
+    );
+    if (t.run) {
+      task.persistent = true;
+    }
+    task.image = "dub";
+    newTasks.push(task);
+  }
+  return newTasks;
   return [];
 }
 
@@ -69,42 +67,47 @@ function findDmd() {
 }
 
 function registerTaskGroups() {
-  nova.assistants.registerTaskAssistant(
-    { provideTasks: () => provideTasksGroup("build") },
-    { identifier: "dub-build", name: "Dub Build" }
+  State.disposal.add(
+    nova.assistants.registerTaskAssistant(
+      { provideTasks: () => provideTasksGroup("build") },
+      { identifier: "dub-build", name: "Dub Build" }
+    )
   );
-  nova.assistants.registerTaskAssistant(
-    { provideTasks: () => provideTasksGroup("rebuild") },
-    { identifier: "dub-rebuild", name: "Dub Rebuild" }
+  State.disposal.add(
+    nova.assistants.registerTaskAssistant(
+      { provideTasks: () => provideTasksGroup("rebuild") },
+      { identifier: "dub-rebuild", name: "Dub Rebuild" }
+    )
   );
-  nova.assistants.registerTaskAssistant(
-    { provideTasks: () => provideTasksGroup("test") },
-    { identifier: "dub-test", name: "Dub Test" }
+  State.disposal.add(
+    nova.assistants.registerTaskAssistant(
+      { provideTasks: () => provideTasksGroup("test") },
+      { identifier: "dub-test", name: "Dub Test" }
+    )
   );
-  nova.assistants.registerTaskAssistant(
-    { provideTasks: () => provideTasksGroup("clean") },
-    { identifier: "dub-clean", name: "Dub Clean" }
+  State.disposal.add(
+    nova.assistants.registerTaskAssistant(
+      { provideTasks: () => provideTasksGroup("clean") },
+      { identifier: "dub-clean", name: "Dub Clean" }
+    )
   );
+}
+
+function reloadTasks() {
+  nova.workspace.reloadTasks("dub-build");
+  nova.workspace.reloadTasks("dub-rebuild");
+  nova.workspace.reloadTasks("dub-test");
+  nova.workspace.reloadTasks("dub-clean");
 }
 
 function register() {
-  nova.commands.register(Commands.findDub, findDub);
-  nova.commands.register(Commands.findDmd, findDmd);
   registerTaskGroups();
+  State.registerCommand(Commands.findDub, findDub);
+  State.registerCommand(Commands.findDmd, findDmd);
+  State.emitter.on(State.events.onDub, reloadTasks);
 }
 
 let Dub = {
-  setLspServer: (lsp) => {
-    lspServer = lsp;
-  },
-
-  reloadTasks: () => {
-    nova.workspace.reloadTasks("dub-build");
-    nova.workspace.reloadTasks("dub-rebuild");
-    nova.workspace.reloadTasks("dub-test");
-    nova.workspace.reloadTasks("dub-clean");
-  },
-
   register: register,
 };
 

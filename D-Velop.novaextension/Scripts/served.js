@@ -3,14 +3,15 @@
 //
 // Distributed under the terms of the MIT license.
 
+const Commands = require("./commands.js");
 const Messages = require("./messages.js");
 const Catalog = require("./catalog.js");
 const Config = require("./config.js");
+const State = require("./state.js");
 const delay = require("./delay.js");
 
 var lspClient = null;
 var tasks = null;
-var onDub = null;
 
 // serve-d wants us to send the complete config, so we fill in a generic
 // default that covers it all.
@@ -160,7 +161,7 @@ async function restartClient() {
   return rv;
 }
 
-async function sendRequest_(method, params) {
+async function sendRequest(method, params) {
   if (lspClient == null) {
     Messages.showError(Catalog.msgNoLspClient);
     return null;
@@ -218,9 +219,7 @@ async function onDubInit() {
     tasks[group] = arr;
   }
 
-  if (onDub) {
-    onDub();
-  }
+  State.emitter.emit(State.events.onDub);
 }
 
 function getConfig(name) {
@@ -298,18 +297,22 @@ function sendConfig() {
 }
 
 function watchConfigVar(name) {
-  nova.config.onDidChange(name, (nv, ov) => {
-    // this doesn't send an update a workspace override exists
-    if (nv != getConfig(name)) {
-      sendConfig();
-    }
-  });
-  nova.workspace.config.observe(name, (nv, ov) => {
-    // this always sends an update
-    if (nv != ov) {
-      sendConfig();
-    }
-  });
+  State.disposal.add(
+    nova.config.onDidChange(name, (nv, ov) => {
+      // this doesn't send an update a workspace override exists
+      if (nv != getConfig(name)) {
+        sendConfig();
+      }
+    })
+  );
+  State.disposal.add(
+    nova.workspace.config.onDidChange(name, (nv, ov) => {
+      // this always sends an update
+      if (nv != ov) {
+        sendConfig();
+      }
+    })
+  );
 }
 
 function watchConfig() {
@@ -331,18 +334,20 @@ function watchConfig() {
   watchConfigVar(Config.tooManyProjectsThreshold);
 }
 
+function register() {
+  watchConfig();
+  State.registerCommand(Commands.restartServer, restartClient);
+  State.emitter.on(State.events.onUpdate, restartClient);
+  State.emitter.on(State.events.onActivate, startClient);
+}
+
 let ServeD = {
   restart: restartClient,
-  start: startClient,
-  stop: stopClient,
   deactivate: stopClient,
-  sendRequest: sendRequest_,
-  onReloadDub: (cb) => {
-    onDub = cb;
-  },
+  sendRequest: sendRequest,
   getTasks: () => {
     return tasks;
   },
-  startUp: watchConfig,
+  register: register,
 };
 module.exports = ServeD;
