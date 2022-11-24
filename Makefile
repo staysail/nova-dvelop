@@ -5,7 +5,7 @@
 ##
 
 PARSER		= d
-EXT_DIR		= Serve-D.novaextension
+EXT_DIR		= D-Velop.novaextension
 SYNTAX_DIR	= $(EXT_DIR)/Syntaxes
 QUERY_DIR	= $(EXT_DIR)/Queries
 TS_DIR		= tree-sitter-d

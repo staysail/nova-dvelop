@@ -1,3 +1,17 @@
+## Version 0.8.5
+
+Bitfield support added for tree-sitter. (New in D2.101).
+
+Marked deprecated forms of version and debug constructs using integers as
+"invalid". (Technically still valid, but deprecated in D2.101, and not
+advised.)
+
+Symbolication of constructor, destructor, and postblits.
+
+Member fields are marked as properties rather than variables.
+
+Other minor tree-sitter query fixes.
+
 ## Version 0.8.4
 
 Added switch alignment configuration for formatting.
