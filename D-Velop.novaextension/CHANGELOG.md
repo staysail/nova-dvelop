@@ -1,3 +1,7 @@
+## Version 0.8.6
+
+Bug fixes only (for download and restart).
+
 ## Version 0.8.5
 
 Bitfield support added for tree-sitter. (New in D2.101).
