@@ -12,6 +12,12 @@ Member fields are marked as properties rather than variables.
 
 Other minor tree-sitter query fixes.
 
+Internal refactoring to make code cleaner, and restarts more reliable
+(hopefully).
+
+Configuration support for "manyProjects" (so you can silence those
+notifications for projects) -- project preference level only at the moment.
+
 ## Version 0.8.4
 
 Added switch alignment configuration for formatting.
