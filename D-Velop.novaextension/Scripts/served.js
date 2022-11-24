@@ -8,6 +8,7 @@ const Messages = require("./messages.js");
 const Catalog = require("./catalog.js");
 const Config = require("./config.js");
 const State = require("./state.js");
+const Prefs = require("./prefs.js");
 const delay = require("./delay.js");
 
 var lspClient = null;
@@ -222,39 +223,38 @@ async function onDubInit() {
   State.emitter.emit(State.events.onDub);
 }
 
-function getConfig(name) {
-  return nova.workspace.config.get(name) ?? nova.config.get(name);
-}
-
 function sendConfig() {
   let cfg = defaultConfig();
-  cfg.d.dubPath = getConfig(Config.dubPath) ?? cfg.d.dubPath;
-  cfg.d.dmdPath = getConfig(Config.dmdPath) ?? cfg.d.dmdPath;
+  cfg.d.dubPath = Prefs.getConfig(Config.dubPath) ?? cfg.d.dubPath;
+  cfg.d.dmdPath = Prefs.getConfig(Config.dmdPath) ?? cfg.d.dmdPath;
   cfg.d.projectImportPaths =
-    getConfig(Config.projectImportPaths) ?? cfg.d.projectImportPaths;
+    Prefs.getConfig(Config.projectImportPaths) ?? cfg.d.projectImportPaths;
   cfg.d.overrideDfmtEditorconfig =
-    getConfig(Config.overrideEditorConfig) ?? cfg.d.overrideDfmtEditorconfig;
+    Prefs.getConfig(Config.overrideEditorConfig) ??
+    cfg.d.overrideDfmtEditorconfig;
   cfg.dfmt.alignSwitchStatements =
-    getConfig(Config.alignSwitch) ?? cfg.dfmt.alignSwitchStatements;
-  cfg.dfmt.braceStyle = getConfig(Config.braceStyle) ?? cfg.dfmt.braceStyle;
+    Prefs.getConfig(Config.alignSwitch) ?? cfg.dfmt.alignSwitchStatements;
+  cfg.dfmt.braceStyle =
+    Prefs.getConfig(Config.braceStyle) ?? cfg.dfmt.braceStyle;
   cfg.dfmt.keepLineBreaks =
-    getConfig(Config.keepBreaks) ?? cfg.dfmt.keepLineBreaks;
+    Prefs.getConfig(Config.keepBreaks) ?? cfg.dfmt.keepLineBreaks;
   cfg.dfmt.splitOperatorAtLineEnd =
-    getConfig(Config.breakAfterOp) ?? cfg.dfmt.splitOperatorAtLineEnd;
+    Prefs.getConfig(Config.breakAfterOp) ?? cfg.dfmt.splitOperatorAtLineEnd;
   cfg.dfmt.compactLabeledStatements =
-    getConfig(Config.compactLabeled) ?? cfg.dfmt.compactLabeledStatements;
+    Prefs.getConfig(Config.compactLabeled) ?? cfg.dfmt.compactLabeledStatements;
   cfg.dfmt.spaceAfterCast =
-    getConfig(Config.spaceAfterCast) ?? cfg.dfmt.spaceAfterCast;
+    Prefs.getConfig(Config.spaceAfterCast) ?? cfg.dfmt.spaceAfterCast;
   cfg.dfmt.spaceBeforeFunctionParameters =
-    getConfig(Config.spaceBeforeFuncParams) ??
+    Prefs.getConfig(Config.spaceBeforeFuncParams) ??
     cfg.dfmt.spaceBeforeFunctionParameters;
   cfg.dfmt.selectiveImportSpace =
-    getConfig(Config.selectiveImportSpace) ?? cfg.dfmt.selectiveImportSpace;
+    Prefs.getConfig(Config.selectiveImportSpace) ??
+    cfg.dfmt.selectiveImportSpace;
   cfg.dfmt.spaceBeforeAAColon =
-    getConfig(Config.spaceBeforeAAColon) ?? cfg.dfmt.spaceBeforeAAColon;
+    Prefs.getConfig(Config.spaceBeforeAAColon) ?? cfg.dfmt.spaceBeforeAAColon;
   cfg.dfmt.singleIndent =
-    getConfig(Config.singleIndent) ?? cfg.dfmt.singleIndent;
-  switch (getConfig(Config.templateConstraintStyle)) {
+    Prefs.getConfig(Config.singleIndent) ?? cfg.dfmt.singleIndent;
+  switch (Prefs.getConfig(Config.templateConstraintStyle)) {
     case "cond0":
       cfg.dfmt.templateConstraintStyle = "conditional_newline";
       cfg.dfmt.singleTemplateConstraintIndent = false;
@@ -284,14 +284,15 @@ function sendConfig() {
       break;
   }
   cfg.editor.rules = [80, 120];
-  cfg.editor.rulers[0] = getConfig(Config.softLineLength) ?? 80;
-  cfg.editor.rulers[1] = getConfig(Config.hardLineLength) ?? 120;
+  cfg.editor.rulers[0] = Prefs.getConfig(Config.softLineLength) ?? 80;
+  cfg.editor.rulers[1] = Prefs.getConfig(Config.hardLineLength) ?? 120;
   // tabSize? we don't have access necessarily to the editor's tabSize
 
   cfg.d.manyProjectsThreshold =
-    getConfig(Config.tooManyProjectsThreshold) ?? cfg.d.manyProjectsThreshold;
+    Prefs.getConfig(Config.tooManyProjectsThreshold) ??
+    cfg.d.manyProjectsThreshold;
   cfg.d.manyProjectsAction =
-    getConfig(Config.tooManyProjectsAction) ?? cfg.d.manyProjectsAction;
+    Prefs.getConfig(Config.tooManyProjectsAction) ?? cfg.d.manyProjectsAction;
 
   sendNotification("served/didChangeConfiguration", { settings: cfg });
 }
