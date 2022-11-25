@@ -37,6 +37,7 @@ const keys = {
   tooManyProjectsAction: "dvelop.manyProjectsAction",
 
   // context keys that don't get written out
+  version: "dvelop.version", // our version so that other extensions can find us
   arch: "dvelop.served.arch", // to avoid waiting for calls to uname
   currentServeD: "dvelop.served.current",
   releaseServeD: "dvelop.served.release",

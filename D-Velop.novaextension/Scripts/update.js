@@ -112,6 +112,12 @@ function onStart() {
 function register() {
   State.registerCommand(Commands.checkForUpdate, checkForUpdateCmd);
   State.emitter.on(State.events.onActivate, onStart);
+
+  // save the version (we're going to use this in the legacy version to
+  // find us)
+  if (nova.config.get(Config.version) != nova.extension.version) {
+    nova.config.set(Config.version, nova.extension.version);
+  }
 }
 
 module.exports = { register: register };
