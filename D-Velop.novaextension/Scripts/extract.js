@@ -24,7 +24,7 @@ const tarExtractor = {
     ".tar",
   ],
   command: "/usr/bin/tar",
-  args: ["xvf"],
+  args: ["xf"],
 };
 
 const zipExtractor = {
@@ -34,13 +34,8 @@ const zipExtractor = {
 };
 
 // extract extracts the files -- it understands .zip, .tar, .tar.xz, etc.
-// it returns a promise that resolves to the status code it is done
-function extract(
-  path,
-  dest = nova.extension.globalStoragePath,
-  cb = null,
-  thisVal = null
-) {
+// The supplied callback will be called when the extraction is complete.
+function extract(path, dest, cb) {
   nova.fs.mkdir(dest);
 
   for (let extractor of [tarExtractor, zipExtractor]) {
@@ -50,7 +45,7 @@ function extract(
       let proc = new Process(extractor.command, { cwd: dest, args: args });
 
       if (cb) {
-        proc.onDidExit(cb, thisVal);
+        proc.onDidExit(cb);
       }
       proc.start();
       return;
