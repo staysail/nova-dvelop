@@ -175,7 +175,11 @@ async function startClient() {
 async function restartClient() {
   console.warn("Stopping language server for restart.");
   stopClient();
-  if (Prefs.getConfig(Catalog.disableServer)) {
+  if (Prefs.getConfig(Config.disableServer)) {
+    // emit this so that if we disable the server we regenerate new DUB
+    // recipes.
+    tasks = null;
+    State.emitter.emit(State.events.onDub);
     return;
   }
   delay(2000); // wait a while before trying to restart
