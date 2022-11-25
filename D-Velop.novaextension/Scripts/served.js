@@ -9,6 +9,7 @@ const Catalog = require("./catalog.js");
 const Config = require("./config.js");
 const State = require("./state.js");
 const Prefs = require("./prefs.js");
+const Paths = require("./paths.js");
 const delay = require("./delay.js");
 
 var lspClient = null;
@@ -90,11 +91,23 @@ async function startClient() {
   // uncomment the following for debugging
   //    args.concat(["--loglevel", "trace"]);
 
-  if (nova.config.get(Config.useCustomServer)) {
-    path = nova.config.get(Config.customServerPath);
-    // Use the default server path
+  if (Prefs.getConfig(Config.disableServer)) {
+    Messages.showNotice(
+      Catalog.msgLspDisabledTitle,
+      Catalog.msgLspDisabledBody
+    );
+    return null;
+  }
+  if (Prefs.getConfig(Config.useCustomServer)) {
+    path = Prefs.getConfig(Config.customServerPath);
     if (!path) {
-      path = "/usr/local/bin/serve-d";
+      let paths = Paths.findProgram(
+        ["/usr/local/bin", "/opt/homebrew/bin"],
+        ["serve-d"]
+      );
+      if (paths.length > 0) {
+        path = paths[0];
+      }
     }
   } else {
     path = nova.path.join(nova.extension.globalStoragePath, "serve-d");
@@ -105,10 +118,6 @@ async function startClient() {
     return null;
   }
 
-  let debug = false;
-  if (nova.inDevMode()) {
-    debug = true;
-  }
   // Create the client
   var serverOptions = {
     path: path,
@@ -117,8 +126,10 @@ async function startClient() {
   var clientOptions = {
     // The set of document syntaxes for which the server is valid
     syntaxes: ["d"],
-    debug: debug,
   };
+  if (nova.inDevMode()) {
+    clientOptions.debug = true;
+  }
   lspClient = new LanguageClient(
     "d-langserver" + Date.now(), // use a unique server id for each call
     "Serve-D",
@@ -136,14 +147,12 @@ async function startClient() {
     }
   });
 
-  // lspClient.onDidStop(this.didStop, this);
-
   lspClient.onNotification("coded/initDubTree", onDubInit);
   lspClient.onNotification("coded/updateDubTree", () => onDubInit);
 
   try {
     lspClient.start();
-    setTimeout(sendConfig, 200); // send config (50 ms for initialization)
+    setTimeout(sendConfig, 200); // send config, but only after we start up
   } catch (err) {
     Messages.showNotice(Catalog.msgLspDidNotStart, err.message);
     return false;
@@ -166,6 +175,9 @@ async function startClient() {
 async function restartClient() {
   console.warn("Stopping language server for restart.");
   stopClient();
+  if (Prefs.getConfig(Catalog.disableServer)) {
+    return;
+  }
   delay(2000); // wait a while before trying to restart
   console.warn("Start language server in restart.");
   let rv = await startClient();
@@ -311,12 +323,14 @@ function sendConfig() {
   sendNotification("served/didChangeConfiguration", { settings: cfg });
 }
 
-function watchConfigVar(name) {
+function watchConfigVarCb(name, cb) {
   State.disposal.add(
     nova.config.onDidChange(name, (nv, ov) => {
       // this doesn't send an update a workspace override exists
-      if (nv != getConfig(name)) {
-        sendConfig();
+      if (nova.workspace.config.get(name) == null) {
+        if (nv != ov) {
+          cb();
+        }
       }
     })
   );
@@ -324,10 +338,14 @@ function watchConfigVar(name) {
     nova.workspace.config.onDidChange(name, (nv, ov) => {
       // this always sends an update
       if (nv != ov) {
-        sendConfig();
+        cb();
       }
     })
   );
+}
+
+function watchConfigVar(name) {
+  watchConfigVarCb(name, sendConfig);
 }
 
 function watchConfig() {
@@ -336,21 +354,31 @@ function watchConfig() {
   watchConfigVar(Config.projectImportPaths);
   watchConfigVar(Config.overrideEditorConfig);
   watchConfigVar(Config.braceStyle);
+  watchConfigVar(Config.keepBreaks);
+  watchConfigVar(Config.softLineLength);
+  watchConfigVar(Config.hardLineLength);
   watchConfigVar(Config.alignSwitch);
   watchConfigVar(Config.compactLabeled);
-  watchConfigVar(Config.keepBreaks);
-  watchConfigVar(Config.hardLineLength);
-  watchConfigVar(Config.softLineLength);
   watchConfigVar(Config.breakAfterOp);
   watchConfigVar(Config.spaceAfterCast);
   watchConfigVar(Config.spaceBeforeFuncParams);
   watchConfigVar(Config.selectiveImportSpace);
+  watchConfigVar(Config.spaceBeforeAAColon);
+  watchConfigVar(Config.singleIndent);
+  watchConfigVar(Config.templateConstraintStyle);
   watchConfigVar(Config.tooManyProjectsAction);
   watchConfigVar(Config.tooManyProjectsThreshold);
 }
 
+function watchConfigRestart() {
+  watchConfigVarCb(Config.disableServer, restartClient);
+  watchConfigVarCb(Config.useCustomServer, restartClient);
+  watchConfigVarCb(Config.customServerPath, restartClient);
+}
+
 function register() {
   watchConfig();
+  watchConfigRestart();
   State.registerCommand(Commands.restartServer, restartClient);
   State.emitter.on(State.events.onUpdate, restartClient);
   State.emitter.on(State.events.onActivate, startClient);

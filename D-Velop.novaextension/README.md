@@ -4,23 +4,28 @@
 
 > This extension is a _BETA_ release.
 
-**D-Velop** provides deep integration with [**D**][1] via the [Serve-D][2] Language Server.
+**D-Velop** provides deep integration with [**D**][1] via the [Serve-D][2] Language Server, as well as a [Tree-sitter][3] D [grammar][4].
 
-This includes support for syntax highlighting via a [Tree-sitter][3] D [grammar][4], indentation,
-folding, and automatic formatting via `dfmt`, including optional formatting of your
-code on save.
+## ✨ Features ✨
 
-Also, some support for symbolication (the **Symbols** sidebar in Nova, and symbol type icons),
-along with local symbol renaming support is provided.
-
-If you have installed our _D_ extension, you may disable that as this
-extension includes all of that functionality as well.
-
-> _NOTE_: An earlier version extension of this was named _Serve-D_.
+- Syntax highlighting
+- Indentation (automatic, somewhat limited)
+- Symbols
+- Folding
+- Format File (including On Save)
+- Format Configuration
+- Rename Symbol (local to file only)
+- Jump To Definition
+- Build Tasks
+- Issue Parsing
+- Sort Imports
+- Signature Assistance
+- Code Quality Hints
+- Support for D 2.101
 
 ![](https://raw.githubusercontent.com/staysail/nova-serve-d/main/screenshot.png)
 
-## Requirements
+## ⚙️ Language Server Integration ⚙️
 
 **D-Velop** requires the _serve-d_ language server for full functionality.
 
@@ -47,30 +52,7 @@ Local symbol renaming requires _serve-d_ **0.8.0-beta.8** or newer.
 
 Format customization requires _serve-d_ **0.8.0-beta.9** or newer.
 
-## Usage
-
-**D-Velop** runs any time you open a local project, automatically lints all open
-files, then reports errors and warnings in Nova's **Issues** sidebar
-and the editor gutter.
-
-You can use the **Format File** option from the editor menu, and you can also enable
-this to happen automatically when saving on a per workspace basis by setting
-it in the project settings.
-
-### Configuration
-
-At this time the only Project level configuration is enabling the
-automatic **Format on Save**. A number of other options are present
-in the project specific preferences. (We plan to add support for global
-configuration as well, in a future update.)
-
-Note that the default formatting does not perfectly match the
-settings used by `dfmt` if you use it. You may wish to adjust.
-You can also configure the extension to honor any `.editorconfig` file
-if present -- this is actually recommended if you share a workspace
-amongst multiple people, especially if they use different editors.
-
-## Security Considerations
+## 🛡️ Security Considerations 🛡️
 
 You may notice that this extension needs entitlements to access
 the network and to read and write local files. These are used
@@ -86,7 +68,13 @@ will prevent both direct access to the network by this extension,
 as well as direct filesystem access. Note however that _serve-d_
 may itself perform those activities.
 
-## Future Work
+You may also disable the use of the language server entirely, which
+can be done globally, but maybe overridden on a per project basis.
+Of course, if you do this, you will lose access to a significant portion of
+the functionality that **D-Velop** can provide, although a fair amount
+of useful functionality will remain.
+
+## 🔮 Future Directions 🔮
 
 More control over the diagnostic hints provided by _serve-d_ would be nice as well.
 
@@ -99,10 +87,7 @@ see this tied into the formatting as an option when formatting documents.
 We anticipate that _serve-d_ will grow additional capabilities, and when
 it does we will try to enable such functionality here.
 
-A number of other knobs, such as configuration of default behavior when
-many subprojects are present, will be supported.
-
-## Bugs
+## 🐜 Bugs 🐜
 
 - Symbol renames won't work if the selection starts in columns 0 or 1, or is located
   on the first two lines of the file. This is a [defect][6] in Nova.
@@ -118,9 +103,19 @@ many subprojects are present, will be supported.
   We hope someday this will improve, and when it does this extension should just
   automatically benefit.
 
+- Sometimes, _serve-d_ may not restart correctly. This usually happens when
+  changing one of the few options which require a server restart. If this
+  happens, try using the **Restart Server** command from the Command Palette,
+  or just disable and re-enable the extension.
+
+- It is impossible to configure the "manyProjects" threshold to values 0 or 1.
+  This is the same bug referenced above, and has been reported to Panic.
+  Hopefully when Panic fixes this bug in Nova, we will be able to lift the
+  restriction in this extension.
+
 ---
 
-## Attribution
+## ⚖️ Attribution ⚖️
 
 The D Rocket logo is used [under license][2].
 

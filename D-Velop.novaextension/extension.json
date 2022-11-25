@@ -3,7 +3,7 @@
   "name": "D-Velop",
   "organization": "Staysail Systems",
   "description": "D language support via Serve-D.",
-  "version": "0.8.6",
+  "version": "0.9.0",
   "categories": ["languages", "formatters"],
   "repository": "https://github.com/staysail/nova-serve-d",
   "bugs": "https://github.com/staysail/nova-serve-d/issues",
@@ -42,12 +42,13 @@
       },
       {
         "title": "Preferences",
-        "command": "dvelop.preferences"
+        "command": "dvelop.preferences",
+        "filters": { "syntaxes": ["d"] }
       }
     ],
     "extensions": [
       {
-        "title": "Preferences",
+        "title": "Extension Preferences",
         "command": "dvelop.extensionPreferences"
       },
       {
@@ -226,6 +227,18 @@
       "type": "section",
       "children": [
         {
+          "key": "dvelop.disableServer",
+          "title": "Disable Serve-D",
+          "description": "Prevent the use of a language server.  May improve performance, and security, but will disable functionality dependent on the language server.",
+          "type": "enum",
+          "values": [
+            [null, "Inherit from Extension Settings"],
+            [true, "Disable Serve-D"],
+            [false, "Enable Serve-D"]
+          ],
+          "default": null
+        },
+        {
           "key": "dvelop.manyProjectsThreshold",
           "title": "Many Projects Threshold",
           "description": "More than this many subprojects triggers special handling",
@@ -253,6 +266,13 @@
       "type": "section",
       "title": "Language Server",
       "children": [
+        {
+          "key": "dvelop.disableServer",
+          "title": "Disable Serve-D",
+          "description": "Prevent the use of a language server.  May improve performance, and security, but will disable functionality dependent on the language server.",
+          "type": "boolean",
+          "default": false
+        },
         {
           "key": "dvelop.checkForUpdates",
           "title": "Check for Updates at Start",

@@ -7,6 +7,7 @@
 // It is important that the string values match the
 // key values, and that the key values match the keys
 // of the values object as well.
+
 const catalog = {
   msgNoLspClient: "msgNoLspClient",
   msgLspRestarted: "msgLspRestarted",
@@ -25,11 +26,14 @@ const catalog = {
   msgCancel: "msgCancel",
   msgUpToDate: "msgUpToDate",
   msgDownloadFailed: "msgDownloadFailed",
-
   msgRenameSymbol: "msgRenameSymbol",
   msgNewName: "msgNewName", // for renaming symbols
   msgSelectionNotRenameable: "msgSelectionNotRenameable",
   msgCouldNotRenameSym: "msgCouldNotRenameSymbol",
+  msgLspDisabledTitle: "msgLspDisabledTitle",
+  msgLspDisabledBody: "msgLspDisabledBody",
+  msgLspIsCustomTitle: "msgLspIsCustomTitle",
+  msgLspIsCustomBody: "msgLspIsCustomBody",
 };
 
 // default English strings
@@ -57,6 +61,11 @@ const values = {
   msgNewName: "New name",
   msgSelectionNotRenameable: "No renameable symbol at cursor",
   msgCouldNotRenameSym: "Could not rename symbol",
+  msgLspDisabledTitle: "Language server is disabled.",
+  msgLspDisabledBody:
+    "Some functionality will be reduced without a language server.",
+  msgLspIsCustomTitle: "Language server is custom.",
+  msgLspIsCustomBody: "Cannot check for updates when using a custom server.",
 };
 
 // verify that every entry in the catalog has a matching entry in values

@@ -1,3 +1,27 @@
+## Version 0.9.0
+
+Fix for update (again). Thanks to Paul Winder for the suggested fix.
+
+Fix for Format On Save.
+
+Several formatting settings would not apply without an extension restart.
+This is now fixed.
+
+New ability to disable the language server. If this is checked, then this
+becomes a "dumb" extension, which provides Syntax highlighting, indentation,
+and symbolication only. Formatting, some navigation, and symbol renaming,
+and import sorting will all not operate without a language server.
+
+If the language server is disabled, then this extension will also never
+attempt to access the network or run any external processes, with the exception
+that some limited build recipes may remain available.
+
+Extension Preferences command renamed to **Extension Preferences** to help
+disambiguate it from the project-local **Preferences** command.
+
+When using a custom server, the "default" server is chosen in a way that
+will work better for folks using homebrew.
+
 ## Version 0.8.6
 
 Bug fixes only (for download and restart).

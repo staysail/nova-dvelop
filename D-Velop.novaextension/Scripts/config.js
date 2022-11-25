@@ -11,6 +11,7 @@ const keys = {
   lspFlavor: "dvelop.lsp.flavor",
   lspPath: "dvelop.lsp.path",
   formatOnSave: "dvelop.fmt.onSave",
+  disableServer: "dvelop.disableServer",
   useCustomServer: "dvelop.useCustomServer",
   customServerPath: "dvelop.customServerPath",
   allowPreRelease: "dvelop.allowPreRelease",

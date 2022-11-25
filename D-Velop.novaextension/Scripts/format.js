@@ -5,8 +5,10 @@
 
 const Commands = require("./commands.js");
 const Messages = require("./Messages.js");
+const Config = require("./config.js");
 const Edits = require("./edits.js");
 const State = require("./state.js");
+const Prefs = require("./prefs.js");
 const Lsp = require("./served.js");
 
 async function formatFileCmd(editor) {
@@ -37,10 +39,15 @@ async function formatFile(editor) {
 }
 
 function formatOnSave(editor) {
-  if (editor.document.syntax != "d") return;
-  const formatOnSave = nova.workspace.config.get(Config.formatOnSave);
+  if (editor.document.syntax != "d") {
+    return;
+  }
+  if (Prefs.getConfig(Config.disableServer)) {
+    return;
+  }
+  const formatOnSave = Prefs.getConfig(Config.formatOnSave);
   if (formatOnSave) {
-    return Format.formatFile(ServeD, editor);
+    return formatFile(editor);
   }
 }
 

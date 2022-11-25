@@ -9,6 +9,7 @@ const Commands = require("./commands.js");
 const Messages = require("./messages.js");
 const Catalog = require("./catalog.js");
 const State = require("./state.js");
+const Prefs = require("./prefs.js");
 const extract = require("./extract.js");
 
 const extPath = nova.extension.globalStoragePath;
@@ -84,6 +85,20 @@ async function checkForUpdate() {
 //nova.commands.register(Commands.checkForUpdate, async function (_) {
 
 async function checkForUpdateCmd() {
+  if (prefs.config.disableServer) {
+    Messages.showNotice(
+      Catalog.msgLspDisabledTitle,
+      Catalog.msgLspDisabledTitle
+    );
+    return;
+  }
+  if (Prefs.config.useCustomServer) {
+    Messages.showNotice(
+      Catalog.msgLspIsCustomTitle,
+      Catalog.msgLspIsCustomBody
+    );
+    return;
+  }
   try {
     await checkForUpdate(true);
   } catch (error) {
@@ -93,7 +108,14 @@ async function checkForUpdateCmd() {
 
 async function checkForUpdateSilent() {
   // If we should check for new versions at start up, try to download from
-  // GitHub releases.
+  // GitHub releases.  But we don't do this if the server is disabled or we
+  // are using a custom server.
+  if (Prefs.getConfig(Config.disableServer)) {
+    return;
+  }
+  if (Prefs.getConfig(Config.useCustomServer)) {
+    return;
+  }
   if (nova.config.get(Config.checkForUpdates)) {
     // if it doesn't work, don't bother warning about it.
     try {

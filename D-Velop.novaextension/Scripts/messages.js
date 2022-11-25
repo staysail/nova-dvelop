@@ -49,6 +49,9 @@ class Messages {
     if (catalog.values[title]) {
       title = this.getMsg(title);
     }
+    if (catalog.values[body]) {
+      body = this.getMsg(body);
+    }
     req.title = title;
     req.body = body;
     nova.notifications.add(req);
