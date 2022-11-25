@@ -23,7 +23,12 @@
 - Code Quality Hints
 - Support for D 2.101
 
-![](https://raw.githubusercontent.com/staysail/nova-serve-d/main/screenshot.png)
+## 📸 Screenshots 📸
+
+![](https://raw.githubusercontent.com/staysail/nova-serve-d/main/screenshot1.png)
+![](https://raw.githubusercontent.com/staysail/nova-serve-d/main/screenshot2.png)
+![](https://raw.githubusercontent.com/staysail/nova-serve-d/main/screenshot3.png)
+![](https://raw.githubusercontent.com/staysail/nova-serve-d/main/screenshot4.png)
 
 ## ⚙️ Language Server Integration ⚙️
 
