@@ -7,6 +7,8 @@
 // follow up soon with proper integration with serve-d.
 
 const Commands = require("./commands.js");
+const Config = require("./config.js");
+const Prefs = require("./prefs.js");
 const Paths = require("./paths.js");
 const State = require("./state.js");
 const Lsp = require("./served.js");
@@ -51,6 +53,54 @@ function provideTasksGroup(group) {
   return [];
 }
 
+function provideTasksDubFallback() {
+  let tasks = Lsp.getTasks();
+  if (tasks != undefined) {
+    return [];
+  }
+  if (
+    nova.workspace.contains(nova.path.join(nova.workspace.path, "dub.json")) ||
+    nova.workspace.contains("dub.sdl")
+  ) {
+    let dub = Prefs.getConfig(Config.dubPath);
+    if (dub == null) {
+      let dubs = findDub();
+      if (Array.isArray(dubs) && dubs.length > 0) {
+        dub = dubs[0];
+      }
+    }
+    if (dub == null) {
+      return [];
+    }
+
+    let task = new Task("Dub");
+    task.setAction(
+      Task.Build,
+      new TaskProcessAction(dub, {
+        args: ["build", "-q"],
+        matchers: ["dmd-error"],
+      })
+    );
+    task.setAction(
+      Task.Clean,
+      new TaskProcessAction(dub, {
+        args: ["clean"],
+        matchers: ["dmd-error"],
+      })
+    );
+    task.setAction(
+      Task.Run,
+      new TaskProcessAction(dub, {
+        args: ["run"],
+        matchers: ["dmd-error"],
+      })
+    );
+    task.image = "dub";
+    return [task];
+  }
+  return [];
+}
+
 let searchPaths = [
   "/Library/D/dmd/bin",
   "/usr/bin",
@@ -67,6 +117,12 @@ function findDmd() {
 }
 
 function registerTaskGroups() {
+  State.disposal.add(
+    nova.assistants.registerTaskAssistant(
+      { provideTasks: provideTasksDubFallback },
+      { identifier: "dub-fallback", name: "Dub" }
+    )
+  );
   State.disposal.add(
     nova.assistants.registerTaskAssistant(
       { provideTasks: () => provideTasksGroup("build") },
@@ -94,6 +150,7 @@ function registerTaskGroups() {
 }
 
 function reloadTasks() {
+  nova.workspace.reloadTasks("dub-fallback");
   nova.workspace.reloadTasks("dub-build");
   nova.workspace.reloadTasks("dub-rebuild");
   nova.workspace.reloadTasks("dub-test");
