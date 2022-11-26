@@ -1,3 +1,7 @@
+## Version 0.9.1
+
+Added funding link (sponsorship button).
+
 ## Version 0.9.0
 
 Fix for update (again). Thanks to Paul Winder for the suggested fix.
