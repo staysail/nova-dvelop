@@ -15,10 +15,10 @@ const extract = require("./extract.js");
 const extPath = nova.extension.globalStoragePath;
 const srvPath = nova.path.join(extPath, "serve-d");
 
-async function checkForUpdate() {
+async function checkForUpdate(force = false) {
   let beta = !!nova.config.get(Config.allowPreRelease);
 
-  let releases = await GitHub.releases();
+  let releases = await GitHub.releases(force);
   let best = await GitHub.bestRelease(releases, beta);
 
   let next = nova.config.get(Config.releaseServeD);
@@ -64,7 +64,7 @@ async function checkForUpdate() {
   let result = null;
   try {
     console.log("Extracting", path);
-    let result = extract(path, extPath, (status) => {
+    result = extract(path, extPath, (status) => {
       if (status == 0) {
         // let's remove the temporary asset since we're done with it.
         nova.fs.remove(path);
@@ -92,7 +92,7 @@ async function checkForUpdateCmd() {
     );
     return;
   }
-  if (Prefs.config.useCustomServer) {
+  if (Prefs.getConfig(Config.useCustomServer)) {
     Messages.showNotice(
       Catalog.msgLspIsCustomTitle,
       Catalog.msgLspIsCustomBody
@@ -116,7 +116,7 @@ async function checkForUpdateSilent() {
   if (Prefs.getConfig(Config.useCustomServer)) {
     return;
   }
-  if (nova.config.get(Config.checkForUpdates)) {
+  if (Prefs.getConfig(Config.checkForUpdates)) {
     // if it doesn't work, don't bother warning about it.
     try {
       await checkForUpdate();

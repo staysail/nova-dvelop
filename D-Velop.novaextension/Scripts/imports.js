@@ -2,10 +2,8 @@
 // Copyright 2022 Staysail Systems, Inc.
 //
 // Distributed under the terms of the MIT license.
-const Commands = require("./commands.js");
 const Edits = require("./edits.js");
 const Lsp = require("./served.js");
-const Message = require("./messages.js");
 const State = require("./state.js");
 
 async function sortImportsCmd(editor) {

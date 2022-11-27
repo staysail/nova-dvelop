@@ -9,22 +9,14 @@ const Cache = require("./cache.js");
 const getCpu = require("./getcpu.js");
 
 const repoUrl = "https://api.github.com/repos/Pure-D/serve-d";
-const extPath = nova.extension.globalStoragePath;
 const tmpDir = nova.fs.tempdir;
 const novaVersion = "nova " + nova.versionString;
 const macosVersion = "macos " + nova.systemVersion.join(".");
-const ourUrl = "https://github.com/staysail/nova-serve-d";
-const userAgent = `Dvelop (${novaVersion} ${macosVersion})`;
+const extName = nova.extension.name;
+const extVersion = nova.extension.versionString;
+const userAgent = `${extName}/${extVersion} (${novaVersion} ${macosVersion})`;
 const earliestSupported = "v0.8.0-beta.1";
 const releasesUrl = `${repoUrl}/releases`;
-
-function makeExtensionDir() {
-  try {
-    nova.fs.mkdir(extPath);
-  } catch (e) {
-    Messages.showError(e.message);
-  }
-}
 
 // return true if v1 is newer than v2
 function isNewer(vers1, vers2) {

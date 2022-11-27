@@ -3,15 +3,9 @@
 //
 // Distributed under the terms of the MIT license.
 
-const Messages = require("./messages.js");
-const Catalog = require("./catalog.js");
 const ServeD = require("./served.js");
-const Config = require("./config.js");
-const Commands = require("./commands.js");
 const Navigate = require("./navigate.js");
-const Edits = require("./edits.js");
 const Format = require("./format.js");
-const GitHub = require("./github.js");
 const Update = require("./update.js");
 const Dub = require("./dub.js");
 const Weka = require("./weka.js");

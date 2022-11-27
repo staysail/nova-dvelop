@@ -40,7 +40,7 @@ async function applyWorkspaceEdits(edit) {
   if (!edit.changes) {
     // this should come in the form of a documentChanges
     if (!edit.documentChanges) {
-      nova.workspace.showWarningMessage(getMsg(Catalog.msgUnableToApply));
+      Messages.showWarning(Catalog.msgUnableToApply);
       return;
     }
     // Note that we can only support edits not creates or renames
@@ -55,8 +55,8 @@ async function applyWorkspaceEdits(edit) {
       }
       const editor = await nova.workspace.openFile(uri);
       if (!editor) {
-        nova.workspace.showWarningMessage(
-          getMsg(Catalog.msgUnableToOpen).replace("_URI_", uri)
+        Messagews.showWarning(
+          Messages.getMsg(Catalog.msgUnableToOpen).replace("_URI_", uri)
         );
         continue;
       }
@@ -73,8 +73,8 @@ async function applyWorkspaceEdits(edit) {
     }
     const editor = await nova.workspace.openFile(uri);
     if (!editor) {
-      nova.workspace.showWarningMessage(
-        getMsg(Catalog.msgUnableToOpen).replace("_URI_", uri)
+      Messages.showWarning(
+        Messages.getMsg(Catalog.msgUnableToOpen).replace("_URI_", uri)
       );
       continue;
     }

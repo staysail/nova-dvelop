@@ -114,7 +114,7 @@ async function startClient() {
   }
 
   if (!nova.fs.access(path, nova.fs.X_OK)) {
-    Messages.showNotice(catalog.msgNoLspClient, "");
+    Messages.showNotice(Catalog.msgNoLspClient, "");
     return null;
   }
 

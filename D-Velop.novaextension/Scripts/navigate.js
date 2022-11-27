@@ -96,7 +96,7 @@ async function chooseLocation(locs) {
   }
   nova.workspace.showChoicePalette(
     choices,
-    { placeholder: getMsg(Catalog.msgSelectLocation) },
+    { placeholder: Messages.getMsg(Catalog.msgSelectLocation) },
     (choice, index) => {
       if (choice != null) {
         showLocation(locs[index]);

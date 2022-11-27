@@ -2,14 +2,16 @@
 // Copyright 2022 Staysail Systems, Inc.
 //
 // Distributed under the terms of the MIT license.
+
 const Messages = require("./messages.js");
 
 const novaVersion = "nova " + nova.versionString;
 const macosVersion = "macos " + nova.systemVersion.join(".");
-const ourUrl = "https://github.com/staysail/nova-serve-d";
 const extPath = nova.extension.globalStoragePath;
 const cacheDir = nova.path.join(extPath, "cache");
-const userAgent = `Dvelop (${novaVersion} ${macosVersion})`;
+const extName = nova.extension.name;
+const extVersion = nova.extension.versionString;
+const userAgent = `${extName}/${extVersion} (${novaVersion} ${macosVersion})`;
 
 function makeCacheDir() {
   try {

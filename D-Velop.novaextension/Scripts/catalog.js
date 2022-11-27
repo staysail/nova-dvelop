@@ -13,6 +13,7 @@ const catalog = {
   msgLspRestarted: "msgLspRestarted",
   msgLspStoppedErr: "msgLspStoppedErr",
   msgLspDidNotStart: "msgLspDidNotStart",
+  msgNothingSelected: "msgNothingSelected",
   msgNothingFound: "msgNothingFound",
   msgSelectLocation: "msgSelectLocation",
   msgUnableToApply: "msgUnableToApply",
@@ -28,6 +29,8 @@ const catalog = {
   msgDownloadFailed: "msgDownloadFailed",
   msgRenameSymbol: "msgRenameSymbol",
   msgNewName: "msgNewName", // for renaming symbols
+  msgUnableToResolveSelection: "msgUnableToResolveSelection",
+
   msgSelectionNotRenameable: "msgSelectionNotRenameable",
   msgCouldNotRenameSym: "msgCouldNotRenameSymbol",
   msgLspDisabledTitle: "msgLspDisabledTitle",
@@ -42,6 +45,7 @@ const values = {
   msgLspRestarted: "Language server restarted.",
   msgLspStoppedErr: "Language server stopped with an error.",
   msgLspDidNotStart: "Language server failed to start.",
+  msgNothingSelected: "Nothing is selected",
   msgNothingFound: "No matches found.",
   msgSelectLocation: "Select location",
   msgUnableToApply: "Unable to apply changes.",
@@ -59,6 +63,7 @@ const values = {
   msgDownloadFailed: "Download of asset failed.",
   msgRenameSymbol: "Rename symbol _OLD_SYMBOL_",
   msgNewName: "New name",
+  msgUnableToResolveSelection: "Unable to resolve selection",
   msgSelectionNotRenameable: "No renameable symbol at cursor",
   msgCouldNotRenameSym: "Could not rename symbol",
   msgLspDisabledTitle: "Language server is disabled.",
