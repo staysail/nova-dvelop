@@ -1,3 +1,9 @@
+## Version 0.9.2
+
+Minor bug fixes observed while porting this to **C-Dragon**. It's
+unlikely that anyone has been impacted by these bugs (mostly errors
+in error branches), but let's fix them!
+
 ## Version 0.9.1
 
 Added funding link (sponsorship button).
