@@ -1,3 +1,7 @@
+## Version 0.9.3
+
+Fix for accidental regression which broke most of the extension.
+
 ## Version 0.9.2
 
 Minor bug fixes observed while porting this to **C-Dragon**. It's

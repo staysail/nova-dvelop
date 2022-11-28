@@ -5,6 +5,7 @@
 const Edits = require("./edits.js");
 const Lsp = require("./served.js");
 const State = require("./state.js");
+const Commands = require("./commands.js");
 
 async function sortImportsCmd(editor) {
   try {
