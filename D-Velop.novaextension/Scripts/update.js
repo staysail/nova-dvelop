@@ -85,7 +85,7 @@ async function checkForUpdate(force = false) {
 //nova.commands.register(Commands.checkForUpdate, async function (_) {
 
 async function checkForUpdateCmd() {
-  if (prefs.config.disableServer) {
+  if (Prefs.getConfig.disableServer) {
     Messages.showNotice(
       Catalog.msgLspDisabledTitle,
       Catalog.msgLspDisabledTitle
