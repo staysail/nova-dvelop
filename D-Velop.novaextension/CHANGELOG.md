@@ -1,3 +1,7 @@
+## Version 0.9.4
+
+Another fix for an update regression. Are we loving JavaScript yet? (not!)
+
 ## Version 0.9.3
 
 Fix for accidental regression which broke most of the extension.
