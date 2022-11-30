@@ -1,3 +1,9 @@
+## Version 0.9.5
+
+Finer grained highlighting for keywords.
+
+Enumeration members symbolicated correctly.
+
 ## Version 0.9.4
 
 Another fix for an update regression. Are we loving JavaScript yet? (not!)
