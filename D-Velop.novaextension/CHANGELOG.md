@@ -4,6 +4,8 @@ Finer grained highlighting for keywords.
 
 Enumeration members symbolicated correctly.
 
+Server debugging enabled conditionally via configuration.
+
 ## Version 0.9.4
 
 Another fix for an update regression. Are we loving JavaScript yet? (not!)

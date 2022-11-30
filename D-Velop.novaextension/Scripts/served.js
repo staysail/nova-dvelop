@@ -87,7 +87,7 @@ function stopClient() {
 
 async function startClient() {
   let path = "";
-  let args = [];
+  let args = ["--provide", "context-snippets", "--provide", "default-snippets"];
   // uncomment the following for debugging
   //    args.concat(["--loglevel", "trace"]);
 
@@ -127,7 +127,7 @@ async function startClient() {
     // The set of document syntaxes for which the server is valid
     syntaxes: ["d"],
   };
-  if (nova.inDevMode()) {
+  if (nova.inDevMode() && Prefs.getConfig(Config.debugLsp)) {
     clientOptions.debug = true;
   }
   lspClient = new LanguageClient(
@@ -378,6 +378,7 @@ function watchConfigRestart() {
   watchConfigVarCb(Config.disableServer, restartClient);
   watchConfigVarCb(Config.useCustomServer, restartClient);
   watchConfigVarCb(Config.customServerPath, restartClient);
+  watchConfigVarCb(Config.debugLsp, restartClient);
 }
 
 function register() {

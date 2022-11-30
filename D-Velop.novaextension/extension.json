@@ -229,7 +229,7 @@
       "children": [
         {
           "key": "dvelop.disableServer",
-          "title": "Disable Serve-D",
+          "title": "Disable Language Server",
           "description": "Prevent the use of a language server.  May improve performance, and security, but will disable functionality dependent on the language server.",
           "type": "enum",
           "values": [
@@ -258,6 +258,13 @@
             ["load", "Load (No Confirmation)"]
           ],
           "default": "ask"
+        },
+        {
+          "key": "dvelop.debugLsp",
+          "title": "Enable LSP Debugging",
+          "description": "Enable debugging of the language server.  May adversely impact performance.",
+          "type": "boolean",
+          "default": false
         }
       ]
     }

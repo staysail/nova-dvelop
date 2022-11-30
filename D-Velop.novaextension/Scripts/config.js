@@ -36,6 +36,7 @@ const keys = {
   templateConstraintStyle: "dvelop.fmt.templateConstraints",
   tooManyProjectsThreshold: "dvelop.manyProjectsThreshold",
   tooManyProjectsAction: "dvelop.manyProjectsAction",
+  debugLsp: "dvelop.debugLsp",
 
   // context keys that don't get written out
   version: "dvelop.version", // our version so that other extensions can find us
