@@ -164,51 +164,55 @@
 	(assert)
 	(auto)
 	(cast)
-	(const)
 	(debug)
 	(delete)
 	(deprecated)
 	(export)
 	(extern)
 	(final)
-	(immutable)
-	(in)
-	(inout)
 	(invariant)
 	(is)
-	(lazy)
 	; "macro" - obsolete
 	(mixin)
 	(module)
 	(new)
-	(nothrow)
-	(out)
 	(override)
-	(package)
 	(pragma)
-	(private)
-	(protected)
-	(public)
-	(pure)
-	(ref)
 	(scope)
-	(shared)
-	(static)
-	(super)
 	(synchronized)
 	(template)
-	(this)
 	(throw)
 	(typeid)
 	(typeof)
 	(unittest)
 	(version)
 	(with)
-	(gshared)
 	(traits)
 	(vector)
 	(parameters_)
 ] @keyword
+
+[
+	(this)
+	(super)
+] @keyword.self
+
+[
+	(const)
+	(immutable)
+	(in)
+	(inout)
+	(lazy)
+	(ref)
+	(protected)
+	(private)
+	(package)
+	(public)
+	(pure)
+	(gshared)
+	(shared)
+	(static)
+] @keyword.modifier
 
 [
 	(cent)
@@ -238,3 +242,5 @@
 ; conventional naming
 (type (identifier) @_type (#match? @_type "^[A-Z]")) @identifier.type.class
 (identifier) @identifier ; catch all
+
+((enum_member  . (identifier) @identifier.property) (#set! role enum-member))
