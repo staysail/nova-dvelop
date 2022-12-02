@@ -4,7 +4,7 @@
   "organization": "Staysail Systems",
   "description": "D language support via Serve-D.",
   "version": "0.9.6",
-  "categories": ["languages", "formatters"],
+  "categories": ["languages", "formatters", "completions", "issues"],
   "repository": "https://github.com/staysail/nova-serve-d",
   "bugs": "https://github.com/staysail/nova-serve-d/issues",
   "funding": "https://github.com/sponsors/gdamore",
