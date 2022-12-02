@@ -25,16 +25,13 @@
         "command": "dvelop.jumpToDefinition",
         "filters": { "syntaxes": ["d"] }
       },
+      { "separator": true },
       {
         "title": "Rename Symbol",
         "command": "dvelop.renameSymbol",
         "filters": { "syntaxes": ["d"] }
       },
-      {
-        "title": "Sort Imports",
-        "command": "dvelop.sortImports",
-        "filters": { "syntaxes": ["d"] }
-      },
+      { "separator": true },
       {
         "title": "Format File",
         "command": "dvelop.formatFile",
@@ -42,8 +39,29 @@
         "filters": { "syntaxes": ["d"] }
       },
       {
+        "title": "Format Selection",
+        "command": "dvelop.formatSelection",
+        "filters": { "syntaxes": ["d"] }
+      },
+      {
+        "title": "Sort Imports",
+        "command": "dvelop.sortImports",
+        "filters": { "syntaxes": ["d"] }
+      },
+      { "separator": true },
+      {
         "title": "Preferences",
         "command": "dvelop.preferences",
+        "filters": { "syntaxes": ["d"] }
+      },
+      {
+        "title": "Extension Preferences",
+        "command": "dvelop.extensionPreferences",
+        "filters": { "syntaxes": ["d"] }
+      },
+      {
+        "title": "Restart Server",
+        "command": "dvelop.restartServer",
         "filters": { "syntaxes": ["d"] }
       }
     ],

@@ -9,18 +9,26 @@ const Config = require("./config.js");
 const Edits = require("./edits.js");
 const State = require("./state.js");
 const Prefs = require("./prefs.js");
+const Ranges = require("./ranges.js");
 const Lsp = require("./served.js");
 
 async function formatFileCmd(editor) {
   try {
-    formatFile(editor);
+    await formatFile(editor);
+  } catch (err) {
+    Messages.showError(err.message);
+  }
+}
+async function formatSelectionCmd(editor) {
+  try {
+    await formatSelection(editor);
   } catch (err) {
     Messages.showError(err.message);
   }
 }
 
 async function formatFile(editor) {
-  var cmdArgs = {
+  let cmdArgs = {
     textDocument: {
       uri: editor.document.uri,
     },
@@ -31,6 +39,28 @@ async function formatFile(editor) {
     // TBD: options
   };
   const changes = await Lsp.sendRequest("textDocument/formatting", cmdArgs);
+
+  if (!changes) {
+    return;
+  }
+  await Edits.applyEdits(editor, changes);
+}
+
+async function formatSelection(editor) {
+  let cmdArgs = {
+    textDocument: {
+      uri: editor.document.uri,
+    },
+    range: Ranges.toLsp(editor.document, editor.selectedRange),
+    options: {
+      tabSize: editor.tabLength,
+      insertSpaces: editor.softTabs,
+    },
+  };
+  const changes = await Lsp.sendRequest(
+    "textDocument/rangeFormatting",
+    cmdArgs
+  );
 
   if (!changes) {
     return;
@@ -53,6 +83,7 @@ function formatOnSave(editor) {
 
 function register() {
   State.registerCommand(Commands.formatFile, formatFileCmd);
+  State.registerCommand(Commands.formatSelection, formatSelectionCmd);
 
   State.disposal.add(
     nova.workspace.onDidAddTextEditor((editor) => {

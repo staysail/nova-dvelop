@@ -12,12 +12,11 @@
 - Indentation (automatic, somewhat limited)
 - Symbols
 - Folding
-- Format File (including On Save)
-- Format Configuration
+- Format File (including On Save) or Selection
 - Rename Symbol (local to file only)
 - Jump To Definition
 - Build Tasks
-- Issue Parsing
+- Issue Parsing (from DUB or DMD output)
 - Sort Imports
 - Signature Assistance
 - Code Quality Hints

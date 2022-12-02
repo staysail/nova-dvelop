@@ -16,6 +16,7 @@ const keys = {
   jumpToDeclaration: "dvelop.jumpToDeclaration",
   jumpToImplementation: "dvelop.jumpToImplementation",
   formatFile: "dvelop.formatFile",
+  formatSelection: "dvelop.formatSelection",
   checkForUpdate: "dvelop.checkForUpdate",
   renameSymbol: "dvelop.renameSymbol",
   findDub: "dvelop.findDub",
