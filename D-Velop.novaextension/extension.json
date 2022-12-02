@@ -3,7 +3,7 @@
   "name": "D-Velop",
   "organization": "Staysail Systems",
   "description": "D language support via Serve-D.",
-  "version": "0.9.5",
+  "version": "0.9.6",
   "categories": ["languages", "formatters"],
   "repository": "https://github.com/staysail/nova-serve-d",
   "bugs": "https://github.com/staysail/nova-serve-d/issues",
@@ -246,7 +246,7 @@
           "type": "number",
           "default": 4,
           "comment": "minimum value 2 because of Nova bug",
-          "min": 2
+          "min": 0
         },
         {
           "key": "dvelop.manyProjectsAction",

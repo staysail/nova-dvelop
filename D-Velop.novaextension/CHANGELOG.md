@@ -1,3 +1,9 @@
+## Version 0.9.6
+
+With the release of Nova 10.4, the problem with serialization of 1 and 0
+in the LSP client is gone, and the associated workarounds and limits are
+removed. It is recommended to upgrade to Nova 10.4 or better.
+
 ## Version 0.9.5
 
 Finer grained highlighting for keywords.

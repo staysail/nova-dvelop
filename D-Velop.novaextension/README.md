@@ -94,12 +94,8 @@ it does we will try to enable such functionality here.
 
 ## 🐜 Bugs 🐜
 
-- Symbol renames won't work if the selection starts in columns 0 or 1, or is located
-  on the first two lines of the file. This is a [defect][6] in Nova.
-  The appearance will be as though nothing has occurred when trying to rename the symbol.
-
-  To workaround this, try just clicking (not selecting) a position within the symbol,
-  but in in columns 3 or higher, then rename (the command palette may be easier to use).
+> Note that earlier versions of Nova had bugs which impacted the functionality
+> of this extension. It is recommended to update to Nova 10.4 or better.
 
 - Symbol renames can mess up highlighting. Make a subsequent change to refresh the
   tree-sitter grammar's view of things. This appears to be a Nova defect.
@@ -112,11 +108,6 @@ it does we will try to enable such functionality here.
   changing one of the few options which require a server restart. If this
   happens, try using the **Restart Server** command from the Command Palette,
   or just disable and re-enable the extension.
-
-- It is impossible to configure the "manyProjects" threshold to values 0 or 1.
-  This is the same bug referenced above, and has been reported to Panic.
-  Hopefully when Panic fixes this bug in Nova, we will be able to lift the
-  restriction in this extension.
 
 ---
 
