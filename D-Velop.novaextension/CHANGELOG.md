@@ -1,3 +1,9 @@
+## Version 0.9.7
+
+Find Symbol support and the new sidebar.
+
+Button fix for rename.
+
 ## Version 0.9.6
 
 Format Selection.

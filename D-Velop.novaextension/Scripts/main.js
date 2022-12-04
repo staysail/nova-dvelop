@@ -12,6 +12,7 @@ const Weka = require("./weka.js");
 const Rename = require("./rename.js");
 const Imports = require("./imports.js");
 const Prefs = require("./prefs.js");
+const Symbols = require("./symbols.js");
 const State = require("./state.js");
 
 exports.activate = function () {
@@ -23,6 +24,7 @@ exports.activate = function () {
   Rename.register();
   Dub.register();
   Update.register();
+  Symbols.register();
   ServeD.register();
 
   // kick off signal to get everything running

@@ -2,7 +2,9 @@
 
 ## D-Velop Extension for Nova
 
-> This extension is a _BETA_ release.
+> This extension is a _BETA_ release. Note that _serve-d_ is also still being
+> actively developed. However, the features which do not rely on the language server
+> such as syntax highlighting and symbolication are known to work well.
 
 **D-Velop** provides deep integration with [**D**][1] via the [Serve-D][2] Language Server, as well as a [Tree-sitter][3] D [grammar][4].
 
@@ -15,6 +17,7 @@
 - Format File (including On Save) or Selection
 - Rename Symbol (local to file only)
 - Jump To Definition
+- Find Symbol(s)
 - Build Tasks
 - Issue Parsing (from DUB or DMD output)
 - Sort Imports
@@ -107,6 +110,14 @@ it does we will try to enable such functionality here.
   changing one of the few options which require a server restart. If this
   happens, try using the **Restart Server** command from the Command Palette,
   or just disable and re-enable the extension.
+
+- **Find Symbol** does not select the signature portion of a definition for a
+  function, method, struct, class, etc. This is a defect in _serve-d_.
+
+- **Find Symbol** and **Jump to Definition** may give inconsistent results.
+  This can happen while _serve-d_ is still building indexes, but it would appear
+  that _serve-d_ may have other issues in this area. When _serve-d_ gets fixed,
+  this extension will automatically benefit.
 
 ---
 

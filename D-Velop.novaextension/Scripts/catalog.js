@@ -25,6 +25,8 @@ const catalog = {
   msgInstall: "msgInstall",
   msgUpdate: "msgUpdate",
   msgCancel: "msgCancel",
+  msgSearch: "msgSearch",
+  msgRename: "msgRename",
   msgUpToDate: "msgUpToDate",
   msgDownloadFailed: "msgDownloadFailed",
   msgRenameSymbol: "msgRenameSymbol",
@@ -37,6 +39,10 @@ const catalog = {
   msgLspDisabledBody: "msgLspDisabledBody",
   msgLspIsCustomTitle: "msgLspIsCustomTitle",
   msgLspIsCustomBody: "msgLspIsCustomBody",
+  msgSymbolsFoundTitle: "msgSymbolsFoundTitle",
+  msgSymbolsFoundBody: "msgSymbolsFoundBody",
+  msgSymbolsSearch: "msgSymbolsSearch",
+  msgSymbol: "msgSymbol",
 };
 
 // default English strings
@@ -59,6 +65,8 @@ const values = {
   msgInstall: "Install",
   msgUpdate: "Update",
   msgCancel: "Cancel",
+  msgSearch: "Search",
+  msgRename: "Rename",
   msgUpToDate: "Language server is up to date.",
   msgDownloadFailed: "Download of asset failed.",
   msgRenameSymbol: "Rename symbol _OLD_SYMBOL_",
@@ -71,6 +79,11 @@ const values = {
     "Some functionality will be reduced without a language server.",
   msgLspIsCustomTitle: "Language server is custom.",
   msgLspIsCustomBody: "Cannot check for updates when using a custom server.",
+  msgSymbolsFoundTitle: "Found _COUNT_ Matches in _FILES_ Files",
+  msgSymbolsFoundBody:
+    "Check the Symbols pane in the D-Velop sidebar to see the results.",
+  msgSymbolsSearch: "Search for symbol(s)",
+  msgSymbol: "Symbol",
 };
 
 // verify that every entry in the catalog has a matching entry in values

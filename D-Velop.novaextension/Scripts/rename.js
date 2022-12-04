@@ -54,6 +54,7 @@ async function renameSym(editor) {
         placeholder: oldName,
         value: oldName,
         label: Messages.getMsg(Catalog.msgNewName),
+        prompt: Messages.getMsg(Catalog.msgRename),
       },
       resolve
     );

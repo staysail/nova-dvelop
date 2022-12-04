@@ -22,6 +22,8 @@ const keys = {
   findDub: "dvelop.findDub",
   findDmd: "dvelop.findDmd",
   sortImports: "dvelop.sortImports",
+  findSymbols: "dvelop.findSymbols",
+  showSymbols: "dvelop.showSymbols",
 };
 
 module.exports = keys;

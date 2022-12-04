@@ -3,8 +3,16 @@
   "name": "D-Velop",
   "organization": "Staysail Systems",
   "description": "D language support via Serve-D.",
-  "version": "0.9.6",
-  "categories": ["languages", "formatters", "completions", "issues", "tasks"],
+  "version": "0.9.7",
+  "categories": [
+    "commands",
+    "completions",
+    "formatters",
+    "issues",
+    "languages",
+    "sidebars",
+    "tasks"
+  ],
   "repository": "https://github.com/staysail/nova-serve-d",
   "bugs": "https://github.com/staysail/nova-serve-d/issues",
   "funding": "https://github.com/sponsors/gdamore",
@@ -24,6 +32,13 @@
         "title": "Jump to Definition",
         "command": "dvelop.jumpToDefinition",
         "filters": { "syntaxes": ["d"] }
+      },
+      {
+        "title": "Find Symbol",
+        "command": "dvelop.findSymbols",
+        "filters": {
+          "syntaxes": ["d"]
+        }
       },
       { "separator": true },
       {
@@ -371,6 +386,30 @@
       }
     }
   },
+  "sidebars": [
+    {
+      "id": "dvelop.sidebar",
+      "name": "D-Velop",
+      "smallImage": "d-mono-small",
+      "largeImage": "d-mono-large",
+      "sections": [
+        {
+          "id": "dvelop.sidebar.symbols",
+          "name": "Symbols",
+          "placeholderText": "Results from \"Find Symbols\" appear here.",
+          "placeholderImage": "d-mono-large",
+          "headerCommands": [
+            {
+              "title": "Find Symbol",
+              "command": "dvelop.findSymbols",
+              "tooltip": "Open the Find Symbol dialog",
+              "image": "search"
+            }
+          ]
+        }
+      ]
+    }
+  ],
   "debug": true,
   "activationEvents": ["onLanguage:d"]
 }
