@@ -24,6 +24,9 @@ const keys = {
   sortImports: "dvelop.sortImports",
   findSymbols: "dvelop.findSymbols",
   showSymbols: "dvelop.showSymbols",
+  getArchTypes: "dvelop.getArchTypes",
+  getBuildTypes: "dvelop.getBuildTypes",
+  getDubConfigs: "dvelop.getDubConfigs",
 };
 
 module.exports = keys;

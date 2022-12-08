@@ -37,6 +37,9 @@ const keys = {
   tooManyProjectsThreshold: "dvelop.manyProjectsThreshold",
   tooManyProjectsAction: "dvelop.manyProjectsAction",
   debugLsp: "dvelop.debugLsp",
+  archType: "dvelop.dub.archTypes",
+  buildType: "dvelop.dub.buildType",
+  dubConfig: "dvelop.dub.config",
 
   // context keys that don't get written out
   version: "dvelop.version", // our version so that other extensions can find us

@@ -116,6 +116,40 @@ function findDmd() {
   return Paths.findProgram(searchPaths, ["dmd", "ldmd2", "ldmd", "gdmd"]);
 }
 
+async function getArchTypes() {
+  try {
+    let result = await Lsp.sendRequest("served/listArchTypes", {
+      withMeaning: true,
+    });
+    let retval = [];
+    for (let a of result) {
+      retval.push([a.value, a.label || a.value]);
+    }
+    return retval;
+  } catch (error) {
+    return [];
+  }
+}
+
+async function getBuildTypes() {
+  try {
+    let result = await Lsp.sendRequest("served/listBuildTypes", {});
+    return result;
+  } catch (error) {
+    return [];
+  }
+}
+
+async function getDubConfigs() {
+  try {
+    let result = await Lsp.sendRequest("served/listConfigurations", {});
+    console.warn("CONFIGURATIONS", JSON.stringify(result));
+    return result;
+  } catch (error) {
+    return [];
+  }
+}
+
 function registerTaskGroups() {
   State.disposal.add(
     nova.assistants.registerTaskAssistant(
@@ -161,6 +195,9 @@ function register() {
   registerTaskGroups();
   State.registerCommand(Commands.findDub, findDub);
   State.registerCommand(Commands.findDmd, findDmd);
+  State.registerCommand(Commands.getArchTypes, getArchTypes);
+  State.registerCommand(Commands.getBuildTypes, getBuildTypes);
+  State.registerCommand(Commands.getDubConfigs, getDubConfigs);
   State.emitter.on(State.events.onDub, reloadTasks);
 }
 

@@ -253,6 +253,30 @@
           "allowFiles": false,
           "allowFolders": true,
           "description": "Additional paths to search for imports."
+        },
+        {
+          "key": "dvelop.dub.config",
+          "title": "Project Configuration",
+          "description": "Build configuration for project when using DUB",
+          "type": "enum",
+          "resolve": "dvelop.getDubConfigs",
+          "default": ""
+        },
+        {
+          "key": "dvelop.dub.archType",
+          "title": "Target Architecture",
+          "description": "Target architecture to build, when using DUB",
+          "type": "enum",
+          "resolve": "dvelop.getArchTypes",
+          "default": ""
+        },
+        {
+          "key": "dvelop.dub.buildType",
+          "title": "Build Type",
+          "description": "Build type, when using DUB",
+          "type": "enum",
+          "resolve": "dvelop.getBuildTypes",
+          "default": "debug"
         }
       ]
     },
