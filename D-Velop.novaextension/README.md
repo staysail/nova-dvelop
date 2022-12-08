@@ -59,6 +59,8 @@ Local symbol renaming requires _serve-d_ **0.8.0-beta.8** or newer.
 
 Format customization requires _serve-d_ **0.8.0-beta.9** or newer.
 
+The server information dialog requires _serve_d_ **0.8.0-beta.10** or newer.
+
 ## 🛡️ Security Considerations 🛡️
 
 You may notice that this extension needs entitlements to access
@@ -109,7 +111,14 @@ it does we will try to enable such functionality here.
 - Sometimes, _serve-d_ may not restart correctly. This usually happens when
   changing one of the few options which require a server restart. If this
   happens, try using the **Restart Server** command from the Command Palette,
-  or just disable and re-enable the extension.
+  or the **Information** pane of the **D-Velop** sidebar. However, if you're
+  using a recent (0.8.0-beta.10 or newer) version of _serve-d_, most of these
+  problems should be a thing of the past.
+
+- Sometimes _serve-d_ will appear to ask to download a newer version of **DCD**,
+  but then doesn't actually appear to use it. This is a problem in _serve-d_.
+  You can work around it by uninstalling DCD (typically installed via homebrew),
+  or by updating the version on your $PATH to the latest version.
 
 - **Find Symbol** does not select the signature portion of a definition for a
   function, method, struct, class, etc. This is a defect in _serve-d_.
