@@ -13,6 +13,7 @@ const Rename = require("./rename.js");
 const Imports = require("./imports.js");
 const Prefs = require("./prefs.js");
 const Symbols = require("./symbols.js");
+const Info = require("./info.js");
 const State = require("./state.js");
 
 exports.activate = function () {
@@ -24,6 +25,7 @@ exports.activate = function () {
   Rename.register();
   Dub.register();
   Update.register();
+  Info.register();
   Symbols.register();
   ServeD.register();
 

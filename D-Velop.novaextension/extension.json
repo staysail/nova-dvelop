@@ -3,7 +3,7 @@
   "name": "D-Velop",
   "organization": "Staysail Systems",
   "description": "D language support via Serve-D.",
-  "version": "0.9.7",
+  "version": "0.9.8",
   "categories": [
     "commands",
     "completions",
@@ -393,6 +393,18 @@
       "smallImage": "d-mono-small",
       "largeImage": "d-mono-large",
       "sections": [
+        {
+          "id": "dvelop.sidebar.info",
+          "name": "Information",
+          "headerCommands": [
+            {
+              "title": "Restart",
+              "command": "dvelop.restartServer",
+              "tooltip": "Restart language server",
+              "image": "__builtin.refresh"
+            }
+          ]
+        },
         {
           "id": "dvelop.sidebar.symbols",
           "name": "Symbols",

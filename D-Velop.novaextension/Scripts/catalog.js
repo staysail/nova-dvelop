@@ -43,6 +43,10 @@ const catalog = {
   msgSymbolsFoundBody: "msgSymbolsFoundBody",
   msgSymbolsSearch: "msgSymbolsSearch",
   msgSymbol: "msgSymbol",
+  msgLspStateInactive: "msgLspStateInactive",
+  msgLspStateDisabled: "msgLspStateDisabled",
+  msgLspStateFailed: "msgLspStateFailed",
+  msgLspStateRunning: "msgLspStateRunning",
 };
 
 // default English strings
@@ -84,6 +88,10 @@ const values = {
     "Check the Symbols pane in the D-Velop sidebar to see the results.",
   msgSymbolsSearch: "Search for symbol(s)",
   msgSymbol: "Symbol",
+  msgLspStateInactive: "Inactive",
+  msgLspStateDisabled: "Disabled",
+  msgLspStateFailed: "Failed",
+  msgLspStateRunning: "Running",
 };
 
 // verify that every entry in the catalog has a matching entry in values

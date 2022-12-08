@@ -26,6 +26,7 @@ const State = {
     onDub: "onDub", // a dub configuration updated
     onUpdate: "onUpdate", // a new update is ready (restart server)
     onActivate: "onActivate", // we are activating
+    onLsp: "onLsp", // LSP started, or stopped, arg is a status object
   },
 };
 

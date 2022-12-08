@@ -142,8 +142,16 @@ async function startClient() {
     if (error) {
       console.error(
         "Language encountered error:",
-        error.message || "unknown exit"
+        error.message || error || "unknown exit"
       );
+      State.emitter.emit(State.events.onLsp, {
+        state: Catalog.msgLspStateFailed,
+        error: error.message || error,
+      });
+    } else {
+      State.emitter.emit(State.events.onLsp, {
+        state: Catalog.msgLspStateInactive,
+      });
     }
   });
 
@@ -154,21 +162,46 @@ async function startClient() {
     lspClient.start();
     setTimeout(sendConfig, 200); // send config, but only after we start up
   } catch (err) {
-    Messages.showNotice(Catalog.msgLspDidNotStart, err.message);
+    Messages.showNotice(Catalog.msgLspDidNotStart, err.message || err || "");
+    State.emitter.emit(State.events.onLsp, {
+      state: Catalog.msgLspStateFailed,
+      error: err.message || err || "",
+    });
     return false;
   }
 
   var limit = 1000;
   while (!lspClient.running && limit > 0) {
-    delay(10);
+    await delay(10);
     limit -= 10;
   }
 
   if (lspClient.running) {
+    // wait for a bit before we issue the getInfo call, because
+    // the LSP start (initialize command) is not necessarily done yet.
+    await delay(1000);
+    try {
+      let status = await lspClient.sendRequest("served/getInfo", {});
+      State.emitter.emit(State.events.onLsp, {
+        state: Catalog.msgLspStateRunning,
+        version: status?.serverInfo?.version,
+        name: status?.serverInfo?.name,
+      });
+    } catch (err) {
+      State.emitter.emit(State.events.onLsp, {
+        state: Catalog.msgLspStateRunning,
+        error: err.message || err,
+      });
+    }
     return true;
   }
 
   Messages.showNotice(Catalog.msgLspDidNotStart, "");
+  State.emitter.emit(State.events.onLsp, {
+    state: Catalog.msgLspStateFailed,
+    reason: Messages.getMsg(Catalog.msgLspDidNotStart),
+  });
+
   return false;
 }
 
@@ -330,7 +363,7 @@ function sendConfig() {
 function watchConfigVarCb(name, cb) {
   State.disposal.add(
     nova.config.onDidChange(name, (nv, ov) => {
-      // this doesn't send an update a workspace override exists
+      // this doesn't send an update if a workspace override exists
       if (nova.workspace.config.get(name) == null) {
         if (nv != ov) {
           cb();

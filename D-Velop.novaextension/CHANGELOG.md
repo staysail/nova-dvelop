@@ -1,3 +1,12 @@
+## Version 0.9.8
+
+New initialization handling. This should be _far_ more robust than previous
+versions. It requires `serve-d` 0.8.0 beta 10 or better, which also includes
+important fixes for stability of the language server.
+
+New sidebar information pane with details about the language server, and the
+ability to restart it.
+
 ## Version 0.9.7
 
 Find Symbol support and the new sidebar.
