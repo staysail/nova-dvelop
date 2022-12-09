@@ -8,6 +8,10 @@ your compiler. For best results we recommend using ldc2.
 Initialization handling was not quite right due to a source code management
 snafu. Additionally, we now properly report when the LSP is disabled.
 
+The old DMD path configuration setting didn't actually do anything useful,
+unless you needed to compile DCD, which should never happen now. We have
+removed it.
+
 ## Version 0.9.8
 
 New initialization handling. This should be _far_ more robust than previous

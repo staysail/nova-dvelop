@@ -3,7 +3,7 @@
   "name": "D-Velop",
   "organization": "Staysail Systems",
   "description": "D language support via Serve-D.",
-  "version": "0.9.8",
+  "version": "0.9.9",
   "categories": [
     "commands",
     "completions",
