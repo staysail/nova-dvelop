@@ -278,6 +278,41 @@ async function onDubInit() {
       arr = tasks[group];
     }
 
+    // unfortunately the compiler and architecture settings don't flow
+    // well to sub-projects because of the way serve-d uses "active instances".
+    // So we "force it" - every task uses the same compiler and architecture.
+    let compiler = Prefs.getConfig(Config.dubCompiler);
+    let arch = Prefs.getConfig(Config.archType);
+    let buildType = Prefs.getConfig(Config.buildType);
+
+    for (let i in task.exec) {
+      if (i == 0) continue;
+      let arg = task.exec[i];
+      if (arg.startsWith("--compiler=") && compiler) {
+        task.exec[i] = "--compiler=" + compiler;
+        compiler = "";
+        continue;
+      }
+      if ((arg.startsWith("-b=") || arg.startsWith("--build=")) && buildType) {
+        task.exec[i] = "-b=" + buildType;
+        buildType = "";
+        continue;
+      }
+      if ((arg.startsWith("-a=") || arg.startsWith("--arch=")) && arch) {
+        task.exec[i] = "-a=" + arch;
+        arch = "";
+        continue;
+      }
+    }
+    if (compiler) {
+      task.exec.push("--compiler=" + compiler);
+    }
+    if (buildType) {
+      task.exec.push("--build=" + buildType);
+    }
+    if (arch) {
+      task.exec.push("-a=" + arch);
+    }
     arr.push({
       name: task.name,
       exec: task.exec[0],
@@ -329,6 +364,7 @@ function getConfig() {
     Prefs.getConfig(Config.spaceBeforeAAColon) ?? cfg.dfmt.spaceBeforeAAColon;
   cfg.dfmt.singleIndent =
     Prefs.getConfig(Config.singleIndent) ?? cfg.dfmt.singleIndent;
+  cfg.d.dubCompiler = Prefs.getConfig(Config.dubCompiler) ?? "";
   switch (Prefs.getConfig(Config.templateConstraintStyle)) {
     case "cond0":
       cfg.dfmt.templateConstraintStyle = "conditional_newline";
@@ -417,6 +453,9 @@ function watchConfig() {
   watchConfigVar(Config.templateConstraintStyle);
   watchConfigVar(Config.tooManyProjectsAction);
   watchConfigVar(Config.tooManyProjectsThreshold);
+  watchConfigVar(Config.dubCompiler);
+  watchConfigVar(Config.arch);
+  watchConfigVar(Config.buildType);
 }
 
 function watchConfigRestart() {
@@ -426,9 +465,18 @@ function watchConfigRestart() {
   watchConfigVarCb(Config.debugLsp, restartClient);
 }
 
+function watchDubSettings() {
+  watchConfigVarCb(Config.dubPath, onDubInit);
+  watchConfigVarCb(Config.dubCompiler, onDubInit);
+  watchConfigVarCb(Config.arch, onDubInit);
+  watchConfigVarCb(Config.buildType, onDubInit);
+}
+
 function register() {
   watchConfig();
   watchConfigRestart();
+  watchDubSettings();
+
   State.registerCommand(Commands.restartServer, restartClient);
   State.emitter.on(State.events.onUpdate, restartClient);
   State.emitter.on(State.events.onActivate, startClient);

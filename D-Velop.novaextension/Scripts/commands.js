@@ -21,6 +21,7 @@ const keys = {
   renameSymbol: "dvelop.renameSymbol",
   findDub: "dvelop.findDub",
   findDmd: "dvelop.findDmd",
+  findCompiler: "dvelop.findCompiler",
   sortImports: "dvelop.sortImports",
   findSymbols: "dvelop.findSymbols",
   showSymbols: "dvelop.showSymbols",

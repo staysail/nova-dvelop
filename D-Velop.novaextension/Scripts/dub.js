@@ -116,6 +116,18 @@ function findDmd() {
   return Paths.findProgram(searchPaths, ["dmd", "ldmd2", "ldmd", "gdmd"]);
 }
 
+function findCompiler() {
+  return Paths.findProgram(searchPaths, [
+    "dmd",
+    "ldmd2",
+    "ldmd",
+    "gdmd",
+    "ldc",
+    "ldc2",
+    "sdc",
+  ]);
+}
+
 async function getArchTypes() {
   try {
     let result = await Lsp.sendRequest("served/listArchTypes", {
@@ -143,7 +155,6 @@ async function getBuildTypes() {
 async function getDubConfigs() {
   try {
     let result = await Lsp.sendRequest("served/listConfigurations", {});
-    console.warn("CONFIGURATIONS", JSON.stringify(result));
     return result;
   } catch (error) {
     return [];
@@ -195,6 +206,7 @@ function register() {
   registerTaskGroups();
   State.registerCommand(Commands.findDub, findDub);
   State.registerCommand(Commands.findDmd, findDmd);
+  State.registerCommand(Commands.findCompiler, findCompiler);
   State.registerCommand(Commands.getArchTypes, getArchTypes);
   State.registerCommand(Commands.getBuildTypes, getBuildTypes);
   State.registerCommand(Commands.getDubConfigs, getDubConfigs);
