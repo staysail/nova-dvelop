@@ -230,41 +230,25 @@
       "children": [
         {
           "key": "dvelop.dub.path",
-          "title": "Dub Location",
-          "description": "Path to dub, if empty uses global default",
+          "title": "Dub",
+          "description": "Path to dub, if empty uses global default.",
           "type": "enum",
           "resolve": "dvelop.findDub",
-          "allowCustom": "true",
-          "placeholder": "/Library/D/dmd/bin/dub"
-        },
-        {
-          "key": "dvelop.dmd.path",
-          "title": "DMD Location",
-          "description": "Path to dmd, if empty uses global default",
-          "type": "enum",
-          "resolve": "dvelop.findDmd",
-          "allowCustom": "true",
-          "placeholder": "/Library/D/dmd/bin/dmd"
-        },
-        {
-          "key": "devlop.importPaths",
-          "title": "Project Import Paths",
-          "type": "pathArray",
-          "allowFiles": false,
-          "allowFolders": true,
-          "description": "Additional paths to search for imports."
+          "allowCustom": true,
+          "placeholder": "dub"
         },
         {
           "key": "dvelop.dub.compiler",
           "title": "Compiler",
           "type": "enum",
           "resolve": "dvelop.findCompiler",
+          "description": "Path to a D compiler, if empty uses the global default.",
           "allowCustom": true,
           "placeholder": "dmd"
         },
         {
           "key": "dvelop.dub.archType",
-          "title": "Target Architecture",
+          "title": "Architecture",
           "description": "Target architecture to build, when using DUB.",
           "type": "enum",
           "resolve": "dvelop.getArchTypes",
@@ -278,6 +262,14 @@
           "type": "enum",
           "resolve": "dvelop.getBuildTypes",
           "default": "debug"
+        },
+        {
+          "key": "devlop.importPaths",
+          "title": "Project Import Paths",
+          "type": "pathArray",
+          "allowFiles": false,
+          "allowFolders": true,
+          "description": "Additional paths to search for imports."
         }
       ]
     },
@@ -300,7 +292,7 @@
         {
           "key": "dvelop.manyProjectsThreshold",
           "title": "Many Projects Threshold",
-          "description": "More than this many subprojects triggers special handling",
+          "description": "More than this many subprojects triggers special handling.",
           "type": "number",
           "default": 4,
           "comment": "minimum value 2 because of Nova bug",
@@ -375,17 +367,17 @@
       "children": [
         {
           "key": "dvelop.dub.path",
-          "title": "Dub Location",
+          "title": "Dub",
           "description": "Path to dub, if empty will search $PATH",
           "type": "path",
           "placeholder": "/Library/D/dmd/bin/dub"
         },
         {
-          "key": "dvelop.dmd.path",
-          "title": "DMD Location",
-          "description": "Path to DMD, if empty will search $PATH",
+          "key": "dvelop.dub.compiler",
+          "title": "Compiler",
+          "description": "Path to a D compiler such as dmd or ldc2, if empty will assume dmd on $PATH.",
           "type": "path",
-          "placeholder": "/Library/D/dmd/bin/dmd"
+          "placeholder": "dmd"
         }
       ]
     }
