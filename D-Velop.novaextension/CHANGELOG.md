@@ -1,5 +1,10 @@
 ## Version 0.9.9
 
+It is possible to change the compiler used for DUB recipes, as well
+as other settings like the architecture and build type now. Note that
+explicitly changing the architecture may or may not work depending on
+your compiler. For best results we recommend using ldc2.
+
 Initialization handling was not quite right due to a source code management
 snafu. Additionally, we now properly report when the LSP is disabled.
 
