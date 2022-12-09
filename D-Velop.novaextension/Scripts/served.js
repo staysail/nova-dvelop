@@ -96,6 +96,9 @@ async function startClient() {
       Catalog.msgLspDisabledTitle,
       Catalog.msgLspDisabledBody
     );
+    State.emitter.emit(State.events.onLsp, {
+      state: Catalog.msgLspStateDisabled,
+    });
     return null;
   }
   if (Prefs.getConfig(Config.useCustomServer)) {
@@ -126,6 +129,10 @@ async function startClient() {
   var clientOptions = {
     // The set of document syntaxes for which the server is valid
     syntaxes: ["d"],
+    initializationOptions: {
+      nonStandardConfiguration: true,
+      startupConfiguration: getConfig(),
+    },
   };
   if (nova.inDevMode() && Prefs.getConfig(Config.debugLsp)) {
     clientOptions.debug = true;
@@ -160,7 +167,7 @@ async function startClient() {
 
   try {
     lspClient.start();
-    setTimeout(sendConfig, 200); // send config, but only after we start up
+    setTimeout(onDubInit, 1000); // send config, but only after we start up
   } catch (err) {
     Messages.showNotice(Catalog.msgLspDidNotStart, err.message || err || "");
     State.emitter.emit(State.events.onLsp, {
@@ -287,6 +294,11 @@ async function onDubInit() {
 }
 
 function sendConfig() {
+  let cfg = getConfig();
+  sendNotification("served/didChangeConfiguration", { settings: cfg });
+}
+
+function getConfig() {
   let cfg = defaultConfig();
   cfg.d.dubPath = Prefs.getConfig(Config.dubPath) ?? cfg.d.dubPath;
   cfg.d.dmdPath = Prefs.getConfig(Config.dmdPath) ?? cfg.d.dmdPath;
@@ -357,7 +369,7 @@ function sendConfig() {
   cfg.d.manyProjectsAction =
     Prefs.getConfig(Config.tooManyProjectsAction) ?? cfg.d.manyProjectsAction;
 
-  sendNotification("served/didChangeConfiguration", { settings: cfg });
+  return cfg;
 }
 
 function watchConfigVarCb(name, cb) {

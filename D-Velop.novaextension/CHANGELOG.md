@@ -1,3 +1,8 @@
+## Version 0.9.9
+
+Initialization handling was not quite right due to a source code management
+snafu. Additionally, we now properly report when the LSP is disabled.
+
 ## Version 0.9.8
 
 New initialization handling. This should be _far_ more robust than previous
