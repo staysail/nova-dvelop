@@ -1,4 +1,4 @@
-<img src="https://raw.githubusercontent.com/staysail/nova-serve-d/main/rocket.png" align="right" width="100" alt="[Logo]" />
+<img src="https://raw.githubusercontent.com/staysail/nova-dvelop/main/rocket.png" align="right" width="100" alt="[Logo]" />
 
 ## D-Velop Extension for Nova
 
@@ -87,7 +87,7 @@ of useful functionality will remain.
 
 More control over the diagnostic hints provided by _serve-d_ would be nice as well.
 
-Richer support for configuration of `dub` recipes and settings, such as
+Richer support for configuration of build recipes and settings, such as
 selecting different configurations, is planned.
 
 Import order sorting works now, but is somewhat limited. We would like to
@@ -130,9 +130,20 @@ it does we will try to enable such functionality here.
 
 ---
 
-## ⚖️ Attribution ⚖️
+## ⚖️ Legal Notices ⚖️
 
-The D Rocket logo is used [under license][2].
+Copyright © 2022 Staysail Systems, Inc.
+
+This extension is made available under the terms of the [MIT License][7].
+
+The D Rocket logo is used [under license][5].
+
+Some of the code in this extension was adapted from [Cameron Little][8]'s
+excellent [TypeScript extension][7] for Nova.
+That extension is also licensed under the MIT license and carries the
+following copyright notice:
+
+> Copyright (c) 2020 Cameron Little
 
 [1]: https://dlang.org "D Language web site"
 [2]: https://github.com/Pure-D/serve-d "Serve-D repository"
@@ -140,3 +151,5 @@ The D Rocket logo is used [under license][2].
 [4]: https://github.com/gdamore/tree-sitter-d "D Grammar for Tree-sitter"
 [5]: https://github.com/dlang-community/artwork "D community artwork"
 [6]: https://devforum.nova.app/t/lsp-integers-0-and-1-serialized-to-boolean/1831
+[7]: https://github.com/staysail/nova-dvelop/blob/main/LICENSE.md "MIT License"
+[8]: https://github.com/apexskier/nova-typescript "TypeScript Extension for Nova"

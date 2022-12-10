@@ -2,7 +2,7 @@
   "identifier": "tech.staysail.ServeD",
   "name": "D-Velop",
   "organization": "Staysail Systems",
-  "description": "D language support via Serve-D.",
+  "description": "D language support.",
   "version": "0.9.9",
   "categories": [
     "commands",
@@ -13,8 +13,8 @@
     "sidebars",
     "tasks"
   ],
-  "repository": "https://github.com/staysail/nova-serve-d",
-  "bugs": "https://github.com/staysail/nova-serve-d/issues",
+  "repository": "https://github.com/staysail/nova-dvelop",
+  "bugs": "https://github.com/staysail/nova-dvelop/issues",
   "funding": "https://github.com/sponsors/gdamore",
   "main": "main.js",
   "min_runtime": "10.0",
