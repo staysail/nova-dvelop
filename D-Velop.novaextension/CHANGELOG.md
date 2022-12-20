@@ -1,3 +1,8 @@
+## Version 0.9.10
+
+Highlighting fix. In some circumstances attributes were highlighted
+inconsistently or incorrectly.
+
 ## Version 0.9.9
 
 It is possible to change the compiler used for DUB recipes, as well
