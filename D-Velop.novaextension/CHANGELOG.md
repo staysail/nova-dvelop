@@ -1,3 +1,7 @@
+## Version 0.9.11
+
+Improved indentation.
+
 ## Version 0.9.10
 
 Highlighting fix. In some circumstances attributes were highlighted
