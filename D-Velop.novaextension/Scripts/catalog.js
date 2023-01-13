@@ -1,5 +1,5 @@
 //
-// Copyright 2022 Staysail Systems, Inc.
+// Copyright 2023 Staysail Systems, Inc.
 //
 // Distributed under the terms of the MIT license.
 
@@ -39,6 +39,8 @@ const catalog = {
   msgLspDisabledBody: "msgLspDisabledBody",
   msgLspIsCustomTitle: "msgLspIsCustomTitle",
   msgLspIsCustomBody: "msgLspIsCustomBody",
+  msgReferencesFoundTitle: "msgReferencesFoundTitle",
+  msgReferencesFoundBody: "msgReferencesFoundBody",
   msgSymbolsFoundTitle: "msgSymbolsFoundTitle",
   msgSymbolsFoundBody: "msgSymbolsFoundBody",
   msgSymbolsSearch: "msgSymbolsSearch",
@@ -83,6 +85,9 @@ const values = {
     "Some functionality will be reduced without a language server.",
   msgLspIsCustomTitle: "Language server is custom.",
   msgLspIsCustomBody: "Cannot check for updates when using a custom server.",
+  msgReferencesFoundTitle: "Found _COUNT_ References in _FILES_ Files",
+  msgReferencesFoundBody:
+    "Check the References pane in the D-Velop sidebar to see the results.",
   msgSymbolsFoundTitle: "Found _COUNT_ Matches in _FILES_ Files",
   msgSymbolsFoundBody:
     "Check the Symbols pane in the D-Velop sidebar to see the results.",

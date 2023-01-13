@@ -423,6 +423,20 @@
           ]
         },
         {
+          "id": "dvelop.sidebar.references",
+          "name": "References",
+          "placeholderText": "Results from \"Find References\" appear here.",
+          "placeholderImage": "d-mono-large",
+          "headerCommands": [
+            {
+              "title": "Find References",
+              "command": "dvelop.findReferences",
+              "tooltip": "Find references to the selected symbol",
+              "image": "search"
+            }
+          ]
+        },
+        {
           "id": "dvelop.sidebar.symbols",
           "name": "Symbols",
           "placeholderText": "Results from \"Find Symbols\" appear here.",

@@ -1,3 +1,8 @@
+## Version 0.9.12
+
+Added support for Find References. This depends on new functionality
+in serve-d itself.
+
 ## Version 0.9.11
 
 Improved indentation.
