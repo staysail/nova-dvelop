@@ -15,6 +15,7 @@ const Prefs = require("./prefs.js");
 const Symbols = require("./symbols.js");
 const Info = require("./info.js");
 const State = require("./state.js");
+const References = require("./references.js");
 
 exports.activate = function () {
   Prefs.register();
@@ -27,6 +28,7 @@ exports.activate = function () {
   Update.register();
   Info.register();
   Symbols.register();
+  References.register();
   ServeD.register();
 
   // kick off signal to get everything running

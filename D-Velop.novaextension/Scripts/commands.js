@@ -1,5 +1,5 @@
 //
-// Copyright 2022 Staysail Systems, Inc.
+// Copyright 2023 Staysail Systems, Inc.
 //
 // Distributed under the terms of the MIT license.
 
@@ -28,6 +28,8 @@ const keys = {
   getArchTypes: "dvelop.getArchTypes",
   getBuildTypes: "dvelop.getBuildTypes",
   getDubConfigs: "dvelop.getDubConfigs",
+  findReferences: "dvelop.findReferences",
+  showReferences: "dvelop.showReferences",
 };
 
 module.exports = keys;

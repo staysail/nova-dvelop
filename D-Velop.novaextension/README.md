@@ -18,6 +18,7 @@
 - Rename Symbol (local to file only)
 - Jump To Definition
 - Find Symbol(s)
+- Find Reference(s)
 - Build Tasks
 - Issue Parsing (from DUB or DMD output)
 - Sort Imports
@@ -132,7 +133,7 @@ it does we will try to enable such functionality here.
 
 ## ⚖️ Legal Notices ⚖️
 
-Copyright © 2022 Staysail Systems, Inc.
+Copyright © 2023 Staysail Systems, Inc.
 
 This extension is made available under the terms of the [MIT License][7].
 
