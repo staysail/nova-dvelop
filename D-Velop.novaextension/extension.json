@@ -3,7 +3,7 @@
   "name": "D-Velop",
   "organization": "Staysail Systems",
   "description": "D language support.",
-  "version": "0.9.11",
+  "version": "0.9.12",
   "categories": [
     "commands",
     "completions",
@@ -32,6 +32,13 @@
         "title": "Jump to Definition",
         "command": "dvelop.jumpToDefinition",
         "filters": { "syntaxes": ["d"] }
+      },
+      {
+        "title": "Find References",
+        "command": "dvelop.findReferences",
+        "filters": {
+          "syntaxes": ["d"]
+        }
       },
       {
         "title": "Find Symbol",

@@ -1,7 +1,16 @@
 ## Version 0.9.12
 
 Added support for Find References. This depends on new functionality
-in serve-d itself.
+in serve-d itself, and is experimental. The functionality in serve-d
+is anticipated to be in the release after 0.8.11.
+
+Note that occasionally serve-d may crash when running this -- due to
+bugs in serve-d which we anticipate will be fixed over time. Likewise,
+the accuracy of these references is somewhat limited as the current
+implementation in serve-d is somewhat naive - so for example references
+in mixins or certain other constructs won't necessarily be picked up.
+
+We expect this to improve over time, as serve-d becomes more sophisticated.
 
 ## Version 0.9.11
 

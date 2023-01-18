@@ -78,7 +78,6 @@ async function findReferences(editor, includeDeclaration = true) {
       Messages.showNotice(Catalog.msgNothingFound, "");
       return;
     }
-    console.warn("Got References", JSON.stringify(result));
 
     let opened = {};
     for (let doc of nova.workspace.textDocuments) {
@@ -122,32 +121,6 @@ async function findReferences(editor, includeDeclaration = true) {
         }
         return a.range.start.character - b.range.start.character;
       });
-
-      // TODO: This code strips duplicate references returned by serve-d.
-      // This is a bug in the LSP that will hopefully be fixed.
-      let unsortedLen = files[name].length;
-      let uniq = [];
-      let last = null;
-      for (let item of files[name]) {
-        if (
-          last == null ||
-          item.range.start.line != last.start.line ||
-          item.range.start.character != last.start.character ||
-          item.range.end.line != last.end.line ||
-          item.range.end.character != last.end.character
-        ) {
-          uniq.push(item);
-        }
-        last = item.range;
-      }
-      if (uniq.length != unsortedLen) {
-        console.warn(
-          "LSP gave us %d duplicates for %s",
-          unsortedLen - uniq.length,
-          name
-        );
-        files[name] = uniq;
-      }
 
       if (files[name].length == 0) {
         continue;
