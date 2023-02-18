@@ -1,5 +1,5 @@
 //
-// Copyright 2022 Staysail Systems, Inc.
+// Copyright 2023 Staysail Systems, Inc.
 //
 // Distributed under the terms of the MIT license.
 
@@ -33,9 +33,9 @@ function resolveTaskAction(context) {
 
 function provideTasks() {
   if (
-    !nova.environment["WEKA_USER"] || // we might want to toss this one
-    !nova.workspace.contains(nova.path.join(build_scripts, "check_all")) ||
-    !nova.workspace.contains(nova.path.join(build_scripts, "wldc"))
+    !nova.workspace.contains(nova.path.join(nova.workspace.path, "weka")) ||
+    !nova.workspace.contains(check_all) ||
+    !nova.workspace.contains(wldc)
   ) {
     return [];
   }
