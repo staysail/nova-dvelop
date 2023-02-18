@@ -97,11 +97,6 @@ async function findReferences(editor, includeDeclaration = true) {
         files[name] = [];
       }
       files[name].push(res);
-      // only open files if we have not already done so
-      if (!opened[res.uri]) {
-        opened[res.uri] = true;
-        waits.push(nova.workspace.openFile(res.uri));
-      }
     }
     await Promise.all(waits);
 
@@ -133,6 +128,10 @@ async function findReferences(editor, includeDeclaration = true) {
         }
       }
       if (lines.length == 0) {
+        for (let i in files[name]) {
+          count++;
+          files[name][i].text = "..."
+        }
         continue;
       }
       for (let i in files[name]) {
