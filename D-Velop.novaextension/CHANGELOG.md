@@ -1,3 +1,13 @@
+## Version 0.9.13
+
+Find references no longer opens files that are not already open.
+This eliminates the very long stalls when looking for a symbol that appears
+widely, especially in the standard library, such as toString.  As a result
+we do not provide a preview of those cases in the sidebar, instead just
+showing ellipses.
+
+Numerous improvements to syntax highlighting.
+
 ## Version 0.9.12
 
 Added support for Find References. This depends on new functionality
