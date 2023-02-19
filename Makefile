@@ -15,7 +15,7 @@ FRAMEWORKS	= "${APPBUNDLE}/Contents/Frameworks/"
 CODESIGN	= codesign
 LIBNAME		= libtree-sitter-$(PARSER).dylib
 SRCS		= $(SRC_DIR)/parser.c $(SRC_DIR)/scanner.c
-QUERIES		= $(QUERY_DIR)/highlights.scm $(QUERY_DIR)/folds.scm
+QUERIES		= $(QUERY_DIR)/highlights.scm $(QUERY_DIR)/folds.scm $(QUERY_DIR)/symbols.scm
 CP			= cp
 
 # install directory layout

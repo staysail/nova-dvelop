@@ -1,3 +1,7 @@
+## Version 0.9.14
+
+Fix regression in symbolication query (from 0.9.13).
+
 ## Version 0.9.13
 
 Find references no longer opens files that are not already open.
