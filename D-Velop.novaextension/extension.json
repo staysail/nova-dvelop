@@ -2,8 +2,8 @@
   "identifier": "tech.staysail.ServeD",
   "name": "D-Velop",
   "organization": "Staysail Systems",
-  "description": "D language support.",
-  "version": "0.9.15",
+  "description": "D (dlang) language support.",
+  "version": "0.9.16",
   "categories": [
     "commands",
     "completions",

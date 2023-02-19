@@ -1,3 +1,8 @@
+## Version 0.9.16
+
+Trivial description change to make finding us (searching for dlang) easier.
+There are no functional changes in this release.
+
 ## Version 0.9.15
 
 Better highlighting for string, ptrdiff_t, etc.
