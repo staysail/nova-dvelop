@@ -1,3 +1,7 @@
+## Version 0.9.15
+
+Better highlighting for string, ptrdiff_t, etc.
+
 ## Version 0.9.14
 
 Fix regression in symbolication query (from 0.9.13).
