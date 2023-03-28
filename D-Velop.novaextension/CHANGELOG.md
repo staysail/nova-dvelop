@@ -1,3 +1,8 @@
+## Version 1.0.0
+
+Enable -unittest for Weka repository users.
+Formalize for a non-beta release.
+
 ## Version 0.9.16
 
 Trivial description change to make finding us (searching for dlang) easier.

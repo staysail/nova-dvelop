@@ -21,6 +21,7 @@ function resolveTaskAction(context) {
       args: [
         "-o-",
         "-vcolumns",
+        "-unittest",
         nova.workspace.relativizePath(editor.document.path),
       ], // file?
       cwd: nova.workspace.path,

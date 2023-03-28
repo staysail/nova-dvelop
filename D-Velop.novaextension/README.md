@@ -2,7 +2,7 @@
 
 ## D-Velop Extension for Nova
 
-> This extension is a _BETA_ release. Note that _serve-d_ is also still being
+> Note that _serve-d_, upon which this extension depends, is still being
 > actively developed. However, the features which do not rely on the language server
 > such as syntax highlighting and symbolication are known to work well.
 
@@ -53,14 +53,9 @@ more on the edge by checking the **Use Beta Releases** option.
 recent 0.8.0 beta release, as that is required to function, until 0.8.0
 or newer is released.)
 
-Note that if you use a custom release, you must use a **0.8.0-beta.1** or
-newer. Older releases will not function at all with this extension.
-
-Local symbol renaming requires _serve-d_ **0.8.0-beta.8** or newer.
-
-Format customization requires _serve-d_ **0.8.0-beta.9** or newer.
-
-The server information dialog requires _serve_d_ **0.8.0-beta.10** or newer.
+As of this writing, _serve-d_ **0.8.0-beta.14** is the newest release
+available, and is recommended for all users (at least until a newer release
+is available.)  Earlier releases may have reduced functionality.
 
 ## 🛡️ Security Considerations 🛡️
 
@@ -97,6 +92,13 @@ see this tied into the formatting as an option when formatting documents.
 We anticipate that _serve-d_ will grow additional capabilities, and when
 it does we will try to enable such functionality here.
 
+Debugging support via the Debug Adapter Protocol is something we anticipate in
+the future, once we figure out a nice way to deliver a version of LLDB with
+D language support enabled.  (We've already done this for our other language
+extensions, but as always, D is a little bit ... erm... special.)  If someone
+wants to help out with this effort, which is mostly a packaging/delivery problem,
+please reach out to us.
+
 ## 🐜 Bugs 🐜
 
 > Note that earlier versions of Nova had bugs which impacted the functionality
@@ -128,6 +130,10 @@ it does we will try to enable such functionality here.
   This can happen while _serve-d_ is still building indexes, but it would appear
   that _serve-d_ may have other issues in this area. When _serve-d_ gets fixed,
   this extension will automatically benefit.
+
+- **Find Symbol**, **Jump to Definition**, and similar do not work correctly
+  with symbols that are provided by mixins.  This is a limitation in _serve-d_,
+  and will hopefully be addressed in future updates of that project.
 
 ---
 
