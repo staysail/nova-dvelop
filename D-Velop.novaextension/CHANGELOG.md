@@ -1,3 +1,11 @@
+## Version 1.0.1
+
+Fix highlighting of some type aliases (e.g. "string", "ptrdiff_t") when they
+appear in imports or other contexts that are not a type.
+
+Tweak the highlighting for import package names to use a the @processing
+selector, which is a little less jarring in most themes than @cdata.
+
 ## Version 1.0.0
 
 Enable -unittest for Weka repository users.
