@@ -267,7 +267,6 @@
 (enum_declaration (enum) . (identifier) @identifier.type.enum)
 (auto_declaration (storage_class (auto)) . (identifier) @identifier.variable)
 (manifest_declarator . (identifier) @identifier.constant)
-((identifier) @_type (#match? @_type "^(string|dstring|wstring|size_t|ptrdiff_t|noreturn)$")) @value.entity @identifier.type.core
 (identifier) @identifier ; catch all
 (declarator . (identifier) @identifier.variable)
 (declarator "=" (void) @value.null)
