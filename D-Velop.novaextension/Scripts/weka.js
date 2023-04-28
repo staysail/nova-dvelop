@@ -21,12 +21,39 @@ function resolveTaskAction(context) {
       args: [
         "-o-",
         "-vcolumns",
-        "-unittest",
         nova.workspace.relativizePath(editor.document.path),
       ], // file?
       cwd: nova.workspace.path,
       matchers: ["dmd-error", "dmd-short-error"],
     });
+  }  else if (context.data == "check_file_ut" && editor && editor.document.path) {
+    return new TaskProcessAction(wldc, {
+      args: [
+        "-o-",
+        "-g",
+        "-vcolumns",
+        "-unittest",
+        nova.workspace.relativizePath(editor.document.path),
+      ], // file?
+      env: { QUIET: "true" },
+      cwd: nova.workspace.path,
+      matchers: ["dmd-error", "dmd-short-error", "d-exception-error" ],
+    });
+  } else if (context.data == "weka_ut" && editor && editor.document.path) {
+    return new TaskProcessAction(wldc, {
+      args: [
+        "-unittest",
+        "-main",
+        nova.workspace.relativizePath(editor.document.path),
+      ],
+      env: {
+        QUIET: "true",
+        WLDC_MODE: "rdmd",
+        ARCHFLAGS: "",
+      },
+      cwd: nova.workspace.path,
+      matchers: ["dmd-error", "dmd-short-error", "d-exception-error"],
+    })
   }
   // well this won't work
   return null;
@@ -51,6 +78,17 @@ function provideTasks() {
   );
   cf_task.image = "weka";
 
+  let ut_task = new Task("Unit Test");
+  ut_task.setAction(
+    Task.Build,
+    new TaskResolvableAction({ data: "check_file_ut" })
+  );
+  ut_task.setAction(
+    Task.Run,
+    new TaskResolvableAction({ data: "weka_ut" })
+  );
+  ut_task.image = "weka";
+
   let cl_task = new Task("Compile Locally");
   cl_task.setAction(
     Task.Build,
@@ -65,11 +103,12 @@ function provideTasks() {
     new TaskProcessAction(check_all, {
       args: ["weka", "-unittest", "-vcolumns"],
       cwd: nova.workspace.path,
+      env: { QUIET: "true" },
       matchers: ["dmd-error", "dmd-short-error"],
     })
   );
   cl_task.image = "weka";
-  return [cl_task, cf_task];
+  return [cl_task, cf_task, ut_task];
 }
 
 function register() {

@@ -1,3 +1,7 @@
+## Version 1.0.2
+
+Better support for unit testing (assertions will be issues).
+
 ## Version 1.0.1
 
 Fix highlighting of some type aliases (e.g. "string", "ptrdiff_t") when they

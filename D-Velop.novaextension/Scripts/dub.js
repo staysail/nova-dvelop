@@ -1,5 +1,5 @@
 //
-// Copyright 2022 Staysail Systems, Inc.
+// Copyright 2023 Staysail Systems, Inc.
 //
 // Distributed under the terms of the MIT license.
 
@@ -40,7 +40,7 @@ function provideTasksGroup(group) {
       new TaskProcessAction(t.exec, {
         args: t.args,
         cwd: t.cwd,
-        matchers: ["dmd-error", "dmd-short-error"],
+        matchers: ["dmd-error", "dmd-short-error", "dmd-exception-error"],
       })
     );
     if (t.run) {
@@ -92,7 +92,7 @@ function provideTasksDubFallback() {
       Task.Run,
       new TaskProcessAction(dub, {
         args: ["run"],
-        matchers: ["dmd-error"],
+        matchers: ["dmd-error", "dmd-exception-error"],
       })
     );
     task.image = "dub";

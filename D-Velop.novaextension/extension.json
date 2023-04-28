@@ -3,7 +3,7 @@
   "name": "D-Velop",
   "organization": "Staysail Systems",
   "description": "D (dlang) language support.",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "categories": [
     "commands",
     "completions",
@@ -408,6 +408,15 @@
         "line": 2,
         "severity": 3
       }
+    },
+    "d-exception-error": {
+      "pattern": {
+        "regexp": "^[^@]+@([^:()]+)\\(([0-9]+)\\): (.+)$",
+        "file": 1,
+        "line": 2,
+        "message": 3,
+        "severity": "error"
+      }
     }
   },
   "sidebars": [
@@ -460,6 +469,5 @@
       ]
     }
   ],
-  "debug": true,
   "activationEvents": ["onLanguage:d"]
 }
