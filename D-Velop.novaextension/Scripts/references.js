@@ -128,11 +128,11 @@ async function findReferences(editor, includeDeclaration = true) {
         }
       }
       if (lines.length == 0) {
-        for (let i in files[name]) {
-          count++;
-          files[name][i].text = "..."
-        }
-        continue;
+        let fileName = files[name][0].uri;
+        fileName = fileName.substring(7); // length of "file://".
+        let content = nova.fs.open(fileName, "rt");
+        lines = content.readlines();
+        content.close();
       }
       for (let i in files[name]) {
         count++;

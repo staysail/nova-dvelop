@@ -2,6 +2,10 @@
 
 Better support for unit testing (assertions will be issues).
 
+Find References pane now shows content preview even for files not open.
+
+Debugging of this extension is off by default (should help performance).
+
 ## Version 1.0.1
 
 Fix highlighting of some type aliases (e.g. "string", "ptrdiff_t") when they
