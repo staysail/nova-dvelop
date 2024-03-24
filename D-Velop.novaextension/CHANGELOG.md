@@ -1,3 +1,8 @@
+## Version 1.0.3
+
+Bumps Tree-Sitter grammar to 0.4.0.  This includes minor changes for
+queries.
+
 ## Version 1.0.2
 
 Better support for unit testing (assertions will be issues).
