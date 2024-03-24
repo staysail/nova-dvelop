@@ -139,7 +139,7 @@ please reach out to us.
 
 ## ⚖️ Legal Notices ⚖️
 
-Copyright © 2023 Staysail Systems, Inc.
+Copyright © 2024 Staysail Systems, Inc.
 
 This extension is made available under the terms of the [MIT License][7].
 

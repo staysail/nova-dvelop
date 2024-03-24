@@ -1,6 +1,6 @@
 The MIT License
 
-Copyright 2022 Staysail Systems, Inc. <info@staysail.tech>
+Copyright 2024 Staysail Systems, Inc. <info@staysail.tech>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"),
