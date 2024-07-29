@@ -1,6 +1,12 @@
+## Version 1.0.4
+
+Bumps Tree-Sitter grammar to 0.5.1, and updates queries. The main benefits
+here are support for some newer constructs (named arguments, hex strings),
+and better highlighting of some values such as embedded escape sequences.
+
 ## Version 1.0.3
 
-Bumps Tree-Sitter grammar to 0.4.0.  This includes minor changes for
+Bumps Tree-Sitter grammar to 0.4.0. This includes minor changes for
 queries.
 
 ## Version 1.0.2
@@ -41,7 +47,7 @@ Fix regression in symbolication query (from 0.9.13).
 
 Find references no longer opens files that are not already open.
 This eliminates the very long stalls when looking for a symbol that appears
-widely, especially in the standard library, such as toString.  As a result
+widely, especially in the standard library, such as toString. As a result
 we do not provide a preview of those cases in the sidebar, instead just
 showing ellipses.
 

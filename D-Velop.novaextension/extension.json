@@ -3,7 +3,7 @@
   "name": "D-Velop",
   "organization": "Staysail Systems",
   "description": "D (dlang) language support.",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "categories": [
     "commands",
     "completions",
