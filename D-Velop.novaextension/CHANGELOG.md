@@ -1,3 +1,8 @@
+## Version 1.0.5
+
+Bumps Tree-Sitter grammar to 0.6.0, and updates queries, to support
+interpolated strings.
+
 ## Version 1.0.4
 
 Bumps Tree-Sitter grammar to 0.5.1, and updates queries. The main benefits
