@@ -1,3 +1,8 @@
+## Version 1.0.6
+
+Bumps Tree-Sitter grammar to 0.8.2, fixing several queries.
+Support for nesting comments is limited to 5 levels of nesting.
+
 ## Version 1.0.5
 
 Bumps Tree-Sitter grammar to 0.6.0, and updates queries, to support
